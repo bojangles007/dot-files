@@ -63,6 +63,14 @@
       brew install aspell --with-lang-uk
     #+END_SRC
 
+*** Leiningen
+
+    This is used by Cider. Installed with brew, of course:
+
+    #+BEGIN_SRC sh
+      brew install leiningen
+    #+END_SRC
+
 *** Fix "weird characters" in =ansi-term= mode
 
     For some reason Emacs' =ansi-term= mode displays some "weird characters".

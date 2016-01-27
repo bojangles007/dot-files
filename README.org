@@ -74,6 +74,15 @@
     tic -o ~/.terminfo /tmp/ansi-term.ti
     #+END_SRC
 
+*** Trash
+
+    This allows moving files to trash rather than deleting them from =dired=.
+    I find that handy.
+
+    #+BEGIN_SRC sh
+    brew install trash
+    #+END_SRC
+
 ** The Friendly Interactive Shell
 
    I'm experimenting with [[http://fishshell.com/docs/current/tutorial.html][fish]] as my login shell. On a new machine, I first

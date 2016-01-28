@@ -355,10 +355,10 @@
 (use-package ac-ispell
   :ensure t
   :init
-  ;; Completion words longer than 4 characters
+  ;; Completion words longer than 12 characters
   (custom-set-variables
-   '(ac-ispell-requires 8)
-   '(ac-ispell-fuzzy-limit 8))
+   '(ac-ispell-requires 12)
+   '(ac-ispell-fuzzy-limit 12))
 
   :config
   (ac-ispell-setup)

@@ -532,6 +532,7 @@
          ("C-x T" . sane-term-create)))
 
 (use-package tramp-term
+  :ensure t
   :bind ("C-x C-t" . tramp-term))
 
 (use-package graphviz-dot-mode

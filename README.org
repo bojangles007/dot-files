@@ -3,7 +3,8 @@
   :header-args:sh: :results output silent
   :END:
 
-  This repo contains my dotfiles.
+  This repo contains my dotfiles. I used to keep them in app-specific repos,
+  e.g. [[http://github.com/stig/.zsh.d][.zsh.d]] and [[http://github.com/stig/.emacs.d][.emacs.d]], but it got a bit tiresome.
 
 ** Clone =Dotfiles=
 
@@ -143,10 +144,50 @@
      brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
    #+END_SRC
 
-** TODO .gitconfig & .gitignore
+** DONE .gitconfig
+
+   Set up my basic details:
+
+   #+BEGIN_SRC sh
+     git config --global user.name "Stig Brautaset"
+     git config --global user.email "stig@brautaset.org"
+   #+END_SRC
+
+   I like coloured output, particularly for diffs, thank you very much. I'm
+   not entirely sure which of these actually does it though:
+
+   #+BEGIN_SRC sh
+     git config --global ui.color true
+     git config --global color.ui true
+   #+END_SRC
+
+   Git aliases? I has them! I used to have more, for example =git co= as
+   abbreviation for =git commit=, but since I moved to use [[http://magit.vc][Magit]] I don't need
+   them any more. I've kept a few mainly for "sentimental reasons" though.
+
+   #+BEGIN_SRC sh
+     git config --global alias.lg "!git log-pretty --graph"
+     git config --global alias.l "!log pretty"
+     git config --global alias.log-pretty "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+   #+END_SRC
+
+   This alias I used for a while when creating the release notes for [[http://sbjson.org][SBJson]].
+   It creates nice output for pasting into a Markdown document, for each
+   commit. It is mainly suitable if you cultivate a carefully manicured git
+   history. You can invoke it like =git sbjsonlog v4.0.0..v4.0.1=:
+
+   #+BEGIN_SRC sh
+      git config --global alias.sbjsonlog "log '--format=format:* [`%h`](https://github.com/stig/json-framework/commit/%H) %s'"
+   #+END_SRC
+
+   I like the "simple" style of push, where branches are assumed to be named
+   similarly to upstream. This is the default in Git above version 2.0, I
+   believe, but I'll leave this here for a little bit, in case I need it.
+
+   #+BEGIN_SRC sh
+     git config --global push.default simple
+   #+END_SRC
 
 ** TODO .gemrc
 
 ** TODO =.lein=
-
-

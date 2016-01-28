@@ -511,7 +511,10 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode))
+  (projectile-global-mode)
+
+  (use-package helm-projectile
+    :ensure t))
 
 (use-package org
   :ensure t

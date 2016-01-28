@@ -34,7 +34,8 @@
 
    #+BEGIN_SRC sh
      test -L ~/.emacs.d && rm ~/.emacs.d
-     ln -s ~/Dotfiles/emacs.d $target
+     test -d ~/.emacs.d && mv ~/.emacs.d ~/.emacs.d.$(date +%s)
+     ln -s ~/Dotfiles/emacs.d ~/.emacs.d
    #+END_SRC
 
    Then use homebrew to install Emacs:

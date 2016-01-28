@@ -6,6 +6,12 @@
   This repo contains my dotfiles. I used to keep them in app-specific repos,
   e.g. [[http://github.com/stig/.zsh.d][.zsh.d]] and [[http://github.com/stig/.emacs.d][.emacs.d]], but it got a bit tiresome.
 
+  This file has lots of code snippets to run, and some full config file
+  snippets. To run the code samples from Emacs, if you have =org-babel=
+  installed, simply position the cursor in the sample and press =C-c C-c=. For
+  the ones that are expected to be [[http://orgmode.org/manual/tangle.html][tangled in place]], position the cursor in
+  the config snippet and hit =C-c C-v t=.
+
 ** Clone =Dotfiles=
 
    I start by cloning the current version of my configuration files.
@@ -130,12 +136,17 @@
    This requires a bit of hackery until [[https://github.com/brockgr/csshx/pull/77][my patch to make csshx behave in Zsh]]
    is merged.
 
-   First we tell =csshx= to look for clusters in =~/.clusters=:
+   First we create a new =~/.clusters= file if there are none:
 
    #+BEGIN_SRC sh
      touch ~/.clusters
-     test -f ~/.csshxrc && mv ~/.csshxrc{,.orig}
-     echo 'extra_cluster_file=~/.clusters' > ~/.csshxrc
+   #+END_SRC
+
+   Then we tell =csshx= to look for clusters in =~/.clusters=. Use =C-c C-v t=
+   in Emacs to tangle into place:
+
+   #+BEGIN_SRC sh :tangle ~/.csshxrc
+     extra_cluster_file=~/.clusters
    #+END_SRC
 
    Then we install it from my own hacked repo:
@@ -188,6 +199,15 @@
      git config --global push.default simple
    #+END_SRC
 
-** TODO .gemrc
+** .gemrc
+
+   I like Gem, the Ruby module installer, to install packages into my own user
+   directory, so I don't have to resort to =sudo=. This setting makes that the
+   default. In Emacs, use =C-c C-v t= on the next code block to "tangle" that
+   snippet in place.
+
+   #+BEGIN_SRC sh :tangle ~/.gemrc
+     gem: --user-install
+   #+END_SRC
 
 ** TODO =.lein=

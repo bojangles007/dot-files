@@ -157,7 +157,7 @@
      brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
    #+END_SRC
 
-** .gitconfig
+** Git
 
    Set up my basic details:
 
@@ -201,7 +201,7 @@
      git config --global push.default simple
    #+END_SRC
 
-** .gemrc
+** Ruby Gems
 
    I like Gem, the Ruby module installer, to install packages into my own user
    directory, so I don't have to resort to =sudo=. This setting makes that the
@@ -212,7 +212,7 @@
      gem: --user-install
    #+END_SRC
 
-** =.lein=
+** Leiningen
 
    Leiningen uses a default =~/.lein/profiles.clj= that is merged with
    project-specific settings. This is a handy place to set up things you want

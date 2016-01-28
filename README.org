@@ -107,6 +107,7 @@
    #+BEGIN_SRC sh
      mkdir -p ~/.config
      test -L ~/.config/fish && rm ~/.config/fish
+     test -d ~/.config/fish && mv ~/.config/fish ~/.config/fish.$(date +%s)
      ln -s ~/Dotfiles/fish ~/.config/fish
    #+END_SRC
 
@@ -156,7 +157,7 @@
      brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
    #+END_SRC
 
-** DONE .gitconfig
+** .gitconfig
 
    Set up my basic details:
 

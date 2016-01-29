@@ -562,3 +562,6 @@
 (use-package graphviz-dot-mode
   :init
   (setq graphviz-dot-view-command "open -a Graphviz %s"))
+
+(use-package fish-mode
+  :ensure t)

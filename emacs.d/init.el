@@ -404,10 +404,25 @@
           ac-source-yasnippet)))
 
 (use-package yasnippet
+  :init
+  (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
+  (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
+
   :config
-  (yas-global-mode 1)
-  (add-hook 'term-mode-hook
-            (lambda() (yas-minor-mode -1))))
+  (defun yas/org-very-safe-expand ()
+    (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+  (defun yas/org-setup ()
+    ;; yasnippet (using the new org-cycle hooks)
+    (make-variable-buffer-local 'yas/trigger-key)
+    (setq yas/trigger-key [tab])
+    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+    (define-key yas/keymap [tab] 'yas/next-field))
+
+  ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
+  (setq org-src-tab-acts-natively nil)
+
+  (add-hook 'org-mode-hook #'yas/org-setup))
 
 (use-package clojure-mode
   :pin melpa-stable

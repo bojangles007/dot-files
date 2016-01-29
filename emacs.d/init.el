@@ -369,18 +369,21 @@
 (use-package helm
   :ensure t
 
-  :bind (("M-x" . helm-M-x)
+  :bind (("C-c C-h e" . helm-list-elisp-packages)
+         ("C-c C-h r" . helm-resume)
+         ("M-x" . helm-M-x)
          ("M-y" . helm-show-kill-ring)
          ("C-x b" . helm-mini)
          ("C-x 4 b" . helm-mini)
          ("C-x C-f" . helm-find-files)))
 
+(use-package helm-ag :ensure t)
+
 (use-package ac-helm
   :ensure t
   :bind ("C-." . ac-complete-with-helm))
 
-(use-package wgrep-ag
-  :ensure t)
+(use-package wgrep-ag :ensure t)
 
 (use-package multiple-cursors
   :ensure t

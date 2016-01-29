@@ -545,7 +545,10 @@
    '((emacs-lisp . t)
      (clojure . t)
      (dot . t)
-     (sh . t))))
+     (sh . t)))
+
+  (use-package ox-gfm
+    :ensure t))
 
 (use-package sane-term
   :ensure t

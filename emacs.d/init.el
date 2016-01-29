@@ -25,10 +25,6 @@
 (if (file-exists-p secret-file)
     (load secret-file))
 
-(let ((default-directory (expand-file-name "~/.homebrew/share/emacs/site-lisp")))
-  (if (file-exists-p default-directory)
-      (normal-top-level-add-subdirs-to-load-path)))
-
 ;; Fill at 78 columns rather than the default of 70
 (setq-default fill-column 78)
 

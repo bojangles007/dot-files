@@ -10,20 +10,10 @@
 (setq ring-bell-function 'ignore)
 
 
-;; Keep local settings in a separate file
-(setq local-file (expand-file-name "local.el" user-emacs-directory))
-(if (file-exists-p local-file)
-    (load local-file))
-
 ;; Keep emacs Custom-settings in a separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (if (file-exists-p custom-file)
     (load custom-file))
-
-;; Keep secret settings (passwords etc) in a separate file also.
-(setq secret-file (expand-file-name "secret.el" user-emacs-directory))
-(if (file-exists-p secret-file)
-    (load secret-file))
 
 ;; Fill at 78 columns rather than the default of 70
 (setq-default fill-column 78)

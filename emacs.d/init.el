@@ -534,6 +534,9 @@
   (use-package helm-projectile
     :ensure t))
 
+(use-package ag
+  :ensure t)
+
 (use-package org
   :ensure t
   :bind ("C-x a" . org-agenda)

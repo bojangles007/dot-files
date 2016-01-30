@@ -120,8 +120,8 @@
    Tediously we have to add its full path (=/usr/local/bin/fish=) to =/etc/shells=
    to allow us to use it as a login shell:
 
-   #+BEGIN_SRC sh
-     cat <<EOF | sudo patch /etc/shells
+   #+BEGIN_SRC sh :dir /sudo::
+     cat <<EOF | patch /etc/shells
      10a11
      > /usr/local/bin/fish
      EOF

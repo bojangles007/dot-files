@@ -196,9 +196,12 @@
 (unless (server-running-p)
   (server-start))
 
-;; Allow ssh+sudo with tramp
-(set-default 'tramp-default-proxies-alist
-             (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+;; To generalize (from the previous example): For all hosts, except my local
+;; one, first connect via ssh, and then apply sudo -u root:
+(add-to-list 'tramp-default-proxies-alist
+             '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+             '((regexp-quote (system-name)) nil nil))
 
 ;;
 ;; Packages installed with package.el

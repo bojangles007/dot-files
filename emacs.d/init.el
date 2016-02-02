@@ -190,6 +190,24 @@
 
 (setq temporary-file-directory "/tmp/")
 
+;; This lets me re-open the currently open file using sudo.
+;; Credit: http://www.emacswiki.org/emacs/TrampMode#toc31
+(defun sudo-edit-current-file ()
+  (interactive)
+  (let ((position (point)))
+    (find-alternate-file
+     (if (file-remote-p (buffer-file-name))
+         (let ((vec (tramp-dissect-file-name (buffer-file-name))))
+           (tramp-make-tramp-file-name
+            "sudo"
+            (tramp-file-name-user vec)
+            (tramp-file-name-host vec)
+            (tramp-file-name-localname vec)))
+       (concat "/sudo::" (buffer-file-name))))
+    (goto-char position)))
+
+(global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
+
 ;; Join line below
 (global-set-key (kbd "M-j")
                 (lambda ()

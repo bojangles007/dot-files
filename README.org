@@ -6,11 +6,18 @@
   This repo contains my dotfiles. I used to keep them in app-specific repos,
   e.g. [[http://github.com/stig/.zsh.d][.zsh.d]] and [[http://github.com/stig/.emacs.d][.emacs.d]], but it got a bit tiresome.
 
-  This file has lots of code snippets to run, and some full config file
-  snippets. To run the code samples from Emacs, if you have =org-babel=
-  installed, simply position the cursor in the sample and press =C-c C-c=. For
-  the ones that are expected to be [[http://orgmode.org/manual/tangle.html][tangled in place]], position the cursor in
-  the config snippet and hit =C-c C-v t=.
+** About this file
+
+  This file has some executable code snippets, and some config file snippets
+  that can be "tangled". (The latter has =:tangle <filename>= in their
+  =#+BEGIN_SRC= line.)
+
+  - To run the code samples from Emacs, if you have =org-babel= installed,
+    simply position the cursor in the sample and press =C-c C-c=.
+  - For the config snippets that are expected to be [[http://orgmode.org/manual/tangle.html][tangled in place]], position
+    the cursor in the config snippet and hit =C-u C-c C-v t=. To tangle all
+    the config snippets in the file in one go, remove the prefix argument and
+    just do =C-c C-v t=.
 
 ** Clone =Dotfiles=
 
@@ -144,8 +151,7 @@
      touch ~/.clusters
    #+END_SRC
 
-   Then we tell =csshx= to look for clusters in =~/.clusters=. Use =C-c C-v t=
-   in Emacs to tangle into place:
+   Then we tell =csshx= to look for clusters in =~/.clusters=.
 
    #+BEGIN_SRC sh :tangle ~/.csshxrc
      extra_cluster_file=~/.clusters
@@ -205,8 +211,7 @@
 
    I like Gem, the Ruby module installer, to install packages into my own user
    directory, so I don't have to resort to =sudo=. This setting makes that the
-   default. In Emacs, use =C-c C-v t= on the next code block to "tangle" that
-   snippet in place.
+   default.
 
    #+BEGIN_SRC sh :tangle ~/.gemrc
      gem: --user-install

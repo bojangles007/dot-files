@@ -539,7 +539,10 @@
    '((emacs-lisp . t)
      (clojure . t)
      (dot . t)
-     (sh . t))))
+     (sh . t)))
+
+  ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
+  (load-file "ox-confluence.el"))
 
 (use-package ox-gfm
   :ensure t)

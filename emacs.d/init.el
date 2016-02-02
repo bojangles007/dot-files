@@ -181,7 +181,7 @@
 
 ;; For all hosts, except my local one, first connect via ssh, and then apply
 ;; sudo -u root:
-(add-to-list 'tramp-default-proxies-alist
+(set-default 'tramp-default-proxies-alist
              '(nil "\\`root\\'" "/ssh:%h:"))
 (add-to-list 'tramp-default-proxies-alist
              '((regexp-quote (system-name)) nil nil))

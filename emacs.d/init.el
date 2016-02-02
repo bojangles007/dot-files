@@ -179,13 +179,16 @@
 (global-set-key (kbd "C-c s") 'eshell)
 
 
-;; For all hosts, except my local one, first connect via ssh, and then apply
-;; sudo -u root:
+;; Allow ssh+sudo with tramp
 (set-default 'tramp-default-proxies-alist
-             '(nil "\\`root\\'" "/ssh:%h:"))
+             (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+
+
+;; Don't connect via SSH for localhost
 (add-to-list 'tramp-default-proxies-alist
              '((regexp-quote (system-name)) nil nil))
 
+(setq temporary-file-directory "/tmp/")
 
 ;; Join line below
 (global-set-key (kbd "M-j")

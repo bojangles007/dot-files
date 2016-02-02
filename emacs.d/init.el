@@ -179,6 +179,14 @@
 (global-set-key (kbd "C-c s") 'eshell)
 
 
+;; For all hosts, except my local one, first connect via ssh, and then apply
+;; sudo -u root:
+(add-to-list 'tramp-default-proxies-alist
+             '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+             '((regexp-quote (system-name)) nil nil))
+
+
 ;; Join line below
 (global-set-key (kbd "M-j")
                 (lambda ()
@@ -193,18 +201,9 @@
 
 (global-set-key (kbd "s-w") 'whitespace-cleanup)
 
-
-
 (require 'server)
 (unless (server-running-p)
   (server-start))
-
-;; To generalize (from the previous example): For all hosts, except my local
-;; one, first connect via ssh, and then apply sudo -u root:
-(add-to-list 'tramp-default-proxies-alist
-             '(nil "\\`root\\'" "/ssh:%h:"))
-(add-to-list 'tramp-default-proxies-alist
-             '((regexp-quote (system-name)) nil nil))
 
 ;;
 ;; Packages installed with package.el

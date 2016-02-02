@@ -542,7 +542,7 @@
      (sh . t)))
 
   ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
-  (load-file "ox-confluence.el"))
+  (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
 
 (use-package ox-gfm
   :ensure t)

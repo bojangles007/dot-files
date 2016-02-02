@@ -175,6 +175,9 @@
 (setq ispell-program-name "aspell"
       ispell-dictionary "british")
 
+;; Launch/switch to eshell more easily
+(global-set-key (kbd "C-c s") 'eshell)
+
 
 ;; Join line below
 (global-set-key (kbd "M-j")

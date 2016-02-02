@@ -554,6 +554,9 @@
   :bind ("C-x a" . org-agenda)
   :init
   (setq org-babel-clojure-backend 'cider)
+
+  ;; Don't execute code blocks during export
+  (setq org-export-babel-evaluate nil)
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages

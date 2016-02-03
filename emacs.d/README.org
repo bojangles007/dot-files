@@ -1,3 +1,4 @@
+#+OPTIONS fn:t toc:nil
 * About My Emacs Config
 
   This is my Emacs configuration. Because I'm prone to forget what does what,
@@ -190,6 +191,31 @@
       (global-auto-revert-mode 1)
     #+END_SRC
 
+
+    All files should end in a newline. Insert one if there isn't one already.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq require-final-newline t)
+    #+END_SRC
+
+*** OS X Specific
+
+    Set up the modifier keys the way that best fits my keyboard.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq mac-command-modifier 'meta
+            mac-option-modifier 'super
+            mac-control-modifier 'control
+            ns-function-modifier 'hyper)
+    #+END_SRC
+
+    Delete files by moving them to Trash. This way they _can_ be retrieved
+    again.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq delete-by-moving-to-trash t)
+    #+END_SRC
+
 *** Miscellaneous Useful Functions
 
 **** Comment or uncomment line or region
@@ -286,6 +312,56 @@
        (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
      #+END_SRC
 
+*** Mode-specific stuff
+
+**** Tramp
+
+     Allow using sudo over ssh, so we can sudo to root remotely on a machine
+     that does not allow root login.
+
+     #+BEGIN_SRC emacs-lisp
+       (set-default 'tramp-default-proxies-alist
+                    (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+     #+END_SRC
+
+     For opening files using sudo locally, don't connect via SSH. (My local
+     machine doesn't accept SSH connections.)
+
+     #+BEGIN_SRC emacs-lisp
+       (add-to-list 'tramp-default-proxies-alist
+               '((regexp-quote (system-name)) nil nil))
+     #+END_SRC
+
+     If I don't set this then tramp will attempt to use OS X's tempfile
+     directory on a remote machine, which does not work. I don't understand
+     why it won't use the remote machine's temp directory automatically, but
+     there you go.
+
+     #+BEGIN_SRC emacs-lisp
+       (setq temporary-file-directory "/tmp/")
+     #+END_SRC
+
+     This function lets me re-open the currently open file using sudo[fn:1].
+     I've bound it to =C-c C-s=. It works for both local and remote buffers.
+
+     #+BEGIN_SRC emacs-lisp
+       (defun sudo-edit-current-file ()
+         (interactive)
+         (let ((position (point)))
+           (find-alternate-file
+            (if (file-remote-p (buffer-file-name))
+                (let ((vec (tramp-dissect-file-name (buffer-file-name))))
+                  (tramp-make-tramp-file-name
+                   "sudo"
+                   (tramp-file-name-user vec)
+                   (tramp-file-name-host vec)
+                   (tramp-file-name-localname vec)))
+              (concat "/sudo::" (buffer-file-name))))
+           (goto-char position)))
+
+       (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
+     #+END_SRC
+
 *** TODO Split & document this lot
 
     Some of this I have _no_ idea what it does. I guess I just take it out and
@@ -321,22 +397,12 @@
         save-interprogram-paste-before-kill t
         mouse-yank-at-point t)
 
-  (setq require-final-newline t)
-
   ;; Auto refresh dired, but be quiet about it
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
 
-  (setq delete-by-moving-to-trash t)
-
   ;; Don't litter my file tree with backup files
   (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
-
-  (setq mac-command-modifier 'meta
-        mac-option-modifier 'super
-        mac-control-modifier 'control
-        ns-function-modifier 'hyper)
-
 
   (setq ispell-program-name "aspell"
         ispell-dictionary "british")
@@ -345,34 +411,6 @@
   (global-set-key (kbd "C-c s") 'eshell)
 
 
-  ;; Allow ssh+sudo with tramp
-  (set-default 'tramp-default-proxies-alist
-               (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
-
-
-  ;; Don't connect via SSH for localhost
-  (add-to-list 'tramp-default-proxies-alist
-               '((regexp-quote (system-name)) nil nil))
-
-  (setq temporary-file-directory "/tmp/")
-
-  ;; This lets me re-open the currently open file using sudo.
-  ;; Credit: http://www.emacswiki.org/emacs/TrampMode#toc31
-  (defun sudo-edit-current-file ()
-    (interactive)
-    (let ((position (point)))
-      (find-alternate-file
-       (if (file-remote-p (buffer-file-name))
-           (let ((vec (tramp-dissect-file-name (buffer-file-name))))
-             (tramp-make-tramp-file-name
-              "sudo"
-              (tramp-file-name-user vec)
-              (tramp-file-name-host vec)
-              (tramp-file-name-localname vec)))
-         (concat "/sudo::" (buffer-file-name))))
-      (goto-char position)))
-
-  (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
 
   ;; Join line below
   (global-set-key (kbd "M-j")
@@ -750,3 +788,7 @@
   (use-package fish-mode
     :ensure t)
 #+END_SRC
+
+* Footnotes
+
+[fn:1] Found at http://www.emacswiki.org/emacs/TrampMode#toc31

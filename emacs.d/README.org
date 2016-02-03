@@ -1,4 +1,4 @@
-#+OPTIONS fn:t toc:nil
+#+OPTIONS: fn:t h:4
 * About My Emacs Config
 
   This is my Emacs configuration. Because I'm prone to forget what does what,
@@ -186,7 +186,6 @@
       (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
     #+END_SRC
 
-
 *** Whitespace
 
     Sentences do not need double spaces to end. Period.
@@ -238,7 +237,7 @@
 
 *** Miscellaneous Useful Functions
 
-**** Comment or uncomment line or region
+**** Comment or uncomment line or region ::
 
      I found this on StackOverflow, I think. If no region is selected it will
      toggle the current programming mode's comment for that line. If a region
@@ -382,7 +381,7 @@
        (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
      #+END_SRC
 
-*** TODO Split & document this lot
+* TODO Split & document this lot
 
     Some of this I have _no_ idea what it does. I guess I just take it out and
     see what breaks?

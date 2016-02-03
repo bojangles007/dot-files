@@ -1,7 +1,6 @@
 #+OPTIONS: fn:t h:4
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
-
 * My Emacs Config
   This is my Emacs configuration. Because I'm prone to forget what does what,
   my configuration is in the form of a [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][literate programming]] document: prose,
@@ -540,7 +539,16 @@
        (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
    #+END_SRC
 
+** SmartParens
 
+   I use smartparens rather that paredit. I cannot remember why; probably
+   something to do with it being better supported for Cider/Clojure? Anyway,
+   here's my SmartParen config. It is  mostly cribbed from the author, with
+   small changes to make suitable for plugging into =user-package=.
+
+   One notable thing: I remove "'" from being a pair, because that character
+   is used for quoting in lisps, and for apostrophe in text modes. Having two
+   inserted every time you hit the key is very annoying.
 
    #+BEGIN_SRC emacs-lisp
    (use-package smartparens
@@ -615,16 +623,27 @@
      ;; In Lisp modes, let ')' go to end of sexp
      (bind-key ")" 'sp-up-sexp emacs-lisp-mode-map)
      (bind-key ")" 'sp-up-sexp lisp-mode-map))
+   #+END_SRC
 
-   (use-package aggressive-indent
-     :ensure t
+** Aggressive Indent
 
-     :config
-     (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-     (add-hook 'puppet-mode-hook #'aggressive-indent-mode)
-     (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
-     (add-hook 'css-mode-hook #'aggressive-indent-mode))
+   I like to keep my code indented properly at all times. Aggressive-indent
+   helps ensure this. Turn it on for lisp modes.
 
+   #+BEGIN_SRC emacs-lisp
+     (use-package aggressive-indent
+       :ensure t
+
+       :config
+       (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+       ;;     (add-hook 'puppet-mode-hook #'aggressive-indent-mode)
+       (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+       (add-hook 'css-mode-hook #'aggressive-indent-mode))
+   #+END_SRC
+
+
+
+   #+BEGIN_SRC emacs-lisp
    (use-package auto-complete
      :ensure t
      :config

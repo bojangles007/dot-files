@@ -543,13 +543,6 @@
 
 
    #+BEGIN_SRC emacs-lisp
-   (use-package markdown-mode
-     :ensure t
-     :mode "\\.md'"
-
-     :init
-     (setq markdown-command "multimarkdown"))
-
    (use-package smartparens
      :ensure t
 

@@ -262,7 +262,7 @@
 
 *** Useful Functions
 
-**** Comment or uncomment line or region ::
+**** Comment or uncomment line or region
 
      I found this on StackOverflow, I think. If no region is selected it will
      toggle the current programming mode's comment for that line. If a region

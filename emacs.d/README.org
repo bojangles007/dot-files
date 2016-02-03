@@ -512,8 +512,17 @@
        (load-theme 'leuven t))
    #+END_SRC
 
+** Magit
+
+   I use [[http://magit.vc][Magit]] all day. If you use git a lot it's possibly worth switching to
+   Emacs just for it. It is excellent. I bind =M-m= to =magit-status=, which
+   is the main entry point for the mode.
+
+   I also use a Magit plugin that interacts with GitHub, allowing me to create
+   pull-requests from within Emacs.
+
    #+BEGIN_SRC emacs-lisp
-   (use-package magit
+      (use-package magit
      :ensure t
 
      :bind ("M-m" . magit-status)
@@ -529,7 +538,11 @@
        :ensure t
        :config
        (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
+   #+END_SRC
 
+
+
+   #+BEGIN_SRC emacs-lisp
    (use-package markdown-mode
      :ensure t
      :mode "\\.md'"

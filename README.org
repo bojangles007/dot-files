@@ -35,76 +35,9 @@
    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
    #+END_SRC
 
-** Install & Set up Emacs
+** Install Emacs & Friends
 
-   Link to our current dotfiles for Emacs:
-
-   #+BEGIN_SRC sh
-     test -L ~/.emacs.d && rm ~/.emacs.d
-     test -d ~/.emacs.d && mv ~/.emacs.d ~/.emacs.d.$(date +%s)
-     ln -s ~/Dotfiles/emacs.d ~/.emacs.d
-   #+END_SRC
-
-   Then use homebrew to install Emacs:
-
-   #+BEGIN_SRC sh
-     brew install emacs --with-cocoa
-   #+END_SRC
-
-*** Editorconfig
-
-    Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
-    their indentation and file format preferences. Emacs supports this, but
-    requires an external tool to help, so let's get that:
-
-    #+BEGIN_SRC sh
-      brew install editorconfig
-    #+END_SRC
-
-*** Ag / The Silver Searcher
-
-    I use =ag= for searching quite a lot in Emacs. This requires an additional
-    external tool for best performance:
-
-    #+BEGIN_SRC sh
-      brew install the_silver_searcher
-    #+END_SRC
-
-*** Aspell with UK English Dictionary
-
-    I only care about the Queen's English for spell checking:
-
-    #+BEGIN_SRC sh
-      brew install aspell --with-lang-uk
-    #+END_SRC
-
-*** Leiningen
-
-    This is used by Cider. Installed with brew, of course:
-
-    #+BEGIN_SRC sh
-      brew install leiningen
-    #+END_SRC
-
-*** Fix "weird characters" in =ansi-term= mode
-
-    For some reason Emacs' =ansi-term= mode displays some "weird characters".
-    To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
-    create =.terminfo=:
-
-    #+BEGIN_SRC sh
-    curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
-    tic -o ~/.terminfo /tmp/ansi-term.ti
-    #+END_SRC
-
-*** Trash
-
-    This allows moving files to trash rather than deleting them from =dired=.
-    I find that handy.
-
-    #+BEGIN_SRC sh
-    brew install trash
-    #+END_SRC
+   See [[emacs.d/README.org]].
 
 ** The Friendly Interactive Shell
 

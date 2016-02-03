@@ -173,6 +173,22 @@
       (global-set-key (kbd "s-a") (kbd "å"))
     #+END_SRC
 
+    When files change on disk, revert the buffer automatically.
+
+    #+BEGIN_SRC emacs-lisp
+      (global-auto-revert-mode 1)
+    #+END_SRC
+
+    I don't like backup files all over my disk. This places them in
+    =~/.emacs.d/backups=.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+    #+END_SRC
+
+
+*** Whitespace
+
     Sentences do not need double spaces to end. Period.
 
     #+BEGIN_SRC emacs-lisp
@@ -185,17 +201,21 @@
     (set-default 'indent-tabs-mode nil)
   #+END_SRC
 
-    When files change on disk, revert the buffer automatically.
-
-    #+BEGIN_SRC emacs-lisp
-      (global-auto-revert-mode 1)
-    #+END_SRC
-
-
     All files should end in a newline. Insert one if there isn't one already.
 
     #+BEGIN_SRC emacs-lisp
       (setq require-final-newline t)
+    #+END_SRC
+
+    This highlights certain whitespace annoyances, and adds a key binding to
+    clean it up.
+
+    #+BEGIN_SRC emacs-lisp
+      (require 'whitespace)
+      (setq whitespace-style '(face empty tabs trailing))
+      (global-whitespace-mode t)
+
+      (global-set-key (kbd "s-w") 'whitespace-cleanup)
     #+END_SRC
 
 *** OS X Specific
@@ -401,9 +421,6 @@
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
 
-  ;; Don't litter my file tree with backup files
-  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
-
   (setq ispell-program-name "aspell"
         ispell-dictionary "british")
 
@@ -419,12 +436,6 @@
                     (join-line -1)))
 
 
-  ;; Display whitespace annoyances
-  (require 'whitespace)
-  (setq whitespace-style '(face empty tabs trailing))
-  (global-whitespace-mode t)
-
-  (global-set-key (kbd "s-w") 'whitespace-cleanup)
 
   (require 'server)
   (unless (server-running-p)

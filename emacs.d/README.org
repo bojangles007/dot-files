@@ -22,7 +22,7 @@
    invoking =C-c C-v t= on this document a =README.sh= file is produced, that
    contains shell commands that will install all the helper programs via /brew/.
 
-** Install Emacs & Friends
+** Install Emacs & This Configuration
 
    Create a symlink from =$HOME/.emacs.d= to the directory containing this
    file. If =$HOME/.emacs.d= is already a symbolic link, delete it first. If
@@ -59,14 +59,6 @@
       brew install the_silver_searcher
     #+END_SRC
 
-*** Aspell with UK English Dictionary
-
-    I only care about the Queen's English for spell checking:
-
-    #+BEGIN_SRC sh
-      brew install aspell --with-lang-uk
-    #+END_SRC
-
 *** Leiningen
 
     This is used by Cider. Installed with brew, of course:
@@ -99,7 +91,7 @@
 
    Alright! Now on to the actual configuration.
 
-*** The Basics
+*** Disable mouse interface, splash screen & beeps
 
     I don't tend to use a mouse in Emacs very often, so I turn off mouse
     interface early to avoid momentary display during launch.
@@ -128,6 +120,8 @@
       (setq ring-bell-function 'ignore)
     #+END_SRC
 
+*** Put Custom settings in a separate file
+
     I prefer to code my configuration, but sometimes Custom settings are good
     enough. I prefer that such settings live in a separate file though. Load
     that file if it exists.
@@ -138,30 +132,7 @@
           (load custom-file))
     #+END_SRC
 
-    I prefer slightly wider fill-rate than the default of 70. Let's make it
-    78, so we stay within 80 characters that so many people consider the holy
-    grail. Also, let's wrap automatically at that width in =text-mode=.
-    Finally disable =s-q= (=kill-emacs=) as it is too close to M-q which I use
-    for reflowing text.
-
-    #+BEGIN_SRC emacs-lisp
-      (setq-default fill-column 78)
-      (add-hook 'text-mode-hook 'turn-on-auto-fill)
-      (global-set-key (kbd "s-q") nil)
-    #+END_SRC
-
-    I like it when Emacs transparently opens compressed files.
-
-    #+BEGIN_SRC emacs-lisp
-      (auto-compression-mode t)
-    #+END_SRC
-
-    Answering just 'y' or 'n' will do, rather than having to spell out "yes"
-    or "no".
-
-    #+BEGIN_SRC emacs-lisp
-      (defalias 'yes-or-no-p 'y-or-n-p)
-    #+END_SRC
+*** Internationalisation
 
     Let's always use UTF-8 encoding. Pretty, pretty please with sugar on top.
 
@@ -185,20 +156,35 @@
       (global-set-key (kbd "s-a") (kbd "å"))
     #+END_SRC
 
-    When files change on disk, revert the buffer automatically.
+*** Use Aspell with UK English Dictionary
+
+    Configure Emacs to use the Queen's English for spell checking. Also, use
+    /aspell/ rather than /ispell/.
 
     #+BEGIN_SRC emacs-lisp
-      (global-auto-revert-mode 1)
+      (setq ispell-program-name "aspell"
+            ispell-dictionary "british")
     #+END_SRC
 
-    I don't like backup files all over my disk. This places them in
-    =~/.emacs.d/backups=.
+    Install aspell with the appropriate dictionary using brew.
 
-    #+BEGIN_SRC emacs-lisp
-      (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+    #+BEGIN_SRC sh
+      brew install aspell --with-lang-uk
     #+END_SRC
 
 *** Whitespace
+
+    I prefer slightly wider fill-rate than the default of 70. Let's make it
+    78, so we stay within 80 characters that so many people consider the holy
+    grail. Also, let's wrap automatically at that width in =text-mode=.
+    Finally disable =s-q= (=kill-emacs=) as it is too close to M-q which I use
+    for reflowing text.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq-default fill-column 78)
+      (add-hook 'text-mode-hook 'turn-on-auto-fill)
+      (global-set-key (kbd "s-q") nil)
+    #+END_SRC
 
     Sentences do not need double spaces to end. Period.
 
@@ -247,7 +233,36 @@
       (setq delete-by-moving-to-trash t)
     #+END_SRC
 
-*** Miscellaneous Useful Functions
+*** Miscellaneous
+
+    When files change on disk, revert the buffer automatically.
+
+    #+BEGIN_SRC emacs-lisp
+      (global-auto-revert-mode 1)
+    #+END_SRC
+
+    I don't like backup files all over my disk. This places them in
+    =~/.emacs.d/backups=.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
+    #+END_SRC
+
+    I *do* like it when Emacs transparently opens compressed files. It gives
+    me the warm fuzzies.
+
+    #+BEGIN_SRC emacs-lisp
+      (auto-compression-mode t)
+    #+END_SRC
+
+    Answering just 'y' or 'n' will do, rather than having to spell out "yes"
+    or "no".
+
+    #+BEGIN_SRC emacs-lisp
+      (defalias 'yes-or-no-p 'y-or-n-p)
+    #+END_SRC
+
+*** Useful Functions
 
 **** Comment or uncomment line or region ::
 
@@ -431,9 +446,6 @@
   ;; Auto refresh dired, but be quiet about it
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
-
-  (setq ispell-program-name "aspell"
-        ispell-dictionary "british")
 
   ;; Launch/switch to eshell more easily
   (global-set-key (kbd "C-c s") 'eshell)

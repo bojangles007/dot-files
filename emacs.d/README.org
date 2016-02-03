@@ -128,124 +128,173 @@
     I prefer slightly wider fill-rate than the default of 70. Let's make it
     78, so we stay within 80 characters that so many people consider the holy
     grail. Also, let's wrap automatically at that width in =text-mode=.
+    Finally disable =s-q= (=kill-emacs=) as it is too close to M-q which I use
+    for reflowing text.
 
     #+BEGIN_SRC emacs-lisp
       (setq-default fill-column 78)
       (add-hook 'text-mode-hook 'turn-on-auto-fill)
+      (global-set-key (kbd "s-q") nil)
     #+END_SRC
 
+    I like it when Emacs transparently opens compressed files.
+
+    #+BEGIN_SRC emacs-lisp
+      (auto-compression-mode t)
+    #+END_SRC
+
+    Answering just 'y' or 'n' will do, rather than having to spell out "yes"
+    or "no".
+
+    #+BEGIN_SRC emacs-lisp
+      (defalias 'yes-or-no-p 'y-or-n-p)
+    #+END_SRC
+
+    Let's always use UTF-8 encoding. Pretty, pretty please with sugar on top.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq locale-coding-system 'utf-8)
+      (set-terminal-coding-system 'utf-8)
+      (set-keyboard-coding-system 'utf-8)
+      (set-selection-coding-system 'utf-8)
+      (prefer-coding-system 'utf-8)
+    #+END_SRC
+
+    Let's define keybindings for the three additional Norwegian characters
+    characters that I don't have natively on my British keyboard.
+
+    #+BEGIN_SRC emacs-lisp
+      (global-set-key (kbd "s-'") (kbd "æ"))
+      (global-set-key (kbd "s-\"") (kbd "Æ"))
+      (global-set-key (kbd "s-O") (kbd "Ø"))
+      (global-set-key (kbd "s-o") (kbd "ø"))
+      (global-set-key (kbd "s-A") (kbd "Å"))
+      (global-set-key (kbd "s-a") (kbd "å"))
+    #+END_SRC
+
+    Sentences do not need double spaces to end. Period.
+
+    #+BEGIN_SRC emacs-lisp
+      (set-default 'sentence-end-double-space nil)
+    #+END_SRC
+
+    Never insert tabs.
+
+  #+BEGIN_SRC emacs-lisp
+    (set-default 'indent-tabs-mode nil)
+  #+END_SRC
+
+    When files change on disk, revert the buffer automatically.
+
+    #+BEGIN_SRC emacs-lisp
+      (global-auto-revert-mode 1)
+    #+END_SRC
+
+*** Miscellaneous Useful Functions
+
+**** Comment or uncomment line or region
+
+     I found this on StackOverflow, I think. If no region is selected it will
+     toggle the current programming mode's comment for that line. If a region
+     is selected it will comment/uncomment the region.
+
+     #+BEGIN_SRC emacs-lisp
+       (defun comment-or-uncomment-region-or-line ()
+         "Comments or uncomments the region or the current line if there's no active region."
+         (interactive)
+         (let (beg end)
+           (if (region-active-p)
+               (setq beg (region-beginning) end (region-end))
+             (setq beg (line-beginning-position) end (line-end-position)))
+           (comment-or-uncomment-region beg end)
+           (next-line)))
+
+       (global-set-key (kbd "s-c") 'comment-or-uncomment-region-or-line)
+     #+END_SRC
+
+**** Replace smart quotes
+
+     At some point I needed to remove some "smart quotes" from a blog post
+     draft created in OS X Notes. I came up with this function. I don't
+     remember needing to use it again, but I keep it for sentimental reasons.
+     (It doesn't even have a keybinding!)
+
+     #+BEGIN_SRC emacs-lisp
+       (defun replace-smart-quotes (beg end)
+         "Replace 'smart quotes' in buffer or region with ascii quotes."
+         (interactive "r")
+         (format-replace-strings '(("\x201C" . "\"")
+                                   ("\x201D" . "\"")
+                                   ("\x2018" . "'")
+                                   ("\x2019" . "'"))
+                                 nil beg end))
+     #+END_SRC
+
+**** Toggle Window Split
+
+     Sometimes a window is split horizontally, and you would prefer
+     vertically. Or vice versa. This function can help! Just don't ask me how
+     it works: I found it on StackOverflow. (I think. Again.)
+
+     #+BEGIN_SRC emacs-lisp
+       (defun toggle-window-split ()
+         (interactive)
+         (if (= (count-windows) 2)
+             (let* ((this-win-buffer (window-buffer))
+                    (next-win-buffer (window-buffer (next-window)))
+                    (this-win-edges (window-edges (selected-window)))
+                    (next-win-edges (window-edges (next-window)))
+                    (this-win-2nd (not (and (<= (car this-win-edges)
+                                                (car next-win-edges))
+                                            (<= (cadr this-win-edges)
+                                                (cadr next-win-edges)))))
+                    (splitter
+                     (if (= (car this-win-edges)
+                            (car (window-edges (next-window))))
+                         'split-window-horizontally
+                       'split-window-vertically)))
+               (delete-other-windows)
+               (let ((first-win (selected-window)))
+                 (funcall splitter)
+                 (if this-win-2nd (other-window 1))
+                 (set-window-buffer (selected-window) this-win-buffer)
+                 (set-window-buffer (next-window) next-win-buffer)
+                 (select-window first-win)
+                 (if this-win-2nd (other-window 1))))))
+
+       (define-key ctl-x-4-map "t" 'toggle-window-split)
+     #+END_SRC
+
+**** Delete the file for the current buffer
+
+     "Delete this file." Simple, huh?
+
+     #+BEGIN_SRC emacs-lisp
+       (defun delete-current-buffer-file ()
+         "Removes file connected to current buffer and kills buffer."
+         (interactive)
+         (let ((filename (buffer-file-name))
+               (buffer (current-buffer))
+               (name (buffer-name)))
+           (if (not (and filename (file-exists-p filename)))
+               (ido-kill-buffer)
+             (when (yes-or-no-p "Are you sure you want to remove this file? ")
+               (delete-file filename)
+               (kill-buffer buffer)
+               (message "File '%s' successfully removed" filename)))))
+
+       (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
+     #+END_SRC
 
 *** TODO Split & document this lot
 
+    Some of this I have _no_ idea what it does. I guess I just take it out and
+    see what breaks?
 
   #+BEGIN_SRC emacs-lisp
-  (defun comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if there's no active region."
-    (interactive)
-    (let (beg end)
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (comment-or-uncomment-region beg end)
-      (next-line)))
-
-  (global-set-key (kbd "s-c") 'comment-or-uncomment-region-or-line)
-
-  (defun replace-smart-quotes (beg end)
-    "Replace 'smart quotes' in buffer or region with ascii quotes."
-    (interactive "r")
-    (format-replace-strings '(("\x201C" . "\"")
-                              ("\x201D" . "\"")
-                              ("\x2018" . "'")
-                              ("\x2019" . "'"))
-                            nil beg end))
-
-  ;; Disable `s-q' (kill-emacs) as it is too close to M-q which I use for
-  ;; reflowing text.
-  (global-set-key (kbd "s-q") nil)
-
-  ;; Let's just close window, rather than kill emacs
-;  (global-set-key (kbd "C-x C-c") nil)
-
-  (global-set-key (kbd "C-c e") (lambda ()
-                                  (interactive)
-                                  (find-file "~/.emacs.d/init.el")))
-
-  (defun toggle-window-split ()
-    (interactive)
-    (if (= (count-windows) 2)
-        (let* ((this-win-buffer (window-buffer))
-               (next-win-buffer (window-buffer (next-window)))
-               (this-win-edges (window-edges (selected-window)))
-               (next-win-edges (window-edges (next-window)))
-               (this-win-2nd (not (and (<= (car this-win-edges)
-                                           (car next-win-edges))
-                                       (<= (cadr this-win-edges)
-                                           (cadr next-win-edges)))))
-               (splitter
-                (if (= (car this-win-edges)
-                       (car (window-edges (next-window))))
-                    'split-window-horizontally
-                  'split-window-vertically)))
-          (delete-other-windows)
-          (let ((first-win (selected-window)))
-            (funcall splitter)
-            (if this-win-2nd (other-window 1))
-            (set-window-buffer (selected-window) this-win-buffer)
-            (set-window-buffer (next-window) next-win-buffer)
-            (select-window first-win)
-            (if this-win-2nd (other-window 1))))))
-
-  (define-key ctl-x-4-map "t" 'toggle-window-split)
-
-  (defun delete-current-buffer-file ()
-    "Removes file connected to current buffer and kills buffer."
-    (interactive)
-    (let ((filename (buffer-file-name))
-          (buffer (current-buffer))
-          (name (buffer-name)))
-      (if (not (and filename (file-exists-p filename)))
-          (ido-kill-buffer)
-        (when (yes-or-no-p "Are you sure you want to remove this file? ")
-          (delete-file filename)
-          (kill-buffer buffer)
-          (message "File '%s' successfully removed" filename)))))
-
-  (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
-
-  ;; Auto refresh buffers
-  (global-auto-revert-mode 1)
-
   (global-set-key (kbd "M-/") 'hippie-expand)
   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
   (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-
-  ;; Transparently open compressed files
-  (auto-compression-mode t)
-
-  ;; Answering just 'y' or 'n' will do
-  (defalias 'yes-or-no-p 'y-or-n-p)
-
-  ;; UTF-8 please
-  (setq locale-coding-system 'utf-8) ; pretty
-  (set-terminal-coding-system 'utf-8) ; pretty
-  (set-keyboard-coding-system 'utf-8) ; pretty
-  (set-selection-coding-system 'utf-8) ; please
-  (prefer-coding-system 'utf-8) ; with sugar on top
-
-  ;; Norwegian characters
-  (global-set-key (kbd "s-'") (kbd "æ"))
-  (global-set-key (kbd "s-\"") (kbd "Æ"))
-  (global-set-key (kbd "s-O") (kbd "Ø"))
-  (global-set-key (kbd "s-o") (kbd "ø"))
-  (global-set-key (kbd "s-A") (kbd "Å"))
-  (global-set-key (kbd "s-a") (kbd "å"))
-
-  ;; Sentences do not need double spaces to end. Period.
-  (set-default 'sentence-end-double-space nil)
-
-  ;; Never insert tabs
-  (set-default 'indent-tabs-mode nil)
 
   ;; Show active region
   (transient-mark-mode 1)

@@ -1,4 +1,4 @@
-* Stig's Emacs Config
+* About My Emacs Config
 
   This is my Emacs configuration. Because I'm prone to forget what does what,
   my configuration is in the form of a [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][literate programming]] document: prose,
@@ -11,7 +11,7 @@
   lot of inspiration from [[https://github.com/magnars/.emacs.d][magnars' .emacs.d]], but after rewriting it using
   [[https://github.com/jwiegley/use-package][use-package]] (which is excellent) it is starting to feel like my own work.
 
-** Install Emacs & Friends using Homebrew
+** Install Emacs & Friends
 
    Link to our current dotfiles for Emacs:
 
@@ -21,7 +21,7 @@
      ln -s ~/Dotfiles/emacs.d ~/.emacs.d
    #+END_SRC
 
-   Then use homebrew to install Emacs:
+   Then use [[http://brew.sh][brew]] to install Emacs:
 
    #+BEGIN_SRC sh
      brew install emacs --with-cocoa
@@ -82,33 +82,63 @@
     brew install trash
     #+END_SRC
 
-** Configure Emacs
+** Configuration
+
+   Alright! Now on to the actual configuration.
+
+*** The Basics
+
+    I don't tend to use a mouse in Emacs very often, so I turn off mouse
+    interface early to avoid momentary display during launch.
+
+    #+BEGIN_SRC emacs-lisp
+      (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+      (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+    #+END_SRC
+
+    I also don't need to see a splash screen on every launch.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq inhibit-startup-message t)
+    #+END_SRC
+
+    I do not like Emacs to beep at me; I prefer a visual bell. Unfortunately
+    in the current stable release there is a bug that causes [[http://debbugs.gnu.org/cgi/bugreport.cgi?bug%3D21662][visual artefacts]]
+    on El Capitan. The workaround is to turn off visual bell, but make the
+    function that actually rings the bell be a no-op. I'd like to get the
+    visual bell back one day. It's been fixed upstream, but I've not been
+    brave enough to build =--HEAD= yet, so so far I've stuck with the stable
+    builds.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq visible-bell nil)
+      (setq ring-bell-function 'ignore)
+    #+END_SRC
+
+    I prefer to code my configuration, but sometimes Custom settings are good
+    enough. I prefer that such settings live in a separate file though. Load
+    that file if it exists.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+      (if (file-exists-p custom-file)
+          (load custom-file))
+    #+END_SRC
+
+    I prefer slightly wider fill-rate than the default of 70. Let's make it
+    78, so we stay within 80 characters that so many people consider the holy
+    grail. Also, let's wrap automatically at that width in =text-mode=.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq-default fill-column 78)
+      (add-hook 'text-mode-hook 'turn-on-auto-fill)
+    #+END_SRC
+
+
+*** TODO Split & document this lot
+
 
   #+BEGIN_SRC emacs-lisp
-  ;; Turn off mouse interface early in startup to avoid momentary display
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-
-  ;; Turn off splash screen
-  (setq inhibit-startup-message t)
-
-  ;; change to use visible bell once http://debbugs.gnu.org/cgi/bugreport.cgi?bug=21662 is fixed
-  (setq visible-bell nil)
-  (setq ring-bell-function 'ignore)
-
-
-  ;; Keep emacs Custom-settings in a separate file
-  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (if (file-exists-p custom-file)
-      (load custom-file))
-
-  ;; Fill at 78 columns rather than the default of 70
-  (setq-default fill-column 78)
-
-  ;; wrap by default
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-
   (defun comment-or-uncomment-region-or-line ()
     "Comments or uncomments the region or the current line if there's no active region."
     (interactive)

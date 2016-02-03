@@ -9,4 +9,7 @@
 /fish/fish_history
 /emacs.d/eshell/history
 /emacs.d/eshell/lastdir
-/emacs.d/README.el
+*.el
+*.sh
+*.html
+!emacs.d/init.el

@@ -812,51 +812,76 @@
        :bind ("C-x C-t" . tramp-term))
    #+END_SRC
 
+** Multiple Cursors
 
-** TODO Rest
+   This package is another one of those near-magical ones. It allows me to do
+   multiple edits in the same buffer, using several cursors. You can think of
+   it as an interactive macro, where you can constantly see what's being done.
 
    #+BEGIN_SRC emacs-lisp
+     (use-package multiple-cursors
+       :ensure t
 
+       :bind (("C-c a" . mc/edit-lines)
+              ("C-c C-a" . mc/mark-all-dwim)
+              ("s-n" . mc/mark-next-like-this)
+              ("s-p" . mc/mark-previous-like-this)))
+   #+END_SRC
 
+** YAS
 
+   YAS is a templating package. You can define mode-specific or global
+   templates, and insert templates with keycombinations or triggered based on
+   trigger words in the text.
 
-   (use-package multiple-cursors
-     :ensure t
+   #+BEGIN_SRC emacs-lisp
+     (use-package yasnippet
+       :init
+       (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
+       (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
 
-     :bind (("C-c a" . mc/edit-lines)
-            ("C-c C-a" . mc/mark-all-dwim)
-            ("s-n" . mc/mark-next-like-this)
-            ("s-p" . mc/mark-previous-like-this)))
+       :config
+       (defun yas/org-very-safe-expand ()
+         (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-   (use-package yasnippet
-     :init
-     (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
-     (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
+       (defun yas/org-setup ()
+         ;; yasnippet (using the new org-cycle hooks)
+         (make-variable-buffer-local 'yas/trigger-key)
+         (setq yas/trigger-key [tab])
+         (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+         (define-key yas/keymap [tab] 'yas/next-field))
 
-     :config
-     (defun yas/org-very-safe-expand ()
-       (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+       ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
+       (setq org-src-tab-acts-natively nil)
 
-     (defun yas/org-setup ()
-       ;; yasnippet (using the new org-cycle hooks)
-       (make-variable-buffer-local 'yas/trigger-key)
-       (setq yas/trigger-key [tab])
-       (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-       (define-key yas/keymap [tab] 'yas/next-field))
+       (add-hook 'org-mode-hook #'yas/org-setup))
+   #+END_SRC
 
-     ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
-     (setq org-src-tab-acts-natively nil)
+** Clojure Support
 
-     (add-hook 'org-mode-hook #'yas/org-setup))
+   I use [[https://github.com/clojure-emacs/clojure-mode/][Clojure Mode]] for my Clojure editing.
 
-   (use-package clojure-mode
-     :pin melpa-stable
-     :mode "\\.clj\\'"
-     :ensure t
+   #+BEGIN_SRC emacs-lisp
+     (use-package clojure-mode
+       :pin melpa-stable
+       :mode "\\.clj\\'"
+       :ensure t
 
-     :config
-     (bind-key ")" 'sp-up-sexp clojure-mode-map)
+       :config
+       (bind-key ")" 'sp-up-sexp clojure-mode-map))
+   #+END_SRC
 
+   I have a package for extra syntax highlighting in Clojure mode, but I'm not
+   sure how much it actually does.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package clojure-mode-extra-font-locking
+       :ensure t)
+   #+END_SRC
+
+   The Clojure Refactor package is also ace.
+
+   #+BEGIN_SRC emacs-lisp
      (use-package clj-refactor
        :pin melpa-stable
        :ensure t
@@ -878,28 +903,36 @@
          ;;(cljr-add-keybindings-with-prefix "C-c C-m")
          )
 
-       (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+       (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+   #+END_SRC
 
-       (use-package cljr-helm
-         :ensure t
-         :init
-         (bind-key "C-c r" 'cljr-helm clojure-mode-map)))
+   The cljr-helm package allows us to interactively narrow down the (ever
+   growing) list of clj-refactoring choices using helm.
 
-     (use-package clojure-mode-extra-font-locking
-       :ensure t)
-     )
+   #+BEGIN_SRC emacs-lisp
+     (use-package cljr-helm
+       :ensure t
+       :init
+       (bind-key "C-c r" 'cljr-helm clojure-mode-map)))
+   #+END_SRC
 
+   For REPL work I use [[https://github.com/clojure-emacs/cider][CIDER]].
 
-   (use-package cider
-     :pin melpa-stable
-     :ensure t
-     :init
-     (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-     (setq cider-repl-result-prefix ";; => ")
+   #+BEGIN_SRC emacs-lisp
+     (use-package cider
+       :pin melpa-stable
+       :ensure t
+       :init
+       (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+       (setq cider-repl-result-prefix ";; => ")
 
-     :config
-     (bind-key ")" 'sp-up-sexp cider-repl-mode-map)
+       :config
+       (bind-key ")" 'sp-up-sexp cider-repl-mode-map))
+   #+END_SRC
 
+   I like auto-complete to work in CIDER too:
+
+   #+BEGIN_SRC emacs-lisp
      (use-package ac-cider
        :ensure t
        :init
@@ -909,42 +942,78 @@
        (eval-after-load "auto-complete"
          '(progn
             (add-to-list 'ac-modes 'cider-mode)
-            (add-to-list 'ac-modes 'cider-repl-mode)))))
+            (add-to-list 'ac-modes 'cider-repl-mode))))
+   #+END_SRC
 
-   (use-package gist
-     :ensure t
-     :bind ("C-x g l" . gist-list))
+** Gists
 
-   (use-package yagist
-     :ensure t
-     :bind ("C-x g c" . yagist-region-or-buffer))
+   Viewing & editing gists in Emacs? Sure! I want that!
 
+   #+BEGIN_SRC emacs-lisp
+     (use-package gist
+       :ensure t
+       :bind ("C-x g l" . gist-list))
+   #+END_SRC
 
-   (use-package org
-     :ensure t
-     :bind ("C-x a" . org-agenda)
-     :init
-     (setq org-babel-clojure-backend 'cider)
+   For actually _creating_ gists I use a different gist mode, due to a bug in
+   the =gist= package.
 
-     ;; Don't execute code blocks during export
-     (setq org-export-babel-evaluate nil)
-     :config
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t)
-        (clojure . t)
-        (dot . t)
-        (sh . t)))
+   #+BEGIN_SRC emacs-lisp
+     (use-package yagist
+       :ensure t
+       :bind ("C-x g c" . yagist-region-or-buffer))
+   #+END_SRC
 
-     ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
-     (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
+** Org
 
-   (use-package graphviz-dot-mode
-     :init
-     (setq graphviz-dot-view-command "open -a Graphviz %s"))
+   I used to use Markdown for my writing, but now I tend to use Org mode. The
+   Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
+   makes it an easy choice. (I can even export to Markdown if I want.)
 
-   (use-package fish-mode
-     :ensure t)
+   #+BEGIN_SRC emacs-lisp
+     (use-package org
+       :ensure t
+       :bind ("C-x a" . org-agenda)
+       :init
+       (setq org-babel-clojure-backend 'cider)
+
+       ;; Don't execute code blocks during export
+       (setq org-export-babel-evaluate nil)
+       :config
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((emacs-lisp . t)
+          (clojure . t)
+          (dot . t)
+          (sh . t)))
+
+       ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
+       (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
+   #+END_SRC
+
+** Graphviz
+
+   I sometimes use Graphviz to create diagrams. I have to actually install the
+   graphviz program separately using brew.
+
+   #+BEGIN_SRC sh
+   brew install graphviz --with-app
+   #+END_SRC
+
+   I also have to tell Emacs how to launch GraphViz.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package graphviz-dot-mode
+       :init
+       (setq graphviz-dot-view-command "open -a Graphviz %s"))
+   #+END_SRC
+
+** Fish
+
+   Add a mode for editing [[http://fishshell.com][FISH]] shell files.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package fish-mode :ensure t)
    #+END_SRC
 
 * Footnotes

@@ -517,6 +517,7 @@
     #+BEGIN_SRC emacs-lisp
       (setq package-archives
             '(("gnu" . "http://elpa.gnu.org/packages/")
+              ("org" . "http://orgmode.org/elpa/")
               ("melpa" . "http://melpa.milkbox.net/packages/")
               ("melpa-stable" . "http://stable.milkbox.net/packages/")))
     #+END_SRC

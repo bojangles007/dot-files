@@ -426,10 +426,6 @@
   (setq global-auto-revert-non-file-buffers t
         auto-revert-verbose nil)
 
-  ;; Launch/switch to eshell more easily
-  (global-set-key (kbd "C-c s") 'eshell)
-
-
 
   ;; Join line below
   (global-set-key (kbd "M-j")
@@ -774,6 +770,48 @@
        :ensure t)
    #+END_SRC
 
+** Working with shells
+
+   I have started using /Eshell/. It is close to magic. There's not a lot of
+   setup (it has its own [[file:eshell/alias][alias file]]), but I've got a keybinding to bring up
+   eshell quickly. This launches eshell if it is not already running, or
+   switches to it if it is.
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-c s") 'eshell)
+   #+END_SRC
+
+   Eshell is great, and its Tramp integration allows me to open remote files
+   in local Emacs seamlessly with the =find-file= command. (Which I have
+   aliased to =ff=.) Eshell also makes sure that my shell behaves the same,
+   and has the same config, whether I am on a local machine or a remote one.
+
+   For some machines at work we use [[https://github.com/google/google-authenticator][google authenticator]]. I have not been able
+   to log in to these using Eshell, so for some things I still just open a
+   regular terminal inside Emacs. Just don't try to open big files, or tail
+   fast-growing log files! I use =sane-term= to get a somewhat similar
+   experience to eshell, i.e. =C-x t= to launch a new term, or switch to one
+   that is already running.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package sane-term
+       :ensure t
+       :bind (("C-x t" . sane-term)
+              ("C-x T" . sane-term-create)))
+   #+END_SRC
+
+   A drawback of =sane-term= is that it doesn't easily allow me to open remote
+   files in the local Emacs. Tramp-term adds some magic to keep track of the
+   directory on the remote machine, thus allowing me to just use the normal
+   =C-x C-f= to get a find-file dialogue in the context of the current
+   terminal window.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package tramp-term
+       :ensure t
+       :bind ("C-x C-t" . tramp-term))
+   #+END_SRC
+
 
 ** TODO Rest
 
@@ -900,15 +938,6 @@
 
      ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
      (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
-
-   (use-package sane-term
-     :ensure t
-     :bind (("C-x t" . sane-term)
-            ("C-x T" . sane-term-create)))
-
-   (use-package tramp-term
-     :ensure t
-     :bind ("C-x C-t" . tramp-term))
 
    (use-package graphviz-dot-mode
      :init

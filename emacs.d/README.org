@@ -13,12 +13,20 @@
   lot of inspiration from [[https://github.com/magnars/.emacs.d][magnars' .emacs.d]], but after rewriting it using
   [[https://github.com/jwiegley/use-package][use-package]] (which is excellent) it is starting to feel like my own work.
 
-** Tangled shell script snippets
+** About this document
 
-   This document doesn't just contain =emacs-lisp= snippets. It also contains
-   some shell snippets to install Emacs itself, and some helper programs. By
-   invoking =C-c C-v t= on this document a =README.sh= file is produced, that
-   contains shell commands that will install all the helper programs via /brew/.
+   As mentioned, this document uses literate programming. The configuration
+   snippets here are not copied-and-pasted from my config, they _are_ my
+   config. I use a tiny "bootloader", found in [[file:init.el][init.el]], that reads this file
+   and parses out all the configuration snippets.
+
+   However, this document doesn't just contain =emacs-lisp= snippets. It also
+   contains some shell snippets to install Emacs itself, and some helper
+   programs. By invoking =C-c C-v t= on this document a =README.sh= file is
+   produced, that contains shell commands that will install all the helper
+   programs via /brew/. (Yes, there's a small bootstrapping problem here. But
+   recent Emacs distributions ships with the required Org mode support for
+   most of this, so it's not really a problem.)
 
 ** Install Emacs & This Configuration
 
@@ -38,20 +46,10 @@
      brew install emacs --with-cocoa
    #+END_SRC
 
-*** Fix "weird characters" in =ansi-term= mode
+** "Basic" Configuration
 
-    For some reason Emacs' =ansi-term= mode displays some "weird characters".
-    To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
-    create =.terminfo=:
-
-    #+BEGIN_SRC sh
-    curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
-    tic -o ~/.terminfo /tmp/ansi-term.ti
-    #+END_SRC
-
-** Configuration
-
-   Alright! Now on to the actual configuration.
+   Alright! Now on to the actual configuration. None of the stuff in this
+   section requires external packages; it's all vanilla Emacs.
 
 *** Disable mouse interface, splash screen & beeps
 
@@ -209,7 +207,7 @@
             ns-function-modifier 'hyper)
     #+END_SRC
 
-*** Miscellaneous
+*** Auto revert mode
 
     When files change on disk, revert the buffer automatically.
 
@@ -217,12 +215,16 @@
       (global-auto-revert-mode 1)
     #+END_SRC
 
-    I don't like backup files all over my disk. This places them in
-    =~/.emacs.d/backups=.
+*** Don't store backup files next to originals
+
+    I don't like backup files (those dreaded =foo~= ones) all over my disk.
+    This places them in =~/.emacs.d/backups=.
 
     #+BEGIN_SRC emacs-lisp
       (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups"))))
     #+END_SRC
+
+*** Transparently open compressed files
 
     I *do* like it when Emacs transparently opens compressed files. It gives
     me the warm fuzzies.
@@ -231,6 +233,8 @@
       (auto-compression-mode t)
     #+END_SRC
 
+*** Make 'y' and 'n' satisfy prompts
+
     Answering just 'y' or 'n' will do, rather than having to spell out "yes"
     or "no".
 
@@ -238,153 +242,165 @@
       (defalias 'yes-or-no-p 'y-or-n-p)
     #+END_SRC
 
-*** Useful Functions
+*** (Un-)comment line or region function
 
-**** Comment or uncomment line or region
+    I found this on StackOverflow, I think. If no region is selected it will
+    toggle the current programming mode's comment for that line. If a region
+    is selected it will comment/uncomment the region.
 
-     I found this on StackOverflow, I think. If no region is selected it will
-     toggle the current programming mode's comment for that line. If a region
-     is selected it will comment/uncomment the region.
+    #+BEGIN_SRC emacs-lisp
+      (defun comment-or-uncomment-region-or-line ()
+        "Comments or uncomments the region or the current line if there's no active region."
+        (interactive)
+        (let (beg end)
+          (if (region-active-p)
+              (setq beg (region-beginning) end (region-end))
+            (setq beg (line-beginning-position) end (line-end-position)))
+          (comment-or-uncomment-region beg end)
+          (next-line)))
 
-     #+BEGIN_SRC emacs-lisp
-       (defun comment-or-uncomment-region-or-line ()
-         "Comments or uncomments the region or the current line if there's no active region."
-         (interactive)
-         (let (beg end)
-           (if (region-active-p)
-               (setq beg (region-beginning) end (region-end))
-             (setq beg (line-beginning-position) end (line-end-position)))
-           (comment-or-uncomment-region beg end)
-           (next-line)))
+      (global-set-key (kbd "s-c") 'comment-or-uncomment-region-or-line)
+    #+END_SRC
 
-       (global-set-key (kbd "s-c") 'comment-or-uncomment-region-or-line)
-     #+END_SRC
+*** Replace smart quotes function
 
-**** Replace smart quotes
+    At some point I needed to remove some "smart quotes" from a blog post
+    draft created in OS X Notes. I came up with this function. I don't
+    remember needing to use it again, but I keep it for sentimental reasons.
+    (It doesn't even have a keybinding!)
 
-     At some point I needed to remove some "smart quotes" from a blog post
-     draft created in OS X Notes. I came up with this function. I don't
-     remember needing to use it again, but I keep it for sentimental reasons.
-     (It doesn't even have a keybinding!)
+    #+BEGIN_SRC emacs-lisp
+      (defun replace-smart-quotes (beg end)
+        "Replace 'smart quotes' in buffer or region with ascii quotes."
+        (interactive "r")
+        (format-replace-strings '(("\x201C" . "\"")
+                                  ("\x201D" . "\"")
+                                  ("\x2018" . "'")
+                                  ("\x2019" . "'"))
+                                nil beg end))
+    #+END_SRC
 
-     #+BEGIN_SRC emacs-lisp
-       (defun replace-smart-quotes (beg end)
-         "Replace 'smart quotes' in buffer or region with ascii quotes."
-         (interactive "r")
-         (format-replace-strings '(("\x201C" . "\"")
-                                   ("\x201D" . "\"")
-                                   ("\x2018" . "'")
-                                   ("\x2019" . "'"))
-                                 nil beg end))
-     #+END_SRC
+*** Toggle Window Split function
 
-**** Toggle Window Split
+    Sometimes a window is split horizontally, and you would prefer
+    vertically. Or vice versa. This function can help! Just don't ask me how
+    it works: I found it on StackOverflow. (I think. Again.)
 
-     Sometimes a window is split horizontally, and you would prefer
-     vertically. Or vice versa. This function can help! Just don't ask me how
-     it works: I found it on StackOverflow. (I think. Again.)
+    #+BEGIN_SRC emacs-lisp
+      (defun toggle-window-split ()
+        (interactive)
+        (if (= (count-windows) 2)
+            (let* ((this-win-buffer (window-buffer))
+                   (next-win-buffer (window-buffer (next-window)))
+                   (this-win-edges (window-edges (selected-window)))
+                   (next-win-edges (window-edges (next-window)))
+                   (this-win-2nd (not (and (<= (car this-win-edges)
+                                               (car next-win-edges))
+                                           (<= (cadr this-win-edges)
+                                               (cadr next-win-edges)))))
+                   (splitter
+                    (if (= (car this-win-edges)
+                           (car (window-edges (next-window))))
+                        'split-window-horizontally
+                      'split-window-vertically)))
+              (delete-other-windows)
+              (let ((first-win (selected-window)))
+                (funcall splitter)
+                (if this-win-2nd (other-window 1))
+                (set-window-buffer (selected-window) this-win-buffer)
+                (set-window-buffer (next-window) next-win-buffer)
+                (select-window first-win)
+                (if this-win-2nd (other-window 1))))))
 
-     #+BEGIN_SRC emacs-lisp
-       (defun toggle-window-split ()
-         (interactive)
-         (if (= (count-windows) 2)
-             (let* ((this-win-buffer (window-buffer))
-                    (next-win-buffer (window-buffer (next-window)))
-                    (this-win-edges (window-edges (selected-window)))
-                    (next-win-edges (window-edges (next-window)))
-                    (this-win-2nd (not (and (<= (car this-win-edges)
-                                                (car next-win-edges))
-                                            (<= (cadr this-win-edges)
-                                                (cadr next-win-edges)))))
-                    (splitter
-                     (if (= (car this-win-edges)
-                            (car (window-edges (next-window))))
-                         'split-window-horizontally
-                       'split-window-vertically)))
-               (delete-other-windows)
-               (let ((first-win (selected-window)))
-                 (funcall splitter)
-                 (if this-win-2nd (other-window 1))
-                 (set-window-buffer (selected-window) this-win-buffer)
-                 (set-window-buffer (next-window) next-win-buffer)
-                 (select-window first-win)
-                 (if this-win-2nd (other-window 1))))))
+      (define-key ctl-x-4-map "t" 'toggle-window-split)
+    #+END_SRC
 
-       (define-key ctl-x-4-map "t" 'toggle-window-split)
-     #+END_SRC
+*** Delete the file for the current buffer function
 
-**** Delete the file for the current buffer
+    "Delete this file." Simple, huh?
 
-     "Delete this file." Simple, huh?
+    #+BEGIN_SRC emacs-lisp
+      (defun delete-current-buffer-file ()
+        "Removes file connected to current buffer and kills buffer."
+        (interactive)
+        (let ((filename (buffer-file-name))
+              (buffer (current-buffer))
+              (name (buffer-name)))
+          (if (not (and filename (file-exists-p filename)))
+              (ido-kill-buffer)
+            (when (yes-or-no-p "Are you sure you want to remove this file? ")
+              (delete-file filename)
+              (kill-buffer buffer)
+              (message "File '%s' successfully removed" filename)))))
 
-     #+BEGIN_SRC emacs-lisp
-       (defun delete-current-buffer-file ()
-         "Removes file connected to current buffer and kills buffer."
-         (interactive)
-         (let ((filename (buffer-file-name))
-               (buffer (current-buffer))
-               (name (buffer-name)))
-           (if (not (and filename (file-exists-p filename)))
-               (ido-kill-buffer)
-             (when (yes-or-no-p "Are you sure you want to remove this file? ")
-               (delete-file filename)
-               (kill-buffer buffer)
-               (message "File '%s' successfully removed" filename)))))
+      (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
+    #+END_SRC
 
-       (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
-     #+END_SRC
+*** Eshell
 
-*** Mode-specific stuff
+    I have started using /Eshell/. It is close to magic. There's not a lot of
+    setup (it has its own [[file:eshell/alias][alias file]]), but I've got a keybinding to bring up
+    eshell quickly. This launches eshell if it is not already running, or
+    switches to it if it is.
 
-**** Tramp
+    #+BEGIN_SRC emacs-lisp
+      (global-set-key (kbd "C-c s") 'eshell)
+    #+END_SRC
 
-     Allow using sudo over ssh, so we can sudo to root remotely on a machine
-     that does not allow root login.
+    Eshell is great, and its Tramp integration allows me to open remote files
+    in local Emacs seamlessly with the =find-file= command. (Which I have
+    aliased to =ff=.) Eshell also makes sure that my shell behaves the same,
+    and has the same config, whether I am on a local machine or a remote one.
 
-     #+BEGIN_SRC emacs-lisp
-       (set-default 'tramp-default-proxies-alist
-                    (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
-     #+END_SRC
+*** Tramp
 
-     For opening files using sudo locally, don't connect via SSH. (My local
-     machine doesn't accept SSH connections.)
+    Allow using sudo over ssh, so we can sudo to root remotely on a machine
+    that does not allow root login.
 
-     #+BEGIN_SRC emacs-lisp
-       (add-to-list 'tramp-default-proxies-alist
-               '((regexp-quote (system-name)) nil nil))
-     #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (set-default 'tramp-default-proxies-alist
+                   (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+    #+END_SRC
 
-     If I don't set this then tramp will attempt to use OS X's tempfile
-     directory on a remote machine, which does not work. I don't understand
-     why it won't use the remote machine's temp directory automatically, but
-     there you go.
+    For opening files using sudo locally, don't connect via SSH. (My local
+    machine doesn't accept SSH connections.)
 
-     #+BEGIN_SRC emacs-lisp
-       (setq temporary-file-directory "/tmp/")
-     #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'tramp-default-proxies-alist
+              '((regexp-quote (system-name)) nil nil))
+    #+END_SRC
 
-     This function lets me re-open the currently open file using sudo[fn:1].
-     I've bound it to =C-c C-s=. It works for both local and remote buffers.
+    If I don't set this then tramp will attempt to use OS X's tempfile
+    directory on a remote machine, which does not work. I don't understand
+    why it won't use the remote machine's temp directory automatically, but
+    there you go.
 
-     #+BEGIN_SRC emacs-lisp
-       (defun sudo-edit-current-file ()
-         (interactive)
-         (let ((position (point)))
-           (find-alternate-file
-            (if (file-remote-p (buffer-file-name))
-                (let ((vec (tramp-dissect-file-name (buffer-file-name))))
-                  (tramp-make-tramp-file-name
-                   "sudo"
-                   (tramp-file-name-user vec)
-                   (tramp-file-name-host vec)
-                   (tramp-file-name-localname vec)))
-              (concat "/sudo::" (buffer-file-name))))
-           (goto-char position)))
+    #+BEGIN_SRC emacs-lisp
+      (setq temporary-file-directory "/tmp/")
+    #+END_SRC
 
-       (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
-     #+END_SRC
+    This function lets me re-open the currently open file using sudo[fn:1].
+    I've bound it to =C-c C-s=. It works for both local and remote buffers.
 
-* TODO Split & document this lot
+    #+BEGIN_SRC emacs-lisp
+      (defun sudo-edit-current-file ()
+        (interactive)
+        (let ((position (point)))
+          (find-alternate-file
+           (if (file-remote-p (buffer-file-name))
+               (let ((vec (tramp-dissect-file-name (buffer-file-name))))
+                 (tramp-make-tramp-file-name
+                  "sudo"
+                  (tramp-file-name-user vec)
+                  (tramp-file-name-host vec)
+                  (tramp-file-name-localname vec)))
+             (concat "/sudo::" (buffer-file-name))))
+          (goto-char position)))
+
+      (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
+    #+END_SRC
+
+*** TODO Split & document this lot
 
     Some of this I have _no_ idea what it does. I guess I just take it out and
     see what breaks?
@@ -435,611 +451,613 @@
   (require 'server)
   (unless (server-running-p)
     (server-start))
-
   #+END_SRC
 
-* Package Installation & Configuration
+** Package Installation & Configuration
 
-  I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the
-  archives we want to use, then initiate already installed packages.
+   I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the
+   archives we want to use, then initiate already installed packages.
 
-** Initialisation
+*** Setup & Initialisation
 
-   #+BEGIN_SRC emacs-lisp
-     (setq package-archives
-           '(("gnu" . "http://elpa.gnu.org/packages/")
-             ("melpa" . "http://melpa.milkbox.net/packages/")
-             ("melpa-stable" . "http://stable.milkbox.net/packages/")))
-     (package-initialize)
-   #+END_SRC
+    First we need to specify which package arhcives we want to use. Only "gnu"
+    is the default.
 
-** use-package
+    #+BEGIN_SRC emacs-lisp
+      (setq package-archives
+            '(("gnu" . "http://elpa.gnu.org/packages/")
+              ("melpa" . "http://melpa.milkbox.net/packages/")
+              ("melpa-stable" . "http://stable.milkbox.net/packages/")))
+    #+END_SRC
 
-   I use the excellent [[https://github.com/jwiegley/use-package][use-package]] for installing & configuring packages.
-   There's a minor bootstrapping problem: we have to make sure /it/ is
-   installed.
+    Then we have to initialise our packages.
 
-   #+BEGIN_SRC emacs-lisp
-     (unless (package-installed-p 'use-package)
-       (message "%s" "Refreshing package database...")
-       (package-refresh-contents)
-       (package-install 'use-package))
-   #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (package-initialize)
+    #+END_SRC
 
-   Configure =use-package= pre-compile the configuration for faster loading.
+    I use the excellent [[https://github.com/jwiegley/use-package][use-package]] for installing & configuring packages.
+    But, because it is _itself_ installed via Melpa, there's a minor
+    bootstrapping problem: we have to make sure it is installed.
 
-   #+BEGIN_SRC emacs-lisp
-     (eval-when-compile
-       (require 'use-package))
-     (require 'bind-key)
-   #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (unless (package-installed-p 'use-package)
+        (message "%s" "Refreshing package database...")
+        (package-refresh-contents)
+        (package-install 'use-package))
+    #+END_SRC
 
-** Leuven Theme
+    Configure =use-package= pre-compile the configuration for faster loading.
 
-   Install & activate a nice-looking theme.
+    #+BEGIN_SRC emacs-lisp
+      (eval-when-compile
+        (require 'use-package))
+      (require 'bind-key)
+    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package leuven-theme
-       :ensure t
-       :config
-       (load-theme 'leuven t))
-   #+END_SRC
+    Now we can use =use-package= to install the rest of the packages we want.
 
-** Magit
+*** Leuven Theme
 
-   I use [[http://magit.vc][Magit]] all day. If you use git a lot it's possibly worth switching to
-   Emacs just for it. It is excellent. I bind =M-m= to =magit-status=, which
-   is the main entry point for the mode.
+    Install & activate a nice-looking theme.
 
-   I also use a Magit plugin that interacts with GitHub, allowing me to create
-   pull-requests from within Emacs.
+    #+BEGIN_SRC emacs-lisp
+      (use-package leuven-theme
+        :ensure t
+        :config
+        (load-theme 'leuven t))
+    #+END_SRC
 
-   #+BEGIN_SRC emacs-lisp
+*** Magit
+
+    I use [[http://magit.vc][Magit]] all day. If you use git a lot it's possibly worth switching to
+    Emacs just for it. It is excellent. I bind =M-m= to =magit-status=, which
+    is the main entry point for the mode.
+
+    #+BEGIN_SRC emacs-lisp
       (use-package magit
-     :ensure t
-
-     :bind ("M-m" . magit-status)
-
-     :init
-     (setq magit-git-executable "/usr/bin/git"
-           git-commit-summary-max-length 65
-           magit-diff-refine-hunk 'all
-           magit-push-always-verify nil)
-
-     :config
-     (use-package magit-gh-pulls
-       :ensure t
-       :config
-       (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)))
-   #+END_SRC
-
-** SmartParens
-
-   I use smartparens rather that paredit. I cannot remember why; probably
-   something to do with it being better supported for Cider/Clojure? Anyway,
-   here's my SmartParen config. It is  mostly cribbed from the author, with
-   small changes to make suitable for plugging into =user-package=.
-
-   One notable thing: I remove "'" from being a pair, because that character
-   is used for quoting in lisps, and for apostrophe in text modes. Having two
-   inserted every time you hit the key is very annoying.
-
-   #+BEGIN_SRC emacs-lisp
-   (use-package smartparens
-     :ensure t
-
-     :config
-     (smartparens-global-mode t)
-     (show-smartparens-global-mode t)
-     (sp-pair "'" nil :actions :rem)
-
-     ;; Add smartparens-strict-mode to all sp--lisp-modes hooks. C-h v sp--lisp-modes
-     ;; to customize/view this list.
-     (mapc (lambda (mode)
-             (add-hook (intern (format "%s-hook" (symbol-name mode))) 'smartparens-strict-mode))
-           sp--lisp-modes)
-
-     ;; Conveniently set keys into the sp-keymap, limiting the keybinding to buffers
-     ;; with SP mode activated
-     (mapc (lambda (info)
-             (let ((key (kbd (car info)))
-                   (function (car (cdr info))))
-               (define-key sp-keymap key function)))
-           '(("C-M-f" sp-forward-sexp)
-             ("C-M-b" sp-backward-sexp)
-
-             ("C-M-d" sp-down-sexp)
-             ("C-M-a" sp-backward-down-sexp)
-             ("C-S-a" sp-beginning-of-sexp)
-             ("C-S-d" sp-end-of-sexp)
-
-             ("C-M-e" sp-up-sexp)
-
-             ("C-M-u" sp-backward-up-sexp)
-             ("C-M-t" sp-transpose-sexp)
-
-             ("C-M-n" sp-next-sexp)
-             ("C-M-p" sp-previous-sexp)
-
-             ("C-M-k" sp-kill-sexp)
-             ("C-M-w" sp-copy-sexp)
-
-             ("C-M-<delete>" sp-unwrap-sexp)
-             ("C-M-<backspace>" sp-backward-unwrap-sexp)
-
-             ("C-<right>" sp-forward-slurp-sexp)
-             ("C-<left>" sp-forward-barf-sexp)
-             ("C-M-<left>" sp-backward-slurp-sexp)
-             ("C-M-<right>" sp-backward-barf-sexp)
-
-             ("M-D" sp-splice-sexp)
-             ("C-M-<delete>" sp-splice-sexp-killing-forward)
-             ("C-M-<backspace>" sp-splice-sexp-killing-backward)
-             ("C-S-<backspace>" sp-splice-sexp-killing-around)
-
-             ("C-]" sp-select-next-thing-exchange)
-             ("C-<left_bracket>" sp-select-previous-thing)
-             ("C-M-]" sp-select-next-thing)
-
-             ("M-F" sp-forward-symbol)
-             ("M-B" sp-backward-symbol)
-
-             ("H-t" sp-prefix-tag-object)
-             ("H-p" sp-prefix-pair-object)
-             ("H-s c" sp-convolute-sexp)
-             ("H-s a" sp-absorb-sexp)
-             ("H-s e" sp-emit-sexp)
-             ("H-s p" sp-add-to-previous-sexp)
-             ("H-s n" sp-add-to-next-sexp)
-             ("H-s j" sp-join-sexp)
-             ("H-s s" sp-split-sexp)))
-
-     ;; In Lisp modes, let ')' go to end of sexp
-     (bind-key ")" 'sp-up-sexp emacs-lisp-mode-map)
-     (bind-key ")" 'sp-up-sexp lisp-mode-map))
-   #+END_SRC
-
-** Aggressive Indent
-
-   I like to keep my code indented properly at all times. Aggressive-indent
-   helps ensure this. Turn it on for lisp modes.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package aggressive-indent
-       :ensure t
-
-       :config
-       (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-       ;;     (add-hook 'puppet-mode-hook #'aggressive-indent-mode)
-       (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
-       (add-hook 'css-mode-hook #'aggressive-indent-mode))
-   #+END_SRC
-
-** Helm
+        :ensure t
+
+        :bind ("M-m" . magit-status)
+
+        :init
+        (setq magit-git-executable "/usr/bin/git"
+              git-commit-summary-max-length 65
+              magit-diff-refine-hunk 'all
+              magit-push-always-verify nil))
+    #+END_SRC
+
+    I also use a Magit plugin that interacts with GitHub, allowing me to create
+    pull-requests from within Emacs.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package magit-gh-pulls
+        :ensure t
+        :config
+        (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+    #+END_SRC
+
+*** SmartParens
+
+    I use smartparens rather that paredit. I cannot remember why; probably
+    something to do with it being better supported for Cider/Clojure? Anyway,
+    here's my SmartParen config. It is  mostly cribbed from the author, with
+    small changes to make suitable for plugging into =user-package=.
+
+    One notable thing: I remove "'" from being a pair, because that character
+    is used for quoting in lisps, and for apostrophe in text modes. Having two
+    inserted every time you hit the key is very annoying.
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package smartparens
+      :ensure t
+
+      :config
+      (smartparens-global-mode t)
+      (show-smartparens-global-mode t)
+      (sp-pair "'" nil :actions :rem)
+
+      ;; Add smartparens-strict-mode to all sp--lisp-modes hooks. C-h v sp--lisp-modes
+      ;; to customize/view this list.
+      (mapc (lambda (mode)
+              (add-hook (intern (format "%s-hook" (symbol-name mode))) 'smartparens-strict-mode))
+            sp--lisp-modes)
+
+      ;; Conveniently set keys into the sp-keymap, limiting the keybinding to buffers
+      ;; with SP mode activated
+      (mapc (lambda (info)
+              (let ((key (kbd (car info)))
+                    (function (car (cdr info))))
+                (define-key sp-keymap key function)))
+            '(("C-M-f" sp-forward-sexp)
+              ("C-M-b" sp-backward-sexp)
+
+              ("C-M-d" sp-down-sexp)
+              ("C-M-a" sp-backward-down-sexp)
+              ("C-S-a" sp-beginning-of-sexp)
+              ("C-S-d" sp-end-of-sexp)
+
+              ("C-M-e" sp-up-sexp)
+
+              ("C-M-u" sp-backward-up-sexp)
+              ("C-M-t" sp-transpose-sexp)
+
+              ("C-M-n" sp-next-sexp)
+              ("C-M-p" sp-previous-sexp)
+
+              ("C-M-k" sp-kill-sexp)
+              ("C-M-w" sp-copy-sexp)
+
+              ("C-M-<delete>" sp-unwrap-sexp)
+              ("C-M-<backspace>" sp-backward-unwrap-sexp)
+
+              ("C-<right>" sp-forward-slurp-sexp)
+              ("C-<left>" sp-forward-barf-sexp)
+              ("C-M-<left>" sp-backward-slurp-sexp)
+              ("C-M-<right>" sp-backward-barf-sexp)
+
+              ("M-D" sp-splice-sexp)
+              ("C-M-<delete>" sp-splice-sexp-killing-forward)
+              ("C-M-<backspace>" sp-splice-sexp-killing-backward)
+              ("C-S-<backspace>" sp-splice-sexp-killing-around)
+
+              ("C-]" sp-select-next-thing-exchange)
+              ("C-<left_bracket>" sp-select-previous-thing)
+              ("C-M-]" sp-select-next-thing)
+
+              ("M-F" sp-forward-symbol)
+              ("M-B" sp-backward-symbol)
+
+              ("H-t" sp-prefix-tag-object)
+              ("H-p" sp-prefix-pair-object)
+              ("H-s c" sp-convolute-sexp)
+              ("H-s a" sp-absorb-sexp)
+              ("H-s e" sp-emit-sexp)
+              ("H-s p" sp-add-to-previous-sexp)
+              ("H-s n" sp-add-to-next-sexp)
+              ("H-s j" sp-join-sexp)
+              ("H-s s" sp-split-sexp)))
+
+      ;; In Lisp modes, let ')' go to end of sexp
+      (bind-key ")" 'sp-up-sexp emacs-lisp-mode-map)
+      (bind-key ")" 'sp-up-sexp lisp-mode-map))
+    #+END_SRC
+
+*** Aggressive Indent
+
+    I like to keep my code indented properly at all times. Aggressive-indent
+    helps ensure this. Turn it on for lisp modes.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package aggressive-indent
+        :ensure t
+
+        :config
+        (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+        ;;     (add-hook 'puppet-mode-hook #'aggressive-indent-mode)
+        (add-hook 'clojure-mode-hook #'aggressive-indent-mode)
+        (add-hook 'css-mode-hook #'aggressive-indent-mode))
+    #+END_SRC
+
+*** Helm
 
-   I use [[https://github.com/emacs-helm/helm][Helm]] for interactive completion and finding things, particularly files.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package helm
-       :ensure t
+    I use [[https://github.com/emacs-helm/helm][Helm]] for interactive completion and finding things, particularly files.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+        :ensure t
 
-       :bind (("C-c C-h e" . helm-list-elisp-packages)
-              ("C-c C-h r" . helm-resume)
-              ("M-x" . helm-M-x)
-              ("M-y" . helm-show-kill-ring)
-              ("C-x b" . helm-mini)
-              ("C-x 4 b" . helm-mini)
-              ("C-x C-f" . helm-find-files)))
-   #+END_SRC
+        :bind (("C-c C-h e" . helm-list-elisp-packages)
+               ("C-c C-h r" . helm-resume)
+               ("M-x" . helm-M-x)
+               ("M-y" . helm-show-kill-ring)
+               ("C-x b" . helm-mini)
+               ("C-x 4 b" . helm-mini)
+               ("C-x C-f" . helm-find-files)))
+    #+END_SRC
 
-** Autocomplete
-
-   I use auto-complete. I am not entirely sure to what extent, but this is my
-   config for it.
+*** Autocomplete
+
+    I use auto-complete. I am not entirely sure to what extent, but this is my
+    config for it.
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package auto-complete
-       :ensure t
-       :config
-       (ac-config-default))
-   #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package auto-complete
+        :ensure t
+        :config
+        (ac-config-default))
+    #+END_SRC
 
-   When it would be embarrassing to mistype long words, there's always
-   ispell-based auto-complete.
+    When it would be embarrassing to mistype long words, there's always
+    ispell-based auto-complete.
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package ac-ispell
-       :init
-       ;; Completion words longer than 12 characters
-       (custom-set-variables
-        '(ac-ispell-requires 12)
-        '(ac-ispell-fuzzy-limit 12))
-
-       :config
-       (ac-ispell-setup)
-
-       (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
-       (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
-   #+END_SRC
-
-   Autocomplete for reStructuredText is very useful.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package auto-complete-rst
-       :mode "\\.rst\'"
-       :config
-       (auto-complete-rst-init)
-       (setq auto-complete-rst-other-sources
-             '(ac-source-filename
-               ac-source-abbrev
-               ac-source-dictionary
-               ac-source-yasnippet)))
-   #+END_SRC
-
-** Editorconfig
-
-   Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
-   their indentation and file format preferences.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package editorconfig
-       :ensure t)
-   #+END_SRC
-
-   Emacs requires an external tool for this to work. I install that using
-   brew.
-
-   #+BEGIN_SRC sh
-     brew install editorconfig
-   #+END_SRC
-
-** Puppet
-
-   My work includes editing a lot of puppet manifests. Puppet-mode makes that
-   more convenient.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package puppet-mode
-       :ensure t
-       :mode "\\.pp'")
-   #+END_SRC
-
-** Ag / The Silver Searcher
-
-   I use =ag= for searching quite a lot in Emacs.
-   This requires an additional external tool for best performance:
-
-   #+BEGIN_SRC sh
-     brew install the_silver_searcher
-   #+END_SRC
-
-   Then make sure the Emacs ag package is installed.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package ag :ensure t)
-   #+END_SRC
-
-   The =helm-ag= package allows me to refine ag results (in case there are
-   very many) using Helm's interactive narrowing down.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package helm-ag :ensure t)
-   #+END_SRC
-
-   "Writable grep" mode for ag is pretty close to magic. When in a buffer
-   showing ag results, try hitting =C-c C-p=--this lets you _edit the results
-   of the search, right from the ag results buffer!_ Just hit =C-x C-s= to
-   save the results.
-
-   If you hit =C-c C-p= while already in writable grep mode you can delete the
-   entire matched line from the file where it was found by hitting =C-c C-d=
-   on it. I use this _a lot_ when cleaning up Hieradata.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package wgrep-ag :ensure t)
-   #+END_SRC
-
-** Projectile
-
-   I use Projectile to navigate my projects. Some of the things I like about
-   it are that it provides the following key bindings:
-
-   - =C-c p t= :: This switches from an implementation file to its test file,
-                  or vice versa. I use this extensively in Clojure mode. It
-                  might not make sense for all languages; YMMV.
-   - =C-c p 4 t= :: The same, as above, but open the file in "other" buffer.
-   - =C-c p s s= :: Ag search for something in this project. If point is at a
-                    token, default to searching for that. (Mnemonic:
-                    "Projectile Silver Searcher".)
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package projectile
-       :ensure t
-       :config
-       (projectile-global-mode))
-   #+END_SRC
-
-   This next package adds =C-c p h=, which invokes =helm-find-file= in project
-   context. Invaluable.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package helm-projectile
-       :ensure t)
-   #+END_SRC
-
-** Working with shells
-
-   I have started using /Eshell/. It is close to magic. There's not a lot of
-   setup (it has its own [[file:eshell/alias][alias file]]), but I've got a keybinding to bring up
-   eshell quickly. This launches eshell if it is not already running, or
-   switches to it if it is.
-
-   #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "C-c s") 'eshell)
-   #+END_SRC
-
-   Eshell is great, and its Tramp integration allows me to open remote files
-   in local Emacs seamlessly with the =find-file= command. (Which I have
-   aliased to =ff=.) Eshell also makes sure that my shell behaves the same,
-   and has the same config, whether I am on a local machine or a remote one.
-
-   For some machines at work we use [[https://github.com/google/google-authenticator][google authenticator]]. I have not been able
-   to log in to these using Eshell, so for some things I still just open a
-   regular terminal inside Emacs. Just don't try to open big files, or tail
-   fast-growing log files! I use =sane-term= to get a somewhat similar
-   experience to eshell, i.e. =C-x t= to launch a new term, or switch to one
-   that is already running.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package sane-term
-       :ensure t
-       :bind (("C-x t" . sane-term)
-              ("C-x T" . sane-term-create)))
-   #+END_SRC
-
-   A drawback of =sane-term= is that it doesn't easily allow me to open remote
-   files in the local Emacs. Tramp-term adds some magic to keep track of the
-   directory on the remote machine, thus allowing me to just use the normal
-   =C-x C-f= to get a find-file dialogue in the context of the current
-   terminal window.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package tramp-term
-       :ensure t
-       :bind ("C-x C-t" . tramp-term))
-   #+END_SRC
-
-** Multiple Cursors
-
-   This package is another one of those near-magical ones. It allows me to do
-   multiple edits in the same buffer, using several cursors. You can think of
-   it as an interactive macro, where you can constantly see what's being done.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package multiple-cursors
-       :ensure t
-
-       :bind (("C-c a" . mc/edit-lines)
-              ("C-c C-a" . mc/mark-all-dwim)
-              ("s-n" . mc/mark-next-like-this)
-              ("s-p" . mc/mark-previous-like-this)))
-   #+END_SRC
-
-** YAS
-
-   YAS is a templating package. You can define mode-specific or global
-   templates, and insert templates with keycombinations or triggered based on
-   trigger words in the text.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package yasnippet
-       :init
-       (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
-       (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
-
-       :config
-       (defun yas/org-very-safe-expand ()
-         (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-       (defun yas/org-setup ()
-         ;; yasnippet (using the new org-cycle hooks)
-         (make-variable-buffer-local 'yas/trigger-key)
-         (setq yas/trigger-key [tab])
-         (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-         (define-key yas/keymap [tab] 'yas/next-field))
-
-       ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
-       (setq org-src-tab-acts-natively nil)
-
-       (add-hook 'org-mode-hook #'yas/org-setup))
-   #+END_SRC
-
-** Clojure Support
-
-   I use [[https://github.com/clojure-emacs/clojure-mode/][Clojure Mode]] for my Clojure editing.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package clojure-mode
-       :pin melpa-stable
-       :mode "\\.clj\\'"
-       :ensure t
-
-       :config
-       (bind-key ")" 'sp-up-sexp clojure-mode-map))
-   #+END_SRC
-
-   I have a package for extra syntax highlighting in Clojure mode, but I'm not
-   sure how much it actually does.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package clojure-mode-extra-font-locking
-       :ensure t)
-   #+END_SRC
-
-   The Clojure Refactor package is also ace.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package clj-refactor
-       :pin melpa-stable
-       :ensure t
-       :config
-       (dolist (mapping '(("route" . "compojure.route")
-                          ("timbre" . "taoensso.timbre")
-                          ("component" . "com.stuartsierra.component")
-                          ("d" . "datomic.api")
-                          ("io" . "clojure.java.io")
-                          ("tc" . "clojure.test.check")
-                          ("gen" . "clojure.test.check.generators")
-                          ("prop" . "clojure.test.check.properties")
-                          ("prop'" . "com.gfredericks.test.chuck.properties")))
-         (add-to-list 'cljr-magic-require-namespaces mapping t))
-
-       :config
-       (defun my-clojure-mode-hook ()
-         (clj-refactor-mode 1)
-         ;;(cljr-add-keybindings-with-prefix "C-c C-m")
-         )
-
-       (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
-   #+END_SRC
-
-   The cljr-helm package allows us to interactively narrow down the (ever
-   growing) list of clj-refactoring choices using helm.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package cljr-helm
-       :ensure t
-       :init
-       (bind-key "C-c r" 'cljr-helm clojure-mode-map)))
-   #+END_SRC
-
-   For REPL work I use [[https://github.com/clojure-emacs/cider][CIDER]]. 
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package cider
-       :pin melpa-stable
-       :ensure t
-       :init
-       (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-       (setq cider-repl-result-prefix ";; => ")
-
-       :config
-       (bind-key ")" 'sp-up-sexp cider-repl-mode-map))
-   #+END_SRC
-
-   CIDER requires the Leiningen external tool. It is installed with brew, of
-   course.
-
-   #+BEGIN_SRC sh
-     brew install leiningen
-   #+END_SRC
-
-   BTW, I like auto-complete to work in CIDER too:
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package ac-cider
-       :ensure t
-       :init
-       (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-       (add-hook 'cider-mode-hook 'ac-cider-setup)
-       (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
-       (eval-after-load "auto-complete"
-         '(progn
-            (add-to-list 'ac-modes 'cider-mode)
-            (add-to-list 'ac-modes 'cider-repl-mode))))
-   #+END_SRC
-
-
-
-** Gists
-
-   Viewing & editing gists in Emacs? Sure! I want that!
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package gist
-       :ensure t
-       :bind ("C-x g l" . gist-list))
-   #+END_SRC
-
-   For actually _creating_ gists I use a different gist mode, due to a bug in
-   the =gist= package.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package yagist
-       :ensure t
-       :bind ("C-x g c" . yagist-region-or-buffer))
-   #+END_SRC
-
-** Org
-
-   I used to use Markdown for my writing, but now I tend to use Org mode. The
-   Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
-   makes it an easy choice. (I can even export to Markdown if I want.)
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package org
-       :ensure t
-       :bind ("C-x a" . org-agenda)
-       :init
-       (setq org-babel-clojure-backend 'cider)
-
-       ;; Don't execute code blocks during export
-       (setq org-export-babel-evaluate nil)
-       :config
-       (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-          (clojure . t)
-          (dot . t)
-          (sh . t)))
-
-       ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
-       (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
-   #+END_SRC
-
-** Graphviz
-
-   I sometimes use Graphviz to create diagrams. I have to actually install the
-   graphviz program separately using brew.
-
-   #+BEGIN_SRC sh
-   brew install graphviz --with-app
-   #+END_SRC
-
-   I also have to tell Emacs how to launch GraphViz.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package graphviz-dot-mode
-       :init
-       (setq graphviz-dot-view-command "open -a Graphviz %s"))
-   #+END_SRC
-
-** Fish
-
-   Add a mode for editing [[http://fishshell.com][FISH]] shell files.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package fish-mode :ensure t)
-   #+END_SRC
-
-** Trash
-
-   This allows moving files to trash rather than deleting them from =dired=.
-   Delete files by moving them to Trash. This way they _can_ be retrieved
-   again.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq delete-by-moving-to-trash t)
-   #+END_SRC
-
-   To support that we need to install a supporting program.
-
-   #+BEGIN_SRC sh
-    brew install trash
-   #+END_SRC
-
-
-
+    #+BEGIN_SRC emacs-lisp
+      (use-package ac-ispell
+        :init
+        ;; Completion words longer than 12 characters
+        (custom-set-variables
+         '(ac-ispell-requires 12)
+         '(ac-ispell-fuzzy-limit 12))
+
+        :config
+        (ac-ispell-setup)
+
+        (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
+        (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
+    #+END_SRC
+
+    Autocomplete for reStructuredText is very useful.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package auto-complete-rst
+        :mode "\\.rst\'"
+        :config
+        (auto-complete-rst-init)
+        (setq auto-complete-rst-other-sources
+              '(ac-source-filename
+                ac-source-abbrev
+                ac-source-dictionary
+                ac-source-yasnippet)))
+    #+END_SRC
+
+*** Editorconfig
+
+    Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
+    their indentation and file format preferences.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package editorconfig
+        :ensure t)
+    #+END_SRC
+
+    Emacs requires an external tool for this to work. I install that using
+    brew.
+
+    #+BEGIN_SRC sh
+      brew install editorconfig
+    #+END_SRC
+
+*** Puppet
+
+    My work includes editing a lot of puppet manifests. Puppet-mode makes that
+    more convenient.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package puppet-mode
+        :ensure t
+        :mode "\\.pp'")
+    #+END_SRC
+
+*** Ag / The Silver Searcher
+
+    I use =ag= for searching quite a lot in Emacs.
+    This requires an additional external tool for best performance:
+
+    #+BEGIN_SRC sh
+      brew install the_silver_searcher
+    #+END_SRC
+
+    Then make sure the Emacs ag package is installed.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ag :ensure t)
+    #+END_SRC
+
+    The =helm-ag= package allows me to refine ag results (in case there are
+    very many) using Helm's interactive narrowing down.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-ag :ensure t)
+    #+END_SRC
+
+    "Writable grep" mode for ag is pretty close to magic. When in a buffer
+    showing ag results, try hitting =C-c C-p=--this lets you _edit the results
+    of the search, right from the ag results buffer!_ Just hit =C-x C-s= to
+    save the results.
+
+    If you hit =C-c C-p= while already in writable grep mode you can delete the
+    entire matched line from the file where it was found by hitting =C-c C-d=
+    on it. I use this _a lot_ when cleaning up Hieradata.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package wgrep-ag :ensure t)
+    #+END_SRC
+
+*** Projectile
+
+    I use Projectile to navigate my projects. Some of the things I like about
+    it are that it provides the following key bindings:
+
+    - =C-c p t= :: This switches from an implementation file to its test file,
+                   or vice versa. I use this extensively in Clojure mode. It
+                   might not make sense for all languages; YMMV.
+    - =C-c p 4 t= :: The same, as above, but open the file in "other" buffer.
+    - =C-c p s s= :: Ag search for something in this project. If point is at a
+                     token, default to searching for that. (Mnemonic:
+                     "Projectile Silver Searcher".)
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package projectile
+        :ensure t
+        :config
+        (projectile-global-mode))
+    #+END_SRC
+
+    This next package adds =C-c p h=, which invokes =helm-find-file= in project
+    context. Invaluable.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm-projectile
+        :ensure t)
+    #+END_SRC
+
+*** Sane Term
+
+    For some machines at work we use [[https://github.com/google/google-authenticator][google authenticator]]. I have not been able
+    to log in to these using Eshell, so for some things I still just open a
+    regular terminal inside Emacs. Just don't try to open big files, or tail
+    fast-growing log files! I use =sane-term= to get a somewhat similar
+    experience to eshell, i.e. =C-x t= to launch a new term, or switch to one
+    that is already running.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package sane-term
+        :ensure t
+        :bind (("C-x t" . sane-term)
+               ("C-x T" . sane-term-create)))
+    #+END_SRC
+
+**** Fix "weird characters" in =ansi-term= mode
+
+     For some reason Emacs' =ansi-term= mode displays some "weird characters".
+     To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
+     create =.terminfo=:
+
+     #+BEGIN_SRC sh
+     curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
+     tic -o ~/.terminfo /tmp/ansi-term.ti
+     #+END_SRC
+
+*** Tramp Term
+
+    A drawback of =sane-term= is that it doesn't easily allow me to open remote
+    files in the local Emacs. Tramp-term adds some magic to keep track of the
+    directory on the remote machine, thus allowing me to just use the normal
+    =C-x C-f= to get a find-file dialogue in the context of the current
+    terminal window.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package tramp-term
+        :ensure t
+        :bind ("C-x C-t" . tramp-term))
+    #+END_SRC
+
+*** Multiple Cursors
+
+    This package is another one of those near-magical ones. It allows me to do
+    multiple edits in the same buffer, using several cursors. You can think of
+    it as an interactive macro, where you can constantly see what's being done.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package multiple-cursors
+        :ensure t
+
+        :bind (("C-c a" . mc/edit-lines)
+               ("C-c C-a" . mc/mark-all-dwim)
+               ("s-n" . mc/mark-next-like-this)
+               ("s-p" . mc/mark-previous-like-this)))
+    #+END_SRC
+
+*** YAS
+
+    YAS is a templating package. You can define mode-specific or global
+    templates, and insert templates with keycombinations or triggered based on
+    trigger words in the text.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package yasnippet
+        :init
+        (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
+        (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
+
+        :config
+        (defun yas/org-very-safe-expand ()
+          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+        (defun yas/org-setup ()
+          ;; yasnippet (using the new org-cycle hooks)
+          (make-variable-buffer-local 'yas/trigger-key)
+          (setq yas/trigger-key [tab])
+          (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+          (define-key yas/keymap [tab] 'yas/next-field))
+
+        ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
+        (setq org-src-tab-acts-natively nil)
+
+        (add-hook 'org-mode-hook #'yas/org-setup))
+    #+END_SRC
+
+*** Clojure Programming Support
+
+    I use [[https://github.com/clojure-emacs/clojure-mode/][Clojure Mode]] for my Clojure editing.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package clojure-mode
+        :pin melpa-stable
+        :mode "\\.clj\\'"
+        :ensure t
+
+        :config
+        (bind-key ")" 'sp-up-sexp clojure-mode-map))
+    #+END_SRC
+
+    I have a package for extra syntax highlighting in Clojure mode, but I'm not
+    sure how much it actually does.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package clojure-mode-extra-font-locking
+        :ensure t)
+    #+END_SRC
+
+    The Clojure Refactor package is also ace.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package clj-refactor
+        :pin melpa-stable
+        :ensure t
+        :config
+        (dolist (mapping '(("route" . "compojure.route")
+                           ("timbre" . "taoensso.timbre")
+                           ("component" . "com.stuartsierra.component")
+                           ("d" . "datomic.api")
+                           ("io" . "clojure.java.io")
+                           ("tc" . "clojure.test.check")
+                           ("gen" . "clojure.test.check.generators")
+                           ("prop" . "clojure.test.check.properties")
+                           ("prop'" . "com.gfredericks.test.chuck.properties")))
+          (add-to-list 'cljr-magic-require-namespaces mapping t))
+
+        :config
+        (defun my-clojure-mode-hook ()
+          (clj-refactor-mode 1)
+          ;;(cljr-add-keybindings-with-prefix "C-c C-m")
+          )
+
+        (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+    #+END_SRC
+
+    The cljr-helm package allows us to interactively narrow down the (ever
+    growing) list of clj-refactoring choices using helm.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package cljr-helm
+        :ensure t
+        :init
+        (bind-key "C-c r" 'cljr-helm clojure-mode-map))
+    #+END_SRC
+
+    For REPL work I use [[https://github.com/clojure-emacs/cider][CIDER]].
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package cider
+        :pin melpa-stable
+        :ensure t
+        :init
+        (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+        (setq cider-repl-result-prefix ";; => ")
+
+        :config
+        (bind-key ")" 'sp-up-sexp cider-repl-mode-map))
+    #+END_SRC
+
+    CIDER requires the Leiningen external tool. It is installed with brew, of
+    course.
+
+    #+BEGIN_SRC sh
+      brew install leiningen
+    #+END_SRC
+
+    BTW, I like auto-complete to work in CIDER too:
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ac-cider
+        :ensure t
+        :init
+        (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+        (add-hook 'cider-mode-hook 'ac-cider-setup)
+        (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+        (eval-after-load "auto-complete"
+          '(progn
+             (add-to-list 'ac-modes 'cider-mode)
+             (add-to-list 'ac-modes 'cider-repl-mode))))
+    #+END_SRC
+
+*** Gists
+
+    Viewing & editing gists in Emacs? Sure! I want that!
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package gist
+        :ensure t
+        :bind ("C-x g l" . gist-list))
+    #+END_SRC
+
+    For actually _creating_ gists I use a different gist mode, due to a bug in
+    the =gist= package.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package yagist
+        :ensure t
+        :bind ("C-x g c" . yagist-region-or-buffer))
+    #+END_SRC
+
+*** Org
+
+    I used to use Markdown for my writing, but now I tend to use Org mode. The
+    Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
+    makes it an easy choice. (I can even export to Markdown if I want.)
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package org
+        :ensure t
+        :bind ("C-x a" . org-agenda)
+        :init
+        (setq org-babel-clojure-backend 'cider)
+
+        ;; Don't execute code blocks during export
+        (setq org-export-babel-evaluate nil)
+        :config
+        (org-babel-do-load-languages
+         'org-babel-load-languages
+         '((emacs-lisp . t)
+           (clojure . t)
+           (dot . t)
+           (sh . t)))
+
+        ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
+        (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
+    #+END_SRC
+
+*** Graphviz
+
+    I sometimes use Graphviz to create diagrams. I have to actually install the
+    graphviz program separately using brew.
+
+    #+BEGIN_SRC sh
+    brew install graphviz --with-app
+    #+END_SRC
+
+    I also have to tell Emacs how to launch GraphViz.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package graphviz-dot-mode
+        :init
+        (setq graphviz-dot-view-command "open -a Graphviz %s"))
+    #+END_SRC
+
+*** Fish
+
+    Add a mode for editing [[http://fishshell.com][FISH]] shell files.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package fish-mode :ensure t)
+    #+END_SRC
+
+*** Trash
+
+    This allows moving files to trash rather than deleting them from =dired=.
+    Delete files by moving them to Trash. This way they _can_ be retrieved
+    again.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq delete-by-moving-to-trash t)
+    #+END_SRC
+
+    To support that we need to install a supporting program.
+
+    #+BEGIN_SRC sh
+     brew install trash
+    #+END_SRC
 
 * Footnotes
 

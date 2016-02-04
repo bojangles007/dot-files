@@ -38,25 +38,6 @@
      brew install emacs --with-cocoa
    #+END_SRC
 
-*** Editorconfig
-
-    Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
-    their indentation and file format preferences. Emacs supports this, but
-    requires an external tool to help, so let's get that:
-
-    #+BEGIN_SRC sh
-      brew install editorconfig
-    #+END_SRC
-
-*** Ag / The Silver Searcher
-
-    I use =ag= for searching quite a lot in Emacs. This requires an additional
-    external tool for best performance:
-
-    #+BEGIN_SRC sh
-      brew install the_silver_searcher
-    #+END_SRC
-
 *** Leiningen
 
     This is used by Cider. Installed with brew, of course:
@@ -641,46 +622,165 @@
        (add-hook 'css-mode-hook #'aggressive-indent-mode))
    #+END_SRC
 
+** Helm
 
+   I use [[https://github.com/emacs-helm/helm][Helm]] for interactive completion and finding things, particularly files.
 
    #+BEGIN_SRC emacs-lisp
-   (use-package auto-complete
-     :ensure t
-     :config
-     (ac-config-default))
+     (use-package helm
+       :ensure t
 
-   (use-package ac-ispell
-     :ensure t
-     :init
-     ;; Completion words longer than 12 characters
-     (custom-set-variables
-      '(ac-ispell-requires 12)
-      '(ac-ispell-fuzzy-limit 12))
+       :bind (("C-c C-h e" . helm-list-elisp-packages)
+              ("C-c C-h r" . helm-resume)
+              ("M-x" . helm-M-x)
+              ("M-y" . helm-show-kill-ring)
+              ("C-x b" . helm-mini)
+              ("C-x 4 b" . helm-mini)
+              ("C-x C-f" . helm-find-files)))
+   #+END_SRC
 
-     :config
-     (ac-ispell-setup)
+** Autocomplete
 
-     (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
-     (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
+   I use auto-complete. I am not entirely sure to what extent, but this is my
+   config for it.
 
-   (use-package helm
-     :ensure t
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-complete
+       :ensure t
+       :config
+       (ac-config-default))
+   #+END_SRC
 
-     :bind (("C-c C-h e" . helm-list-elisp-packages)
-            ("C-c C-h r" . helm-resume)
-            ("M-x" . helm-M-x)
-            ("M-y" . helm-show-kill-ring)
-            ("C-x b" . helm-mini)
-            ("C-x 4 b" . helm-mini)
-            ("C-x C-f" . helm-find-files)))
+   When it would be embarrassing to mistype long words, there's always
+   ispell-based auto-complete.
 
-   (use-package helm-ag :ensure t)
+   #+BEGIN_SRC emacs-lisp
+     (use-package ac-ispell
+       :init
+       ;; Completion words longer than 12 characters
+       (custom-set-variables
+        '(ac-ispell-requires 12)
+        '(ac-ispell-fuzzy-limit 12))
 
-   (use-package ac-helm
-     :ensure t
-     :bind ("C-." . ac-complete-with-helm))
+       :config
+       (ac-ispell-setup)
 
-   (use-package wgrep-ag :ensure t)
+       (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
+       (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
+   #+END_SRC
+
+   Autocomplete for reStructuredText is very useful.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-complete-rst
+       :mode "\\.rst\'"
+       :config
+       (auto-complete-rst-init)
+       (setq auto-complete-rst-other-sources
+             '(ac-source-filename
+               ac-source-abbrev
+               ac-source-dictionary
+               ac-source-yasnippet)))
+   #+END_SRC
+
+** Editorconfig
+
+   Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
+   their indentation and file format preferences.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package editorconfig
+       :ensure t)
+   #+END_SRC
+
+   Emacs requires an external tool for this to work. I install that using
+   brew.
+
+   #+BEGIN_SRC sh
+     brew install editorconfig
+   #+END_SRC
+
+** Puppet
+
+   My work includes editing a lot of puppet manifests. Puppet-mode makes that
+   more convenient.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package puppet-mode
+       :ensure t
+       :mode "\\.pp'")
+   #+END_SRC
+
+** Ag / The Silver Searcher
+
+   I use =ag= for searching quite a lot in Emacs.
+   This requires an additional external tool for best performance:
+
+   #+BEGIN_SRC sh
+     brew install the_silver_searcher
+   #+END_SRC
+
+   Then make sure the Emacs ag package is installed.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ag :ensure t)
+   #+END_SRC
+
+   The =helm-ag= package allows me to refine ag results (in case there are
+   very many) using Helm's interactive narrowing down.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm-ag :ensure t)
+   #+END_SRC
+
+   "Writable grep" mode for ag is pretty close to magic. When in a buffer
+   showing ag results, try hitting =C-c C-p=--this lets you _edit the results
+   of the search, right from the ag results buffer!_ Just hit =C-x C-s= to
+   save the results.
+
+   If you hit =C-c C-p= while already in writable grep mode you can delete the
+   entire matched line from the file where it was found by hitting =C-c C-d=
+   on it. I use this _a lot_ when cleaning up Hieradata.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package wgrep-ag :ensure t)
+   #+END_SRC
+
+** Projectile
+
+   I use Projectile to navigate my projects. Some of the things I like about
+   it are that it provides the following key bindings:
+
+   - =C-c p t= :: This switches from an implementation file to its test file,
+                  or vice versa. I use this extensively in Clojure mode. It
+                  might not make sense for all languages; YMMV.
+   - =C-c p 4 t= :: The same, as above, but open the file in "other" buffer.
+   - =C-c p s s= :: Ag search for something in this project. If point is at a
+                    token, default to searching for that. (Mnemonic:
+                    "Projectile Silver Searcher".)
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package projectile
+       :ensure t
+       :config
+       (projectile-global-mode))
+   #+END_SRC
+
+   This next package adds =C-c p h=, which invokes =helm-find-file= in project
+   context. Invaluable.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package helm-projectile
+       :ensure t)
+   #+END_SRC
+
+
+** TODO Rest
+
+   #+BEGIN_SRC emacs-lisp
+
+
+
 
    (use-package multiple-cursors
      :ensure t
@@ -689,16 +789,6 @@
             ("C-c C-a" . mc/mark-all-dwim)
             ("s-n" . mc/mark-next-like-this)
             ("s-p" . mc/mark-previous-like-this)))
-
-   (use-package auto-complete-rst
-     :mode "\\.rst\'"
-     :config
-     (auto-complete-rst-init)
-     (setq auto-complete-rst-other-sources
-           '(ac-source-filename
-             ac-source-abbrev
-             ac-source-dictionary
-             ac-source-yasnippet)))
 
    (use-package yasnippet
      :init
@@ -783,12 +873,6 @@
             (add-to-list 'ac-modes 'cider-mode)
             (add-to-list 'ac-modes 'cider-repl-mode)))))
 
-   (use-package puppet-mode
-     :mode "\\.pp'")
-
-   (use-package editorconfig
-     :ensure t)
-
    (use-package sbt-mode
      :mode "\\.sbt\\'"
      :init
@@ -823,16 +907,6 @@
      :ensure t
      :bind ("C-x g c" . yagist-region-or-buffer))
 
-   (use-package projectile
-     :ensure t
-     :config
-     (projectile-global-mode)
-
-     (use-package helm-projectile
-       :ensure t))
-
-   (use-package ag
-     :ensure t)
 
    (use-package org
      :ensure t

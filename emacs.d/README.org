@@ -394,7 +394,7 @@
                   (tramp-file-name-user vec)
                   (tramp-file-name-host vec)
                   (tramp-file-name-localname vec)))
-             (concat "/sudo::" (buffer-file-name))))
+             (concat "/sudo:root@localhost:" (buffer-file-name))))
           (goto-char position)))
     #+END_SRC
 

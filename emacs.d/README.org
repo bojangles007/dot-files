@@ -359,7 +359,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (set-default 'tramp-default-proxies-alist
-                   (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+                   '(nil "\\`root\\'" "/ssh:%h:"))
     #+END_SRC
 
     For opening files using sudo locally, don't connect via SSH. (My local
@@ -367,7 +367,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'tramp-default-proxies-alist
-              '((regexp-quote (system-name)) nil nil))
+                   '((regexp-quote (system-name)) nil nil))
     #+END_SRC
 
     If I don't set this then tramp will attempt to use OS X's tempfile

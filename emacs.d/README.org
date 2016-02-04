@@ -396,8 +396,6 @@
                   (tramp-file-name-localname vec)))
              (concat "/sudo::" (buffer-file-name))))
           (goto-char position)))
-
-      (global-set-key (kbd "C-c C-s") 'sudo-edit-current-file)
     #+END_SRC
 
 *** Set up Clipboard

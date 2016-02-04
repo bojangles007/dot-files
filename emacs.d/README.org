@@ -38,14 +38,6 @@
      brew install emacs --with-cocoa
    #+END_SRC
 
-*** Leiningen
-
-    This is used by Cider. Installed with brew, of course:
-
-    #+BEGIN_SRC sh
-      brew install leiningen
-    #+END_SRC
-
 *** Fix "weird characters" in =ansi-term= mode
 
     For some reason Emacs' =ansi-term= mode displays some "weird characters".
@@ -55,15 +47,6 @@
     #+BEGIN_SRC sh
     curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
     tic -o ~/.terminfo /tmp/ansi-term.ti
-    #+END_SRC
-
-*** Trash
-
-    This allows moving files to trash rather than deleting them from =dired=.
-    I find that handy.
-
-    #+BEGIN_SRC sh
-    brew install trash
     #+END_SRC
 
 ** Configuration
@@ -97,6 +80,15 @@
     #+BEGIN_SRC emacs-lisp
       (setq visible-bell nil)
       (setq ring-bell-function 'ignore)
+    #+END_SRC
+
+*** Disable kill-emacs
+
+    Disable =s-q= (=kill-emacs=) as it is too close to =M-q= which I use for
+    reflowing text.
+
+    #+BEGIN_SRC emacs-lisp
+      (global-set-key (kbd "s-q") nil)
     #+END_SRC
 
 *** Put Custom settings in a separate file
@@ -151,19 +143,27 @@
       brew install aspell --with-lang-uk
     #+END_SRC
 
-*** Whitespace
+*** Extend word-wrap to 78 characters
 
     I prefer slightly wider fill-rate than the default of 70. Let's make it
     78, so we stay within 80 characters that so many people consider the holy
-    grail. Also, let's wrap automatically at that width in =text-mode=.
-    Finally disable =s-q= (=kill-emacs=) as it is too close to M-q which I use
-    for reflowing text.
+    grail.
 
     #+BEGIN_SRC emacs-lisp
       (setq-default fill-column 78)
-      (add-hook 'text-mode-hook 'turn-on-auto-fill)
-      (global-set-key (kbd "s-q") nil)
     #+END_SRC
+
+*** Automatic word-wrap in text-mode
+
+    Turn on automatic work-wrap in =text-mode=. Without this you end up with
+    really long lines and have to manually insert linebreaks where you want
+    them. (Or call e.g. =fill-paragraph=, bound to =M-q=, manually.)
+
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'text-mode-hook 'turn-on-auto-fill)
+    #+END_SRC
+
+*** A sentence ends at a period
 
     Sentences do not need double spaces to end. Period.
 
@@ -171,17 +171,21 @@
       (set-default 'sentence-end-double-space nil)
     #+END_SRC
 
-    Never insert tabs.
+*** Never insert tabs
 
   #+BEGIN_SRC emacs-lisp
     (set-default 'indent-tabs-mode nil)
   #+END_SRC
+
+*** End all files in a newline
 
     All files should end in a newline. Insert one if there isn't one already.
 
     #+BEGIN_SRC emacs-lisp
       (setq require-final-newline t)
     #+END_SRC
+
+*** Highlight & deal with whitespace annoyances
 
     This highlights certain whitespace annoyances, and adds a key binding to
     clean it up.
@@ -194,7 +198,7 @@
       (global-set-key (kbd "s-w") 'whitespace-cleanup)
     #+END_SRC
 
-*** OS X Specific
+*** Set up modifier keys on OS X
 
     Set up the modifier keys the way that best fits my keyboard.
 
@@ -203,13 +207,6 @@
             mac-option-modifier 'super
             mac-control-modifier 'control
             ns-function-modifier 'hyper)
-    #+END_SRC
-
-    Delete files by moving them to Trash. This way they _can_ be retrieved
-    again.
-
-    #+BEGIN_SRC emacs-lisp
-      (setq delete-by-moving-to-trash t)
     #+END_SRC
 
 *** Miscellaneous
@@ -916,7 +913,7 @@
        (bind-key "C-c r" 'cljr-helm clojure-mode-map)))
    #+END_SRC
 
-   For REPL work I use [[https://github.com/clojure-emacs/cider][CIDER]].
+   For REPL work I use [[https://github.com/clojure-emacs/cider][CIDER]]. 
 
    #+BEGIN_SRC emacs-lisp
      (use-package cider
@@ -930,7 +927,14 @@
        (bind-key ")" 'sp-up-sexp cider-repl-mode-map))
    #+END_SRC
 
-   I like auto-complete to work in CIDER too:
+   CIDER requires the Leiningen external tool. It is installed with brew, of
+   course.
+
+   #+BEGIN_SRC sh
+     brew install leiningen
+   #+END_SRC
+
+   BTW, I like auto-complete to work in CIDER too:
 
    #+BEGIN_SRC emacs-lisp
      (use-package ac-cider
@@ -944,6 +948,8 @@
             (add-to-list 'ac-modes 'cider-mode)
             (add-to-list 'ac-modes 'cider-repl-mode))))
    #+END_SRC
+
+
 
 ** Gists
 
@@ -1015,6 +1021,25 @@
    #+BEGIN_SRC emacs-lisp
      (use-package fish-mode :ensure t)
    #+END_SRC
+
+** Trash
+
+   This allows moving files to trash rather than deleting them from =dired=.
+   Delete files by moving them to Trash. This way they _can_ be retrieved
+   again.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq delete-by-moving-to-trash t)
+   #+END_SRC
+
+   To support that we need to install a supporting program.
+
+   #+BEGIN_SRC sh
+    brew install trash
+   #+END_SRC
+
+
+
 
 * Footnotes
 

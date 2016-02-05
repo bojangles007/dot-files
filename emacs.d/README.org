@@ -80,6 +80,16 @@
       (setq ring-bell-function 'ignore)
     #+END_SRC
 
+*** Start in fullscreen
+
+    I like fullscreen applications, so start Emacs in fullscreen.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'after-init-hook
+                   (lambda ()
+                     (set-frame-parameter nil 'fullscreen 'fullboth)))
+    #+END_SRC
+
 *** Disable kill-emacs
 
     Disable =s-q= (=kill-emacs=) as it is too close to =M-q= which I use for

@@ -519,28 +519,39 @@
    I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the
    archives we want to use, then initiate already installed packages.
 
-*** Setup & Initialisation
+*** Setup Packages
 
-    First we need to specify which package arhcives we want to use. Only "gnu"
-    is the default.
-
-    #+BEGIN_SRC emacs-lisp
-      (setq package-archives
-            '(("gnu" . "http://elpa.gnu.org/packages/")
-              ("org" . "http://orgmode.org/elpa/")
-              ("melpa" . "http://melpa.milkbox.net/packages/")
-              ("melpa-stable" . "http://stable.milkbox.net/packages/")))
-    #+END_SRC
-
-    Then we have to initialise our packages.
+    First we initialize the already-installed optional packages, whatever they
+    are. Normally this would be called just before the =after-init-hook=. We
+    do it here to ensure any such packages are available for the rest of this
+    file.
 
     #+BEGIN_SRC emacs-lisp
       (package-initialize)
     #+END_SRC
 
+    Disable the regular =(package-initalize)= run as it will be unnecessary now.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq package-enable-at-startup nil)
+    #+END_SRC
+
+    We need to add the package archives we want to use. Org has their own
+    archive, for some reason. All other packages I get from melpa or
+    melpa-stable.
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+      (add-to-list 'package-archives '("melpa-stable" . "http://stable.milkbox.net/packages/"))
+    #+END_SRC
+
+*** Special-case installation of =use-package=
+
     I use the excellent [[https://github.com/jwiegley/use-package][use-package]] for installing & configuring packages.
-    But, because it is _itself_ installed via Melpa, there's a minor
-    bootstrapping problem: we have to make sure it is installed.
+    Because it is _itself_ installed via Melpa, there's a minor bootstrapping
+    problem: we have to make sure it is installed before we can use it to
+    install the rest of the packages.
 
     #+BEGIN_SRC emacs-lisp
       (unless (package-installed-p 'use-package)
@@ -549,7 +560,7 @@
         (package-install 'use-package))
     #+END_SRC
 
-    Configure =use-package= pre-compile the configuration for faster loading.
+    Configure =use-package= to pre-compile the configuration for faster loading.
 
     #+BEGIN_SRC emacs-lisp
       (eval-when-compile

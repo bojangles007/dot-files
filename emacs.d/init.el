@@ -6,6 +6,13 @@
 ;; I copied this from an example found at
 ;; http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming
 
+;; Initialize packages early, so we load latest org from ELPA later in this
+;; file.
+(package-initialize)
+
+;; Don't call package-initialize again after we're done with init.el
+(setq package-enable-at-startup nil)
+
 ;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org
 ;; Mode files.
 (setq dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name)))

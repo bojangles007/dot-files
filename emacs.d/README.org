@@ -523,29 +523,14 @@
 
 ** Setup Packages
 
-   First we initialize the already-installed optional packages, whatever they
-   are. Normally this would be called just before the =after-init-hook=. We
-   do it here to ensure any such packages are available for the rest of this
-   file.
-
-   #+BEGIN_SRC emacs-lisp
-     (package-initialize)
-   #+END_SRC
-
-   Disable the regular =(package-initalize)= run as it will be unnecessary now.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq package-enable-at-startup nil)
-   #+END_SRC
-
    We need to add the package archives we want to use. Org has their own
    archive, for some reason. All other packages I get from melpa or
    melpa-stable.
 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
      (add-to-list 'package-archives '("melpa-stable" . "http://stable.milkbox.net/packages/"))
+     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
    #+END_SRC
 
 ** Special-case installation of =use-package=

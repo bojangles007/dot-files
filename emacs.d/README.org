@@ -1066,16 +1066,27 @@
 
        ;; Don't execute code blocks during export
        (setq org-export-babel-evaluate nil)
+
+       ;; Tell Org where to fid ditaa jar
+       (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+
        :config
        (org-babel-do-load-languages
         'org-babel-load-languages
         '((emacs-lisp . t)
           (clojure . t)
+          (ditaa . t)
           (dot . t)
           (sh . t)))
 
        ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
        (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
+   #+END_SRC
+
+   Ditaa has to be installed manually. It's a cool toy, so let's do that.
+
+   #+BEGIN_SRC sh
+     brew install ditaa
    #+END_SRC
 
 ** Graphviz

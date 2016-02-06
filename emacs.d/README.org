@@ -1110,7 +1110,12 @@
    again.
 
    #+BEGIN_SRC emacs-lisp
-     (setq delete-by-moving-to-trash t)
+     (use-package osx-trash
+       :require t
+       :init
+       (setq delete-by-moving-to-trash t)
+       :config
+       (osx-trash-setup))
    #+END_SRC
 
    To support that we need to install a supporting program.

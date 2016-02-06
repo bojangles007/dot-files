@@ -1111,7 +1111,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package osx-trash
-       :require t
+       :ensure t
        :init
        (setq delete-by-moving-to-trash t)
        :config

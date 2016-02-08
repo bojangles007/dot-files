@@ -916,11 +916,8 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package yasnippet
-       :init
-       (add-hook 'clojure-mode-hook 'yas-minor-mode-on)
-       (add-hook 'markdown-mode-hook 'yas-minor-mode-on)
-
        :config
+       (yas-global-mode)
        (defun yas/org-very-safe-expand ()
          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 

@@ -3,10 +3,8 @@
 # key: retro
 # --
 #+OPTIONS: f:t
+#+PROPERTY: header-args:sh :results output code :exports both
 * ${1:Incident Name (Tweet-length)}
-  :PROPERTIES:
-  :header-args:sh: :results output code :exports both
-  :END:
 
 **** TODO Incident summary, of one or two sentences at most
 

@@ -1086,6 +1086,13 @@
      brew install ditaa
    #+END_SRC
 
+   I like to be able to export to Markdown & ReST:
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ox-gfm)
+     (use-package ox-rst)
+   #+END_SRC
+
 ** Graphviz
 
    I sometimes use Graphviz to create diagrams. I have to actually install the

@@ -1089,6 +1089,7 @@
    I like to be able to export to Markdown & ReST:
 
    #+BEGIN_SRC emacs-lisp
+     (use-package ox-md)
      (use-package ox-gfm)
      (use-package ox-rst)
    #+END_SRC

@@ -19,7 +19,7 @@
     the config snippets in the file in one go, remove the prefix argument and
     just do =C-c C-v t=.
 
-** Clone =Dotfiles=
+** Clone this repo into =~/Dotfiles=
 
    I start by cloning the current version of my configuration files.
 

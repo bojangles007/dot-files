@@ -746,20 +746,6 @@
        (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
    #+END_SRC
 
-   Autocomplete for reStructuredText is very useful.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package auto-complete-rst
-       :mode "\\.rst\'"
-       :config
-       (auto-complete-rst-init)
-       (setq auto-complete-rst-other-sources
-             '(ac-source-filename
-               ac-source-abbrev
-               ac-source-dictionary
-               ac-source-yasnippet)))
-   #+END_SRC
-
 ** Editorconfig
 
    Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up
@@ -1091,7 +1077,42 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ox-md)
      (use-package ox-gfm)
-     (use-package ox-rst)
+   #+END_SRC
+
+** Sphinx & reStructuredText
+
+   I like to build Sphinx docs locally to check I've got the right syntax, and
+   that links are accounted for. I use sphinx-fronted for that:
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package sphinx-frontend)
+   #+END_SRC
+
+   That does require installing python, as OS X's default install doesn't come
+   with sphinx:
+
+   #+BEGIN_SRC sh
+     brew install python
+   #+END_SRC
+
+   I like to export initial draft in Org mode to ReST:
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package ox-rst)
+   #+END_SRC
+
+   While we're at it, turn on auto-complete for reStructuredText.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-complete-rst
+       :mode "\\.rst\'"
+       :config
+       (auto-complete-rst-init)
+       (setq auto-complete-rst-other-sources
+             '(ac-source-filename
+               ac-source-abbrev
+               ac-source-dictionary
+               ac-source-yasnippet)))
    #+END_SRC
 
 ** Graphviz

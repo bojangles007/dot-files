@@ -531,12 +531,10 @@
 ** Setup Packages
 
    We need to add the package archives we want to use. Org has their own
-   archive, for some reason. All other packages I get from melpa or
-   melpa-stable.
+   archive, for some reason.
 
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-     (add-to-list 'package-archives '("melpa-stable" . "http://stable.milkbox.net/packages/"))
      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
    #+END_SRC
 
@@ -933,7 +931,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package clojure-mode
-       :pin melpa-stable
        :mode "\\.clj\\'"
        :ensure t
 
@@ -953,7 +950,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package clj-refactor
-       :pin melpa-stable
        :ensure t
        :config
        (dolist (mapping '(("route" . "compojure.route")
@@ -990,7 +986,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package cider
-       :pin melpa-stable
        :ensure t
        :init
        (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)

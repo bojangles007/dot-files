@@ -1067,10 +1067,7 @@
           (clojure . t)
           (ditaa . t)
           (dot . t)
-          (sh . t)))
-
-       ;; taken from https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el
-       (load-file  (expand-file-name "ox-confluence.el" user-emacs-directory)))
+          (sh . t))))
    #+END_SRC
 
    Ditaa has to be installed manually. It's a cool toy, so let's do that.
@@ -1079,11 +1076,16 @@
      brew install ditaa
    #+END_SRC
 
-   I like to be able to export to Markdown & ReST:
+   I like to be able to export to Markdown.
 
    #+BEGIN_SRC emacs-lisp
      (use-package ox-md)
-     (use-package ox-gfm)
+   #+END_SRC
+
+   I also like to use the [[https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el][Confluence exporter]] for pasting into JIRA comments:
+
+   #+BEGIN_SRC emacs-lisp
+     (load-file (expand-file-name "ox-confluence.el" user-emacs-directory))
    #+END_SRC
 
 ** Sphinx & reStructuredText

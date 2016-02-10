@@ -92,6 +92,13 @@
                     (set-frame-parameter nil 'fullscreen 'fullboth)))
    #+END_SRC
 
+   Sometimes (when using ediff) I don't use fullscreen. By resizing the window
+   by pixels rather than characters we can still fill the entire screen.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq frame-resize-pixelwise t)
+   #+END_SRC
+
 ** Disable kill-emacs
 
    Disable =s-q= (=kill-emacs=) as it is too close to =M-q= which I use for

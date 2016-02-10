@@ -31,10 +31,16 @@
 
 * Install Emacs & Setup =~/.emacs.d=
 
-  I use [[http://brew.sh][homebrew]] to install Emacs:
+  I use [[http://brew.sh][homebrew]] to install Emacs. I use YAMAMOTO Mitsuharu's experimental
+  "Mac port" addition to GNU Emacs 24. This provides much, _much_ nicer fonts.
+  Also, it appears that this patched Emacs is a lot faster, particularly when
+  invoking external processes. (Magit, specifically.)
 
   #+BEGIN_SRC sh
-    brew install emacs --with-cocoa
+    brew tap caskroom/cask
+    brew tap railwaycat/homebrew-emacsmacport
+    brew cask install emacs-mac --with-spacemacs-icon
+    mv /opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.15/Emacs.app/ /Applications/
   #+END_SRC
 
   I then create a symlink from =~/.emacs.d= to the directory containing this

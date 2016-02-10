@@ -378,7 +378,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (set-default 'tramp-default-proxies-alist
-                  '(nil "\\`root\\'" "/ssh:%h:"))
+                  (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
    #+END_SRC
 
    For opening files using sudo locally, don't connect via SSH. (My local

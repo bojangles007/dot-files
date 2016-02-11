@@ -1089,6 +1089,19 @@
      (load-file (expand-file-name "ox-confluence.el" user-emacs-directory))
    #+END_SRC
 
+** Org password manager
+
+   I need a password manager to manage some passwords. This seems to do the
+   trick. It stores passwords in an encrypted file.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-password-manager
+       :init
+       (setq org-completion-use-ido t)
+       :config
+       (org-password-manager-key-bindings))
+   #+END_SRC
+
 ** Sphinx & reStructuredText
 
    I like to build Sphinx docs locally to check I've got the right syntax, and

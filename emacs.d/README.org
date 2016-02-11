@@ -955,17 +955,7 @@
 
    cf. https://github.com/clojure-emacs/clj-refactor.el/issues/291
 
-   The Clojure Refactor package is also ace. It seems to have temporarily lost
-   its dependency spec, so let's first install those:
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package paredit :ensure t)
-     (use-package edn :ensure t)
-     (use-package inflections :ensure t)
-     (use-package hydra :ensure t)
-   #+END_SRC
-
-   Then Clojure Refactor itself:
+   The Clojure Refactor package is also ace.
 
    #+BEGIN_SRC emacs-lisp
      (use-package clj-refactor

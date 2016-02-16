@@ -1098,8 +1098,9 @@
      (use-package org-password-manager
        :init
        (setq org-completion-use-ido t)
-       :config
-       (org-password-manager-key-bindings))
+       :bind (("C-c C-p u" . org-password-manager-get-username)
+              ("C-c C-p p" . org-password-manager-get-password)
+              ("C-c C-p g" . org-password-manager-generate-password)))
    #+END_SRC
 
 ** Sphinx & reStructuredText

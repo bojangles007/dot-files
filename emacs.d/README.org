@@ -1103,6 +1103,12 @@
               ("C-c C-p g" . org-password-manager-generate-password)))
    #+END_SRC
 
+   The ~C-c C-p g~ keybinding requires an external tool:
+
+   #+BEGIN_SRC sh
+   brew install pwgen
+   #+END_SRC
+
 ** Sphinx & reStructuredText
 
    I like to build Sphinx docs locally to check I've got the right syntax, and

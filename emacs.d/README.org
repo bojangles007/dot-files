@@ -414,6 +414,13 @@
      (setq temporary-file-directory "/tmp/")
    #+END_SRC
 
+   Apparently using =ssh= is faster than the default =scp= mode, so let's use
+   that.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq tramp-default-method "ssh")
+   #+END_SRC
+
    This function lets me re-open the currently open file using sudo[fn:1].
    I've bound it to =C-c C-s=. It works for both local and remote buffers.
 

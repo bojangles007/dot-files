@@ -1105,9 +1105,9 @@
      (use-package org-password-manager
        :init
        (setq org-completion-use-ido t)
-       :bind (("C-c C-p u" . org-password-manager-get-username)
-              ("C-c C-p p" . org-password-manager-get-password)
-              ("C-c C-p g" . org-password-manager-generate-password)))
+       :bind (("C-c P u" . org-password-manager-get-username)
+              ("C-c P p" . org-password-manager-get-password)
+              ("C-c P g" . org-password-manager-generate-password)))
    #+END_SRC
 
    The ~C-c C-p g~ keybinding requires an external tool:

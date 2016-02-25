@@ -546,6 +546,13 @@
  (setq-default transient-mark-mode t)
  #+END_SRC
 
+** Running tests
+
+   Add a convenient keybinding for running tests interactively.
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x t") 'ert)
+   #+END_SRC
 * Install & Configure Optional Packages
 
   I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the

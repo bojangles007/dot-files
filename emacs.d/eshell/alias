@@ -1,4 +1,5 @@
-alias scd "${pwd}/$1"(:s/ssh/sudo/)
-alias ff find-file $1
-alias d dired $1
+alias pt ~/.gem/ruby/2.0.0/bin/papertrail $*
 alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
+alias d dired $1
+alias ff find-file $1
+alias scd "${pwd}/$1"(:s/ssh/sudo/)

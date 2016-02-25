@@ -1,12 +1,12 @@
-* How I Setup My Environment
-  :PROPERTIES:
-  :header-args:sh: :results output silent
-  :END:
+#+TITLE: How I Setup my environment
+#+AUTHOR: Stig Brautaset <stig@brautaset.org>
+#+PROPERTY: header-args:sh :results output silent
+* Introduction
 
   This repo contains my dotfiles. I used to keep them in app-specific repos,
   e.g. [[http://github.com/stig/.zsh.d][.zsh.d]] and [[http://github.com/stig/.emacs.d][.emacs.d]], but it got a bit tiresome.
 
-** About this file
+* About this file
 
   This file has some executable code snippets, and some config file snippets
   that can be "tangled". (The latter has =:tangle <filename>= in their
@@ -19,154 +19,151 @@
     the config snippets in the file in one go, remove the prefix argument and
     just do =C-c C-v t=.
 
-** Clone this repo into =~/Dotfiles=
+* Clone this repo into =~/Dotfiles=
 
-   I start by cloning the current version of my configuration files.
+  I start by cloning the current version of my configuration files.
 
-   #+BEGIN_SRC sh
-   git clone git@github.com:stig/dot-files.git ~/Dotfiles
-   #+END_SRC
+  #+BEGIN_SRC sh
+  git clone git@github.com:stig/dot-files.git ~/Dotfiles
+  #+END_SRC
 
-** Homebrew
+* Homebrew
 
-   First install [[brew.sh][brew]]:
+  First install [[brew.sh][brew]]:
 
-   #+BEGIN_SRC sh
-   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-   #+END_SRC
+  #+BEGIN_SRC sh
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  #+END_SRC
 
-** Install Emacs & Friends
+* Install Emacs & Friends
 
-   See [[emacs.d/README.org]].
+  See [[emacs.d/README.org]].
 
-** The Friendly Interactive Shell
+* The Friendly Interactive Shell
 
-   I'm experimenting with [[http://fishshell.com/docs/current/tutorial.html][fish]] as my login shell. On a new machine, I first
-   set up a link to my =fish= dotfiles:
+  I'm experimenting with [[http://fishshell.com/docs/current/tutorial.html][fish]] as my login shell. On a new machine, I first
+  set up a link to my =fish= dotfiles:
 
-   #+BEGIN_SRC sh
-     mkdir -p ~/.config
-     test -L ~/.config/fish && rm ~/.config/fish
-     test -d ~/.config/fish && mv ~/.config/fish ~/.config/fish.$(date +%s)
-     ln -s ~/Dotfiles/fish ~/.config/fish
-   #+END_SRC
+  #+BEGIN_SRC sh
+    mkdir -p ~/.config
+    test -L ~/.config/fish && rm ~/.config/fish
+    test -d ~/.config/fish && mv ~/.config/fish ~/.config/fish.$(date +%s)
+    ln -s ~/Dotfiles/fish ~/.config/fish
+  #+END_SRC
 
-   Then we install =fish= itself via brew:
+  Then we install =fish= itself via brew:
 
-   #+BEGIN_SRC sh
-     brew install fish
-   #+END_SRC
+  #+BEGIN_SRC sh
+    brew install fish
+  #+END_SRC
 
-   Tediously we have to add its full path (=/usr/local/bin/fish=) to =/etc/shells=
-   to allow us to use it as a login shell:
+  Tediously we have to add its full path (=/usr/local/bin/fish=) to =/etc/shells=
+  to allow us to use it as a login shell:
 
-   #+BEGIN_SRC sh :dir /sudo::
-     cat <<EOF | patch /etc/shells
-     10a11
-     > /usr/local/bin/fish
-     EOF
-   #+END_SRC
+  #+BEGIN_SRC sh :dir /sudo::
+    cat <<EOF | patch /etc/shells
+    10a11
+    > /usr/local/bin/fish
+    EOF
+  #+END_SRC
 
-   Finally we have to remember to actually change our login shell:
+  Finally we have to remember to actually change our login shell:
 
-   #+BEGIN_SRC sh
-     chsh -s /usr/local/bin/fish
-   #+END_SRC
+  #+BEGIN_SRC sh
+    chsh -s /usr/local/bin/fish
+  #+END_SRC
 
-** Cluster SSH
+* Cluster SSH
 
-   This requires a bit of hackery until [[https://github.com/brockgr/csshx/pull/77][my patch to make csshx behave in Zsh]]
-   is merged.
+  This requires a bit of hackery until [[https://github.com/brockgr/csshx/pull/77][my patch to make csshx behave in Zsh]]
+  is merged.
 
-   First we create a new =~/.clusters= file if there are none:
+  First we create a new =~/.clusters= file if there are none:
 
-   #+BEGIN_SRC sh
-     touch ~/.clusters
-   #+END_SRC
+  #+BEGIN_SRC sh
+    touch ~/.clusters
+  #+END_SRC
 
-   Then we tell =csshx= to look for clusters in =~/.clusters=.
+  Then we tell =csshx= to look for clusters in =~/.clusters=.
 
-   #+BEGIN_SRC sh :tangle ~/.csshxrc
-     extra_cluster_file=~/.clusters
-   #+END_SRC
+  #+BEGIN_SRC sh :tangle ~/.csshxrc
+    extra_cluster_file=~/.clusters
+  #+END_SRC
 
-   Then we install it from my own hacked repo:
+  Then we install it from my own hacked repo:
 
-   #+BEGIN_SRC sh
-     brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
-   #+END_SRC
+  #+BEGIN_SRC sh
+    brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
+  #+END_SRC
 
-** Git
+* Git
 
-   Set up my basic details:
+  Set up my basic details:
 
-   #+BEGIN_SRC sh
-     git config --global user.name "Stig Brautaset"
-     git config --global user.email "stig@brautaset.org"
-   #+END_SRC
+  #+BEGIN_SRC sh
+    git config --global user.name "Stig Brautaset"
+    git config --global user.email "stig@brautaset.org"
+  #+END_SRC
 
-   I like coloured output, particularly for diffs, thank you very much. I'm
-   not entirely sure which of these actually does it though:
+  I like coloured output, particularly for diffs, thank you very much. I'm
+  not entirely sure which of these actually does it though:
 
-   #+BEGIN_SRC sh
-     git config --global ui.color true
-     git config --global color.ui true
-   #+END_SRC
+  #+BEGIN_SRC sh
+    git config --global ui.color true
+    git config --global color.ui true
+  #+END_SRC
 
-   Git aliases? I has them! I used to have more, for example =git co= as
-   abbreviation for =git commit=, but since I moved to use [[http://magit.vc][Magit]] I don't need
-   them any more. I've kept a few mainly for "sentimental reasons" though.
+  Git aliases? I has them! I used to have more, for example =git co= as
+  abbreviation for =git commit=, but since I moved to use [[http://magit.vc][Magit]] I don't need
+  them any more. I've kept a few mainly for "sentimental reasons" though.
 
-   #+BEGIN_SRC sh
-     git config --global alias.lg "!git log-pretty --graph"
-     git config --global alias.l "!log pretty"
-     git config --global alias.log-pretty "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
-   #+END_SRC
+  #+BEGIN_SRC sh
+    git config --global alias.lg "!git log-pretty --graph"
+    git config --global alias.l "!log pretty"
+    git config --global alias.log-pretty "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+  #+END_SRC
 
-   This alias I used for a while when creating the release notes for [[http://sbjson.org][SBJson]].
-   It creates nice output for pasting into a Markdown document, for each
-   commit. It is mainly suitable if you cultivate a carefully manicured git
-   history. You can invoke it like =git sbjsonlog v4.0.0..v4.0.1=:
+  This alias I used for a while when creating the release notes for [[http://sbjson.org][SBJson]].
+  It creates nice output for pasting into a Markdown document, for each
+  commit. It is mainly suitable if you cultivate a carefully manicured git
+  history. You can invoke it like =git sbjsonlog v4.0.0..v4.0.1=:
 
-   #+BEGIN_SRC sh
-      git config --global alias.sbjsonlog "log '--format=format:* [`%h`](https://github.com/stig/json-framework/commit/%H) %s'"
-   #+END_SRC
+  #+BEGIN_SRC sh
+     git config --global alias.sbjsonlog "log '--format=format:* [`%h`](https://github.com/stig/json-framework/commit/%H) %s'"
+  #+END_SRC
 
-   I like the "simple" style of push, where branches are assumed to be named
-   similarly to upstream. This is the default in Git above version 2.0, I
-   believe, but I'll leave this here for a little bit, in case I need it.
+  I like the "simple" style of push, where branches are assumed to be named
+  similarly to upstream. This is the default in Git above version 2.0, I
+  believe, but I'll leave this here for a little bit, in case I need it.
 
-   #+BEGIN_SRC sh
-     git config --global push.default simple
-   #+END_SRC
+  #+BEGIN_SRC sh
+    git config --global push.default simple
+  #+END_SRC
 
-** Ruby Gems
+* Ruby Gems
 
-   I like Gem, the Ruby module installer, to install packages into my own user
-   directory, so I don't have to resort to =sudo=. This setting makes that the
-   default.
+  I like Gem, the Ruby module installer, to install packages into my own user
+  directory, so I don't have to resort to =sudo=. This setting makes that the
+  default.
 
-   #+BEGIN_SRC sh :tangle ~/.gemrc
-     gem: --user-install
-   #+END_SRC
+  #+BEGIN_SRC sh :tangle ~/.gemrc
+    gem: --user-install
+  #+END_SRC
 
-** Leiningen
+* Leiningen
 
-   Leiningen uses a default =~/.lein/profiles.clj= that is merged with
-   project-specific settings. This is a handy place to set up things you want
-   working with every project, for example =cider-repl= if you use CIDER in
-   Emacs. (Which I do.)
+  Leiningen uses a default =~/.lein/profiles.clj= that is merged with
+  project-specific settings. This is a handy place to set up things you want
+  working with every project, for example =cider-repl= if you use CIDER in
+  Emacs. (Which I do.)
 
-   #+BEGIN_SRC clojure :tangle ~/.lein/profiles.clj :mkdirp yes
-     {:user {:plugins [[lein-pprint "1.1.1"]
-                       [cider/cider-nrepl "0.11.0-SNAPSHOT"]
-                       [refactor-nrepl "2.2.0-SNAPSHOT"]
-                       [lein-ancient "0.6.7"]
-                       [lein-kibit "0.1.2"]]
-             :dependencies [[org.clojure/tools.nrepl "0.2.12"]
-                            [slamhound "1.3.1"]
-                            [criterium "0.4.3"]]
-             :aliases {"slamhound" ["run" "-m" "slam.hound"]}}}
-   #+END_SRC
+  #+BEGIN_SRC clojure :tangle ~/.lein/profiles.clj :mkdirp yes
+    {:user {:plugins [[lein-pprint "1.1.1"]
+                      [lein-ancient "0.6.7"]
+                      [lein-kibit "0.1.2"]]
+            :dependencies [[slamhound "1.3.1"]
+                           [criterium "0.4.3"]]
+            :aliases {"slamhound" ["run" "-m" "slam.hound"]}}}
+  #+END_SRC
 
-**** TODO Describe what the plugins do
+** TODO Describe what the plugins do

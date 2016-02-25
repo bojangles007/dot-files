@@ -865,33 +865,6 @@
        :ensure t)
    #+END_SRC
 
-** Sane Term
-
-   For some machines at work we use [[https://github.com/google/google-authenticator][google authenticator]]. I have not been able
-   to log in to these using Eshell, so for some things I still just open a
-   regular terminal inside Emacs. Just don't try to open big files, or tail
-   fast-growing log files! I use =sane-term= to get a somewhat similar
-   experience to eshell, i.e. =C-x t= to launch a new term, or switch to one
-   that is already running.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package sane-term
-       :ensure t
-       :bind (("C-x t" . sane-term)
-              ("C-x T" . sane-term-create)))
-   #+END_SRC
-
-*** Fix "weird characters" in =ansi-term= mode
-
-    For some reason Emacs' =ansi-term= mode displays some "weird characters".
-    To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
-    create =.terminfo=:
-
-    #+BEGIN_SRC sh
-    curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
-    tic -o ~/.terminfo /tmp/ansi-term.ti
-    #+END_SRC
-
 ** Tramp Term
 
    A drawback of =sane-term= is that it doesn't easily allow me to open remote
@@ -905,6 +878,18 @@
        :ensure t
        :bind ("C-x C-t" . tramp-term))
    #+END_SRC
+
+*** Fix "weird characters" in =ansi-term= mode
+
+    For some reason Emacs' =ansi-term= mode displays some "weird characters".
+    To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
+    create =.terminfo=:
+
+    #+BEGIN_SRC sh
+    curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
+    tic -o ~/.terminfo /tmp/ansi-term.ti
+    #+END_SRC
+
 
 ** Multiple Cursors
 

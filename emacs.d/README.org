@@ -1082,10 +1082,11 @@
      (use-package ox-md)
    #+END_SRC
 
-   I also like to use the [[https://github.com/howardabrams/dot-files/blob/master/elisp/ox-confluence.el][Confluence exporter]] for pasting into JIRA comments:
+   I hate writing JIRA markup, so I wrote a JIRA export backend for Org mode.
+   It should be available on Melpa now.
 
    #+BEGIN_SRC emacs-lisp
-     (load-file (expand-file-name "ox-confluence.el" user-emacs-directory))
+     (use-package ox-jira)
    #+END_SRC
 
 ** Org password manager

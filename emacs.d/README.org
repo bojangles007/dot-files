@@ -1076,12 +1076,6 @@
      brew install ditaa
    #+END_SRC
 
-   I like to be able to export to Markdown.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package ox-md)
-   #+END_SRC
-
    I hate writing JIRA markup, so I wrote a JIRA export backend for Org mode.
    It should be available on Melpa now.
 

@@ -1185,6 +1185,22 @@
     brew install trash
    #+END_SRC
 
+** Plant UML Mode
+
+   I use this for [[http://plantuml.com/sequence.html][sequence diagrams]] etc.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package puml-mode
+       :init
+       (setq puml-plantuml-jar-path "/usr/local/Cellar/plantuml/8031/plantuml.8031.jar"))
+   #+END_SRC
+
+   This requires installing plantuml using brew.
+
+   #+BEGIN_SRC sh
+     brew install plantuml
+   #+END_SRC
+
 * Footnotes
 
 [fn:1] Found at http://www.emacswiki.org/emacs/TrampMode#toc31

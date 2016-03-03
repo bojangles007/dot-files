@@ -1191,6 +1191,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package puml-mode
+       :mode "\\.puml\\'"
        :init
        (setq puml-plantuml-jar-path "/usr/local/Cellar/plantuml/8031/plantuml.8031.jar"))
    #+END_SRC

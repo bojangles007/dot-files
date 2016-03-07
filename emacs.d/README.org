@@ -1113,10 +1113,16 @@
    #+END_SRC
 
    That does require installing python, as OS X's default install doesn't come
-   with sphinx:
+   with pip:
 
    #+BEGIN_SRC sh
      brew install python
+   #+END_SRC
+
+   Then, we need to install sphinx itself:
+
+   #+BEGIN_SRC sh
+     pip install sphinx
    #+END_SRC
 
    I like to export initial draft in Org mode to ReST:

@@ -772,24 +772,6 @@
        (global-auto-complete-mode))
    #+END_SRC
 
-   When it would be embarrassing to mistype long words, there's always
-   ispell-based auto-complete.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package ac-ispell
-       :init
-       ;; Completion words longer than 12 characters
-       (custom-set-variables
-        '(ac-ispell-requires 12)
-        '(ac-ispell-fuzzy-limit 12))
-
-       :config
-       (ac-ispell-setup)
-
-       (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
-       (add-hook 'mail-mode-hook 'ac-ispell-ac-setup))
-   #+END_SRC
-
 ** Editorconfig
 
    Some projects I touch, particularly at work, use [[http://editorconfig.org][editorconfig]] to set up

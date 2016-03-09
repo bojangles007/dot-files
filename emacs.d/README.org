@@ -553,6 +553,15 @@
    #+BEGIN_SRC emacs-lisp
      (global-set-key (kbd "C-x t") 'ert)
    #+END_SRC
+** IRC
+
+   But /of course/ Emacs has a built-in IRC client. In fact it has two! But I
+   digress. Let's use the oldest one, and configure it slightly.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq rcirc-default-nick "stigbra")
+   (setq rcirc-default-full-name "Stig Brautaset")
+   #+END_SRC
 * Install & Configure Optional Packages
 
   I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the

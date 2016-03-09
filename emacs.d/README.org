@@ -930,13 +930,19 @@
 
    I use [[https://github.com/clojure-emacs/clojure-mode/][Clojure Mode]] for my Clojure editing.
 
+   Note that this code block is not closed! We close it at the end of the
+   section, so that all the remaining blocks are encapsulated in it. That
+   means they will only be installed if clojure-mode is installed.
+
+   I like that because these update almost every day, but I don't use them at
+   work so it's annoying to have to update them so frequently there.
+
    #+BEGIN_SRC emacs-lisp
      (use-package clojure-mode
        :mode "\\.clj\\'"
-       :ensure t
 
        :config
-       (bind-key ")" 'sp-up-sexp clojure-mode-map))
+       (bind-key ")" 'sp-up-sexp clojure-mode-map)
    #+END_SRC
 
    I have a package for extra syntax highlighting in Clojure mode, but I'm not
@@ -1020,6 +1026,12 @@
          '(progn
             (add-to-list 'ac-modes 'cider-mode)
             (add-to-list 'ac-modes 'cider-repl-mode))))
+   #+END_SRC
+
+   Now we have to close the =clojure-mode= block:
+
+   #+BEGIN_SRC emacs-lisp
+   )
    #+END_SRC
 
 ** Gists

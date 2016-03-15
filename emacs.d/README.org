@@ -1071,7 +1071,7 @@
        ;; Don't execute code blocks during export
        (setq org-export-babel-evaluate nil)
 
-       ;; Tell Org where to fid ditaa jar
+       ;; Tell Org where to find ditaa jar
        (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
 
        :config

@@ -888,6 +888,17 @@
     tic -o ~/.terminfo /tmp/ansi-term.ti
     #+END_SRC
 
+** Flycheck
+
+   Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs,
+   intended as replacement for the older Flymake extension which is part of
+   GNU Emacs.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package flycheck
+       :config
+       (global-flycheck-mode))
+   #+END_SRC
 
 ** Multiple Cursors
 

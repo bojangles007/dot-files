@@ -449,7 +449,7 @@
    with the below command in eshell you can do:
 
    #+BEGIN_EXAMPLE
-   alias man 'tramp-aware-woman ${*man --path $1}'
+   alias man 'tramp-aware-woman ${*man -c --path $1}'
    #+END_EXAMPLE
 
    Now you have an alias which will open a woman buffer with the /remote/ man

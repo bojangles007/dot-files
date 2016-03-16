@@ -440,6 +440,36 @@
          (goto-char position)))
    #+END_SRC
 
+   The man pages on my OS X local machine are very oqften different from the
+   remote machines I'm logged in to. Thus, when in eshell, in a /remote/ path,
+   I would like to display /remote/ man pages from that system. I'm not sure
+   the regular man command can do that, but /woman/ can, with a bit of help.
+
+   I've not /completely/ nailed this, so the useability is a bit rough. But
+   with the below command in eshell you can do:
+
+   #+BEGIN_EXAMPLE
+   alias man 'tramp-aware-woman ${*man --path $1}'
+   #+END_EXAMPLE
+
+   Now you have an alias which will open a woman buffer with the /remote/ man
+   page of the man page you want.
+
+   #+BEGIN_SRC emacs-lisp
+     (defun tramp-aware-woman (man-page-path)
+       (interactive)
+       (let ((dir (eshell/pwd)))
+         (woman-find-file
+          (if (file-remote-p dir)
+              (let ((vec (tramp-dissect-file-name dir)))
+                (tramp-make-tramp-file-name
+                 (tramp-file-name-method vec)
+                 (tramp-file-name-user vec)
+                 (tramp-file-name-host vec)
+                 man-page-path))
+            man-page-path))))
+   #+END_SRC
+
 ** Set up Clipboard
 
    These settings improve pasting behaviour with programs outside Emacs.

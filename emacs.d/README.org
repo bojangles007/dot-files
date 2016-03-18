@@ -1127,6 +1127,13 @@
      (use-package ox-jira)
    #+END_SRC
 
+   I'm not that fond of writing Markdown anymore either:
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ox-gfm)
+     (use-package ox-md)
+   #+END_SRC
+
 ** Org password manager
 
    I need a password manager to manage some passwords. This seems to do the

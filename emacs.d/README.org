@@ -975,10 +975,6 @@
        :ensure t)
    #+END_SRC
 
-**** TODO Remove this section when CLJ Refactor has been fixed
-
-   cf. https://github.com/clojure-emacs/clj-refactor.el/issues/291
-
    The Clojure Refactor package is also ace.
 
    #+BEGIN_SRC emacs-lisp
@@ -998,9 +994,7 @@
 
        :config
        (defun my-clojure-mode-hook ()
-         (clj-refactor-mode 1)
-         ;;(cljr-add-keybindings-with-prefix "C-c C-m")
-         )
+         (clj-refactor-mode 1))
 
        (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
    #+END_SRC

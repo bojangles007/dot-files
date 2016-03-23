@@ -1071,16 +1071,27 @@
 
 ** Org
 
+   The Org manual expects these to be available in any mode, so set them here.
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-c l") 'org-store-link)
+     (global-set-key (kbd "C-c a") 'org-agenda)
+     (global-set-key (kbd "C-c c") 'org-capture)
+     (global-set-key (kbd "C-c b") 'org-iswitchb)
+   #+END_SRC
+
    I used to use Markdown for my writing, but now I tend to use Org mode. The
    Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
    makes it an easy choice. (I can even export to Markdown if I want.)
 
    #+BEGIN_SRC emacs-lisp
      (use-package org
-       :ensure t
-       :bind ("C-x a" . org-agenda)
        :init
        (setq org-babel-clojure-backend 'cider)
+
+       ;; Sometimes I accidentally edit non-visible parts of org document. This
+       ;; helps, apparently.
+       (setq org-catch-invisible-edits t)
 
        ;; Don't execute code blocks during export
        (setq org-export-babel-evaluate nil)

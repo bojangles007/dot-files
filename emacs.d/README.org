@@ -1091,6 +1091,9 @@
        :init
        (setq org-babel-clojure-backend 'cider)
 
+       ;; Log a timestamp & a note whenever an entry is completed
+       (setq org-log-done 'note)
+
        ;; Sometimes I accidentally edit non-visible parts of org document. This
        ;; helps, apparently.
        (setq org-catch-invisible-edits t)

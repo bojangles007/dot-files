@@ -1086,6 +1086,8 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package org
+       :bind (("C-n" . org-next-link)
+              ("C-p" . org-previous-link))
        :init
        (setq org-babel-clojure-backend 'cider)
 

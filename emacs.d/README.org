@@ -582,7 +582,7 @@
    (setq rcirc-default-full-name "Stig Brautaset")
    #+END_SRC
 
-** Sending Email
+** Composing & Sending Email
 
    Sending Email from Emacs? Yes please! First let Emacs know our preferred
    email client.
@@ -631,10 +631,11 @@
                              (message-fetch-field "from"))
                for (address smtp-user smtp-server) in smtp-accounts
                when (string-match address from)
-               do ((setq smtpmail-smtp-user smtp-user
-                         smtpmail-smtp-server smtp-server)
-                   (message "Setting SMTP server to %s for user %s"
-                            smtp-server smtp-user)))))
+               do (progn
+                    (message "Setting SMTP server to %s for user %s"
+                             smtp-server smtp-user)
+                    (setq smtpmail-smtp-user smtp-user
+                          smtpmail-smtp-server smtp-server)))))
    #+END_SRC
 
    Add the `change-smpt' function as a "before advice" to the /real/ function
@@ -659,6 +660,13 @@
 
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+   #+END_SRC
+
+   I want to install the `org-plus-contrib' package, so need to use the org
+   MELPA repo. This is required for the `org-mime' package.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
    #+END_SRC
 
 ** Special-case installation of =use-package=
@@ -1197,6 +1205,16 @@
    #+BEGIN_SRC emacs-lisp
      (use-package ox-gfm)
      (use-package ox-md)
+   #+END_SRC
+
+   Not only that, but I want to be able to create MIME HTML mail based on
+   org-formatted source. There's a package for that too, of course.
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'org-mime)
+     (add-hook 'message-mode-hook
+               (lambda ()
+                 (local-set-key "\C-c\C-h" 'org-mime-htmlize)))
    #+END_SRC
 
 ** Org password manager

@@ -955,31 +955,6 @@
        :ensure t)
    #+END_SRC
 
-** Tramp Term
-
-   A drawback of =sane-term= is that it doesn't easily allow me to open remote
-   files in the local Emacs. Tramp-term adds some magic to keep track of the
-   directory on the remote machine, thus allowing me to just use the normal
-   =C-x C-f= to get a find-file dialogue in the context of the current
-   terminal window.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package tramp-term
-       :ensure t
-       :bind ("C-x C-t" . tramp-term))
-   #+END_SRC
-
-*** Fix "weird characters" in =ansi-term= mode
-
-    For some reason Emacs' =ansi-term= mode displays some "weird characters".
-    To fix this, copy [[https://gist.github.com/stig/0c8bc5aeb8602cdb45de#file-ansi-term-ti][ansi-term.ti]] to somewhere locally and run =tic= on it to
-    create =.terminfo=:
-
-    #+BEGIN_SRC sh
-    curl 'https://gist.githubusercontent.com/stig/0c8bc5aeb8602cdb45de/raw/e20e6fb0a0d937b51dfdd4107053ac0b140efb2c/ansi-term.ti' > /tmp/ansi-term.ti
-    tic -o ~/.terminfo /tmp/ansi-term.ti
-    #+END_SRC
-
 ** Flycheck
 
    Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs,

@@ -582,6 +582,71 @@
    (setq rcirc-default-full-name "Stig Brautaset")
    #+END_SRC
 
+** Sending Email
+
+   Sending Email from Emacs? Yes please! First let Emacs know our preferred
+   email client.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq mail-user-agent 'gnus-user-agent)
+     (setq read-mail-command 'gnus)
+   #+END_SRC
+
+   Use Org structure editing & table mode in Message mode. (Used for composing
+   messages.)
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+     (add-hook 'message-mode-hook 'turn-on-orgtbl)
+   #+END_SRC
+
+   Set up defaults for sending email.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq send-mail-function 'smtpmail-send-it
+           starttls-extra-arguments nil
+           smtpmail-smtp-service 587
+           smtpmail-debug-info t)
+   #+END_SRC
+
+   List of sender addresses and SMTP servers.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq smtp-accounts
+           '(("stig.brautaset@icloud.com" "stig.brautaset@icloud.com" "smtp.mail.me.com")
+             ("sbrautaset@gmail.com" "sbrautaset@gmail.com" "smtp.gmail.com")
+             ("sbrautaset@laterpay.net" "sbrautaset@laterpay.ag" "smtp.gmail.com")))
+   #+END_SRC
+
+   A function to change the active SMTP server based on the sender address.
+   (This is heavily inspired by [[http://www.mostlymaths.net/2010/12/emacs-30-day-challenge-using-gnus-to.html][emacs 30 day challenge: using gnus]].)
+
+   #+BEGIN_SRC emacs-lisp
+     (defun change-smtp (recipient smtpmail-text-buffer &rest ask-for-password)
+       "Change the SMTP server & user according to current sender"
+
+       (save-excursion
+         (loop with from = (save-restriction
+                             (message-narrow-to-headers)
+                             (message-fetch-field "from"))
+               for (address smtp-user smtp-server) in smtp-accounts
+               when (string-match address from)
+               do ((setq smtpmail-smtp-user smtp-user
+                         smtpmail-smtp-server smtp-server)
+                   (message "Setting SMTP server to %s for user %s"
+                            smtp-server smtp-user)))))
+   #+END_SRC
+
+   Add the `change-smpt' function as a "before advice" to the /real/ function
+   to send mail via smpt. This causes `change-smtp' to be called immediately
+   before the advised function, with the same arguments.
+
+   #+BEGIN_SRC emacs-lisp
+     (advice-add #'smtpmail-via-smtp
+                 :before
+                 #'change-smtp)
+   #+END_SRC
+
 * Install & Configure Optional Packages
 
   I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the

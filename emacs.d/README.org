@@ -158,7 +158,7 @@
      (global-set-key (kbd "s-o") (kbd "ø"))
      (global-set-key (kbd "s-A") (kbd "Å"))
      (global-set-key (kbd "s-a") (kbd "å"))
-   #+END_SRC
+     #+END_SRC
 
 ** Use Aspell with UK English Dictionary
 
@@ -206,9 +206,9 @@
 
 ** Never insert tabs
 
- #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
    (set-default 'indent-tabs-mode nil)
- #+END_SRC
+   #+END_SRC
 
 ** End all files in a newline
 
@@ -495,9 +495,9 @@
 
    Keep up to 100 recent files, rather than the default of 20.
 
-  #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (setq recentf-max-saved-items 100)
-  #+END_SRC
+   #+END_SRC
 
 ** Save my place in each file
 

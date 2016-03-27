@@ -889,7 +889,6 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package puppet-mode
-       :ensure t
        :mode "\\.pp'")
    #+END_SRC
 

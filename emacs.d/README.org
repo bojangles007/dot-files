@@ -1004,7 +1004,7 @@
         :config
         (defun my-message-setup-routine ()
           (flyspell-mode 1))
-        (add-hook 'message-setup-hook 'my-message-setup-routine))
+        (add-hook 'message-mode-hook 'my-message-setup-routine))
     #+END_SRC
 
 ** Multiple Cursors

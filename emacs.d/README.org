@@ -718,7 +718,7 @@
 
        :init
        (setq magit-git-executable "/usr/bin/git"
-             git-commit-summary-max-length 65
+             git-commit-summary-max-length 78
              magit-diff-refine-hunk 'all
              magit-push-always-verify nil))
    #+END_SRC

@@ -997,9 +997,21 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck
-       :config
-       (global-flycheck-mode))
+     :ensure t)
    #+END_SRC
+
+*** On-the-fly spell checking for email/ news messages
+
+    Do spell checking on-the-fly in message mode.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package flyspell-lazy
+        :ensure t
+        :config
+        (defun my-message-setup-routine ()
+          (flyspell-mode 1))
+        (add-hook 'message-setup-hook 'my-message-setup-routine))
+    #+END_SRC
 
 ** Multiple Cursors
 

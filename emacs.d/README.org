@@ -648,6 +648,32 @@
                  #'change-smtp)
    #+END_SRC
 
+   Add a function to cycle between from addresses in the message buffer.
+   Credit to [[https://www.emacswiki.org/emacs/GnusTutorial][GnusTutorial]] which is where I found the example I adopted this
+   from.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq my-email-addresses (mapcar (lambda (lst) (car lst) ) smtp-accounts))
+     (setq message-alternative-emails
+           (regexp-opt my-email-addresses))
+
+     (setq message-from-selected-index 0)
+     (defun message-loop-from ()
+       (interactive)
+       (setq message-article-current-point (point))
+       (goto-char (point-min))
+       (if (eq message-from-selected-index (length my-email-addresses))
+           (setq message-from-selected-index 0) nil)
+       (while (re-search-forward "^From:.*$" nil t)
+         (replace-match (concat "From: " user-full-name " <" (nth message-from-selected-index my-email-addresses) ">")))
+       (goto-char message-article-current-point)
+       (setq message-from-selected-index (+ message-from-selected-index 1)))
+
+     (add-hook 'message-mode-hook
+               (lambda ()
+                 (define-key message-mode-map "\C-c\C-f" 'message-loop-from)))
+   #+END_SRC
+
 * Install & Configure Optional Packages
 
   I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the

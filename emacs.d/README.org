@@ -646,7 +646,7 @@
                           smtpmail-smtp-server smtp-server)))))
    #+END_SRC
 
-   Add the `change-smpt' function as a "before advice" to the /real/ function
+   Add the `change-smtp' function as a "before advice" to the /real/ function
    to send mail via smpt. This causes `change-smtp' to be called immediately
    before the advised function, with the same arguments.
 

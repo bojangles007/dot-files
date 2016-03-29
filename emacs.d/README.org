@@ -136,14 +136,6 @@
          (load custom-file))
    #+END_SRC
 
-** Connect to PostgreSQL from Emacs?
-
-   But of course! However, we need to tell Emacs where our psql is:
-
-   #+BEGIN_SRC emacs-lisp
-   (setq sql-postgres-program "/Applications/Postgres.app/Contents/Versions/latest/bin/psql")
-   #+END_SRC
-
 ** Internationalisation
 
    Let's always use UTF-8 encoding. Pretty, pretty please with sugar on top.

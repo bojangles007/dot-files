@@ -612,6 +612,7 @@
 
    #+BEGIN_SRC emacs-lisp
      (setq send-mail-function 'smtpmail-send-it
+           message-send-mail-function 'smtpmail-send-it
            starttls-extra-arguments nil
            smtpmail-smtp-service 587
            smtpmail-debug-info t)

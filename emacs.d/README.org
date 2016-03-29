@@ -181,7 +181,7 @@
    Install aspell with the appropriate dictionary using brew.
 
    #+BEGIN_SRC sh
-     brew install aspell --with-lang-uk
+     brew install aspell
    #+END_SRC
 
 ** Extend word-wrap to 78 characters

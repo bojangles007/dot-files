@@ -1,6 +1,6 @@
 #+TITLE: My Emacs Setup
 #+AUTHOR: Stig Brautaset
-#+OPTIONS: fn:t h:4
+#+OPTIONS: f:t h:4
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
 * Introduction

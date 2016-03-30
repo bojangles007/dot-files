@@ -650,6 +650,12 @@
                  #'change-smtp)
    #+END_SRC
 
+   Add a BCC to myself.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq mail-self-blind t)
+   #+END_SRC
+
    Add a function to cycle between from addresses in the message buffer.
    Credit to [[https://www.emacswiki.org/emacs/GnusTutorial][GnusTutorial]] which is where I found the example I adopted this
    from.

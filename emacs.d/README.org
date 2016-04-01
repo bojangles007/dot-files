@@ -1204,6 +1204,7 @@
           (clojure . t)
           (ditaa . t)
           (dot . t)
+          (sql . t)
           (sh . t))))
    #+END_SRC
 

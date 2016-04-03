@@ -1,5 +1,5 @@
 alias bundle $HOME/.gem/ruby/2.0.0/bin/bundle
-alias man tramp-aware-woman ${*man -c --path $1}
+alias woman tramp-aware-woman ${*man -c --path $1}
 alias take mkdir $1 ; cd $1
 alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
 alias scd "${pwd}/$1"(:s/ssh/sudo/)

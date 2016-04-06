@@ -13,3 +13,5 @@
 *.sh
 *.html
 !emacs.d/init.el
+emacs.d/bbdb
+emacs.d/bbdb-vcard/

@@ -600,6 +600,22 @@
      (add-hook 'message-mode-hook 'turn-on-orgtbl)
    #+END_SRC
 
+   Use /message-x/ for some nice auto-completion in headers, and body.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package message-x :ensure t)
+   #+END_SRC
+
+   Also, use bbdb to manage contacts. I don't have a good two-way synch
+   between iCloud contacts and BBDB, but selecting all contacts in
+   Contacts.app and exporting them as a vCard archive can be imported with
+   =bbdb-vcard-import-file=.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package bbdb :ensure t)
+     (use-package bbdb-vcard :ensure t)
+   #+END_SRC
+
    Set up defaults for sending email.
 
    #+BEGIN_SRC emacs-lisp

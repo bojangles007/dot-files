@@ -592,6 +592,13 @@
      (setq read-mail-command 'gnus)
    #+END_SRC
 
+   Discourage HTML & Rich Text messages.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq mm-discouraged-alternatives
+      '("text/html" "text/richtext"))
+   #+END_SRC
+
    Use Org structure editing & table mode in Message mode. (Used for composing
    messages.) Also turn on yas minor mode, for form responses.
 

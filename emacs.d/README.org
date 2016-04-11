@@ -593,11 +593,12 @@
    #+END_SRC
 
    Use Org structure editing & table mode in Message mode. (Used for composing
-   messages.)
+   messages.) Also turn on yas minor mode, for form responses.
 
    #+BEGIN_SRC emacs-lisp
      (add-hook 'message-mode-hook 'turn-on-orgstruct++)
      (add-hook 'message-mode-hook 'turn-on-orgtbl)
+     (add-hook 'message-mode-hook 'yas-minor-mode)
    #+END_SRC
 
    Set up defaults for sending email.

@@ -1158,8 +1158,16 @@
    #+BEGIN_SRC emacs-lisp
      (use-package gist
        :ensure t
-       :bind (("C-x g c" . gist-region-or-buffer-private)
-              ("C-x g l" . gist-list)))
+       :bind ("C-x g l" . gist-list))
+   #+END_SRC
+
+   Yagist, a fork of the above package, has the edge when it comes to actually
+   _create_ gists.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package yagist
+       :ensure t
+       :bind ("C-x g c" . yagist-region-or-buffer-private))
    #+END_SRC
 
 ** Org

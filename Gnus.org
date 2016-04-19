@@ -1,0 +1,107 @@
+#+TITLE: My Gnus Setup
+#+AUTHOR: Stig Brautaset
+
+This is my Gnus config. I like to use Org babel because I like to prattle on
+to myself with stuff that shouldn't necessarily go in the end product.
+
+First write a tiny bootloader to =~/.gnus.el=, which simply loads this file.
+The process generates a =Gnus.el= file. This section does not end up in the
+=Gnus.el=, presumably because of the explicit =:tangle ~/.gnus.el= directive.
+
+#+BEGIN_SRC emacs-lisp :tangle ~/.gnus.el
+  (require 'ob-tangle)
+  (org-babel-load-file "~/Dotfiles/Gnus.org")
+#+END_SRC
+
+Write a header to the Gnus.el so it won't be confused with the reas config.
+Sadness and woe will betide you if you edit it and start Gnus: your changes
+will be summarily overwritten.
+
+#+BEGIN_SRC emacs-lisp
+  ;;; gnus.el --- my Gnus configuration
+
+  ;; Warning: The primary source of this config is in the Gnus.org file next to
+  ;; this one. Any changes made to Gnus.el will be blown away when Gnus starts.
+#+END_SRC
+
+Load required libraries. nnmail is used later to move messages to the correct
+folder when they are expired.
+
+#+BEGIN_SRC emacs-lisp
+(require 'nnmail)
+#+END_SRC
+
+Set different expiry times based on different folders.
+
+#+BEGIN_SRC emacs-lisp
+(setq nnmail-expiry-wait-function
+      (lambda (newsgroup)
+	(cond
+         ;; don't expire our archive lists, ever
+         ((string-match "nnimap+laterpay:[Gmail]/Bin" newsgroup) 'never)
+         ((string-match "nnimap+laterpay:[Gmail]/All Mail" newsgroup) 'never)
+
+         ((string-match "nnimap+gmail:[Gmail]/Bin" newsgroup) 'never)
+         ((string-match "nnimap+gmail:[Gmail]/All Mail" newsgroup) 'never)
+
+         ((string-match "nnimap+icloud:Deleted Messages" newsgroup) 'never)
+         ((string-match "nnimap+icloud:Archive" newsgroup) 'never)
+
+         (t 'immediate))))
+#+END_SRC
+
+Do not expire messages immediately when exiting the group. I press =C-c C-x=
+in the \*Group\* buffer if I want messages to expire.
+
+#+BEGIN_SRC emacs-lisp
+(remove-hook 'gnus-summary-prepare-exit-hook
+             'gnus-summary-expire-articles)
+#+END_SRC
+
+For reading _actual news_ I use gmane as my primary server. I also have some
+other mail accounts. I don't subscribe to all mailboxes everywhere, but for
+convenience the config is the same.
+
+#+BEGIN_SRC emacs-lisp
+(setq gnus-select-method '(nntp "news.gmane.org"))
+
+(add-to-list 'gnus-secondary-select-methods
+             '(nnimap "gmail"
+                      (nnimap-address "imap.gmail.com")
+                      (nnimap-server-port "imaps")
+                      (nnimap-stream ssl)
+
+                      (nnmail-expiry-target "nnimap+gmail:[Gmail]/Bin")
+                      (nnmail-expiry-wait 1)))
+
+(add-to-list 'gnus-secondary-select-methods
+             '(nnimap "laterpay"
+                      (nnimap-address "imap.gmail.com")
+                      (nnimap-server-port "imaps")
+                      (nnimap-stream ssl)
+
+                      (nnmail-expiry-target "nnimap+laterpay:[Gmail]/Bin")
+                      (nnmail-expiry-wait 1)))
+
+(add-to-list 'gnus-secondary-select-methods
+             '(nnimap "icloud"
+                      (nnimap-address "imap.mail.me.com")
+                      (nnimap-server-port "imaps")
+                      (nnimap-stream ssl)
+
+                      (nnmail-expiry-target "nnimap+icloud:Deleted Messages")
+                      (nnmail-expiry-wait 1)))
+#+END_SRC
+
+A list of groups I am subscribed to. I am honestly not certain what this does.
+
+#+BEGIN_SRC emacs-lisp
+(setq message-subscribed-addresses
+      '("centos-announce@centos.org"))
+#+END_SRC
+
+Ignore all groups matching this regular expression.
+
+#+BEGIN_SRC emacs-lisp
+(setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+#+END_SRC

@@ -15,8 +15,13 @@ the following:
 2. Click the "settings" menu item
 3. Click the "Accounts" tab that shows up. This will be roughly in the
    middle of the screen, at the top.
-4. In the "Send mail as" section, click the "make default" option next
+4. If $1@laterpay.net is not in the list of accounts, add it by clicking the
+   "Add another email address that you own" link.
+5. In the "Send mail as" section, click the "make default" option next
    to $1@laterpay.net.
+
+Please send me a reply so I can verify the setup works, and many
+apologies for the inconvenience!
 
 Your friendly sysadmin,
 

@@ -105,3 +105,9 @@ Ignore all groups matching this regular expression.
 #+BEGIN_SRC emacs-lisp
 (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 #+END_SRC
+
+I only use Gnus, so I don't care about =.newsrc=, actually.
+
+#+BEGIN_SRC emacs-lisp
+(setq gnus-save-newsrc-file nil)
+#+END_SRC

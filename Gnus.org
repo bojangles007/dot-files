@@ -33,16 +33,36 @@ folder when they are expired. nnir is used to search messages.
 (require 'nnir)
 #+END_SRC
 
-Set different expiry times based on different folders. Unfortunately this
-function just gets the folder name, not the full account, so we cannot set
-different expiry for the same folder name in different accounts.
+Set different expiry times based on different folders.
 
 #+BEGIN_SRC emacs-lisp
-  (setq nnmail-expiry-wait-function
-        (lambda (group)
-          (if (string= "INBOX" group)
-              'immediate
-            'never)))
+  (setq gnus-parameters
+        '((".*"
+           (expiry-wait . never))
+        
+          ("^nnimap.*:INBOX$"
+           (expiry-wait . immediate))))
+#+END_SRC
+
+Set different posting styles based on the group I'm in.
+
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-posting-styles
+        '((".*"
+           (name "Stig Brautaset")
+           (address "stig@brautaset.org"))
+        
+          ("nnimap+laterpay"
+           (address "sbrautaset@laterpay.net")
+           (organisation "LaterPay GmbH"))
+
+          ("nnimap+gmail"
+           (address "sbrautaset@gmail.com")) 
+        
+          ;; Set From based on To address
+          ("nnimap.*"
+           (From (with-current-buffer gnus-article-buffer
+                   (message-fetch-field "to"))))))
 #+END_SRC
 
 Do not expire messages immediately when exiting the group. I press =C-c C-x=

@@ -26,10 +26,11 @@ will be summarily overwritten.
 #+END_SRC
 
 Load required libraries. nnmail is used later to move messages to the correct
-folder when they are expired.
+folder when they are expired. nnir is used to search messages.
 
 #+BEGIN_SRC emacs-lisp
 (require 'nnmail)
+(require 'nnir)
 #+END_SRC
 
 Set different expiry times based on different folders. Unfortunately this
@@ -69,6 +70,7 @@ Also set different expiry targets based on the account the mail is in.
                    (nnimap-address "imap.gmail.com")
                    (nnimap-server-port "imaps")
                    (nnimap-stream ssl)
+                   (nnir-search-engine imap)
 
                    (nnmail-expiry-target "nnimap+gmail:[Gmail]/Bin"))
 
@@ -76,6 +78,7 @@ Also set different expiry targets based on the account the mail is in.
                   (nnimap-address "imap.gmail.com")
                   (nnimap-server-port "imaps")
                   (nnimap-stream ssl)
+                  (nnir-search-engine imap)
 
                   (nnmail-expiry-target "nnimap+laterpay:[Gmail]/Bin"))
 
@@ -83,6 +86,7 @@ Also set different expiry targets based on the account the mail is in.
                   (nnimap-address "imap.mail.me.com")
                   (nnimap-server-port "imaps")
                   (nnimap-stream ssl)
+                  (nnir-search-engine imap)
 
                   (nnmail-expiry-target "nnimap+icloud:Deleted Messages"))))
 #+END_SRC

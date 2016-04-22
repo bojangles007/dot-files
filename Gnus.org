@@ -1,5 +1,6 @@
 #+TITLE: My Gnus Setup
 #+AUTHOR: Stig Brautaset
+#+PROPERTY: header-args:emacs-lisp :results silent
 
 This is my Gnus config. I like to use Org babel because I like to prattle on
 to myself with stuff that shouldn't necessarily go in the end product.
@@ -31,23 +32,16 @@ folder when they are expired.
 (require 'nnmail)
 #+END_SRC
 
-Set different expiry times based on different folders.
+Set different expiry times based on different folders. Unfortunately this
+function just gets the folder name, not the full account, so we cannot set
+different expiry for the same folder name in different accounts.
 
 #+BEGIN_SRC emacs-lisp
-(setq nnmail-expiry-wait-function
-      (lambda (newsgroup)
-	(cond
-         ;; don't expire our archive lists, ever
-         ((string-match "nnimap+laterpay:[Gmail]/Bin" newsgroup) 'never)
-         ((string-match "nnimap+laterpay:[Gmail]/All Mail" newsgroup) 'never)
-
-         ((string-match "nnimap+gmail:[Gmail]/Bin" newsgroup) 'never)
-         ((string-match "nnimap+gmail:[Gmail]/All Mail" newsgroup) 'never)
-
-         ((string-match "nnimap+icloud:Deleted Messages" newsgroup) 'never)
-         ((string-match "nnimap+icloud:Archive" newsgroup) 'never)
-
-         (t 'immediate))))
+  (setq nnmail-expiry-wait-function
+        (lambda (group)
+          (if (string= "INBOX" group)
+              'immediate
+            'never)))
 #+END_SRC
 
 Do not expire messages immediately when exiting the group. I press =C-c C-x=
@@ -58,39 +52,52 @@ in the \*Group\* buffer if I want messages to expire.
              'gnus-summary-expire-articles)
 #+END_SRC
 
-For reading _actual news_ I use gmane as my primary server. I also have some
-other mail accounts. I don't subscribe to all mailboxes everywhere, but for
-convenience the config is the same.
+For reading /bona fide news/ I use gmane as my primary server.
 
 #+BEGIN_SRC emacs-lisp
-(setq gnus-select-method '(nntp "news.gmane.org"))
+  (setq gnus-select-method '(nntp "news.gmane.org"))
+#+END_SRC
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nnimap "gmail"
-                      (nnimap-address "imap.gmail.com")
-                      (nnimap-server-port "imaps")
-                      (nnimap-stream ssl)
+I also have some other mail accounts. I don't subscribe to all mailboxes
+everywhere, but for convenience the config is the same.
 
-                      (nnmail-expiry-target "nnimap+gmail:[Gmail]/Bin")
-                      (nnmail-expiry-wait 1)))
+Also set different expiry targets based on the account the mail is in.
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nnimap "laterpay"
-                      (nnimap-address "imap.gmail.com")
-                      (nnimap-server-port "imaps")
-                      (nnimap-stream ssl)
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-secondary-select-methods
+        '((nnimap "gmail"
+                   (nnimap-address "imap.gmail.com")
+                   (nnimap-server-port "imaps")
+                   (nnimap-stream ssl)
 
-                      (nnmail-expiry-target "nnimap+laterpay:[Gmail]/Bin")
-                      (nnmail-expiry-wait 1)))
+                   (nnmail-expiry-target "nnimap+gmail:[Gmail]/Bin"))
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nnimap "icloud"
-                      (nnimap-address "imap.mail.me.com")
-                      (nnimap-server-port "imaps")
-                      (nnimap-stream ssl)
+          (nnimap "laterpay"
+                  (nnimap-address "imap.gmail.com")
+                  (nnimap-server-port "imaps")
+                  (nnimap-stream ssl)
 
-                      (nnmail-expiry-target "nnimap+icloud:Deleted Messages")
-                      (nnmail-expiry-wait 1)))
+                  (nnmail-expiry-target "nnimap+laterpay:[Gmail]/Bin"))
+
+          (nnimap "icloud"
+                  (nnimap-address "imap.mail.me.com")
+                  (nnimap-server-port "imaps")
+                  (nnimap-stream ssl)
+
+                  (nnmail-expiry-target "nnimap+icloud:Deleted Messages"))))
+#+END_SRC
+
+Try to store sent messages to the relevant IMAP sent folder:
+
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-message-archive-group
+        (lambda (group)
+          (cond ((string-match-p "nnimap\\+laterpay" group)
+                 "nnimap+laterpay:[Gmail]/Sent Mail")
+                ((string-match-p "nnimap\\+gmail" group)
+                 "nnimap+gmail:[Gmail]/Sent Mail")
+                ((string-match-p "nnimap\\+icloud" group)
+                 "nnimap+icloud:Sent Messages"))))
 #+END_SRC
 
 A list of groups I am subscribed to. I am honestly not certain what this does.

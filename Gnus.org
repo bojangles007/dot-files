@@ -33,36 +33,39 @@ folder when they are expired. nnir is used to search messages.
 (require 'nnir)
 #+END_SRC
 
-Set different expiry times based on different folders.
+Set different parameters based on the group/folder I currently have open.
 
 #+BEGIN_SRC emacs-lisp
   (setq gnus-parameters
         '((".*"
-           (expiry-wait . never))
-        
-          ("^nnimap.*:INBOX$"
+           (gcc-self . "nnimap+icloud:Sent Messages")
+           (expiry-target . "nnimap+icloud:Deleted Messages")
+           (expiry-wait . never)
+           (posting-style
+            (name "Stig Brautaset")
+            (address "stig@brautaset.org")))
+
+          ("^nnimap\\+gmail"
+           (gcc-self . "nnimap+gmail:[Gmail]/Sent Mail")
+           (expiry-target . "nnimap+gmail:[Gmail]/Bin")
+           (posting-style
+            (address "sbrautaset@gmail.com")))
+
+          ("^nnimap\\+laterpay"
+           (gcc-self . "nnimap+laterpay:[Gmail]/Sent Mail")
+           (expiry-target . "nnimap+laterpay:[Gmail]/Bin")
+           (posting-style 
+            (address "sbrautaset@laterpay.net")
+            (organisation "LaterPay GmbH")))
+
+          ("INBOX"
            (expiry-wait . immediate))))
 #+END_SRC
 
-Set different posting styles based on the group I'm in.
+Always keep the inbox visible.
 
 #+BEGIN_SRC emacs-lisp
-  (setq gnus-posting-styles
-        '((".*"
-           (name "Stig Brautaset")
-           (address "stig@brautaset.org"))
-        
-          ("nnimap+laterpay"
-           (address "sbrautaset@laterpay.net")
-           (organisation "LaterPay GmbH"))
-
-          ("nnimap+gmail"
-           (address "sbrautaset@gmail.com")) 
-        
-          ;; Set From based on To address
-          ("nnimap.*"
-           (From (with-current-buffer gnus-article-buffer
-                   (message-fetch-field "to"))))))
+(setq gnus-permanently-visible-groups "INBOX")
 #+END_SRC
 
 Do not expire messages immediately when exiting the group. I press =C-c C-x=
@@ -109,19 +112,6 @@ Also set different expiry targets based on the account the mail is in.
                   (nnir-search-engine imap)
 
                   (nnmail-expiry-target "nnimap+icloud:Deleted Messages"))))
-#+END_SRC
-
-Try to store sent messages to the relevant IMAP sent folder:
-
-#+BEGIN_SRC emacs-lisp
-  (setq gnus-message-archive-group
-        (lambda (group)
-          (cond ((string-match-p "nnimap\\+laterpay" group)
-                 "nnimap+laterpay:[Gmail]/Sent Mail")
-                ((string-match-p "nnimap\\+gmail" group)
-                 "nnimap+gmail:[Gmail]/Sent Mail")
-                ((string-match-p "nnimap\\+icloud" group)
-                 "nnimap+icloud:Sent Messages"))))
 #+END_SRC
 
 A list of groups I am subscribed to. I am honestly not certain what this does.

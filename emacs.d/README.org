@@ -1025,8 +1025,8 @@
      (use-package multiple-cursors
        :ensure t
 
-       :bind (("C-c a" . mc/edit-lines)
-              ("C-c C-a" . mc/mark-all-dwim)
+       :bind (("C-c M-e" . mc/edit-lines)
+              ("C-c M-a" . mc/mark-all-dwim)
               ("s-n" . mc/mark-next-like-this)
               ("s-p" . mc/mark-previous-like-this)))
    #+END_SRC

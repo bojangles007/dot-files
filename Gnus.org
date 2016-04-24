@@ -58,6 +58,9 @@ Set different parameters based on the group/folder I currently have open.
             (address "sbrautaset@laterpay.net")
             (organisation "LaterPay GmbH")))
 
+          ("^nnrss:"
+           (mm-discouraged-alternatives nil))
+
           ("INBOX"
            (expiry-wait . immediate))))
 #+END_SRC

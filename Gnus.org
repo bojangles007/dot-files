@@ -45,12 +45,6 @@ Set different parameters based on the group/folder I currently have open.
             (name "Stig Brautaset")
             (address "stig@brautaset.org")))
 
-          ("^nnimap\\+gmail"
-           (gcc-self . "nnimap+gmail:[Gmail]/Sent Mail")
-           (expiry-target . "nnimap+gmail:[Gmail]/Bin")
-           (posting-style
-            (address "sbrautaset@gmail.com")))
-
           ("^nnimap\\+laterpay"
            (gcc-self . "nnimap+laterpay:[Gmail]/Sent Mail")
            (expiry-target . "nnimap+laterpay:[Gmail]/Bin")
@@ -92,15 +86,7 @@ Also set different expiry targets based on the account the mail is in.
 
 #+BEGIN_SRC emacs-lisp
   (setq gnus-secondary-select-methods
-        '((nnimap "gmail"
-                   (nnimap-address "imap.gmail.com")
-                   (nnimap-server-port "imaps")
-                   (nnimap-stream ssl)
-                   (nnir-search-engine imap)
-
-                   (nnmail-expiry-target "nnimap+gmail:[Gmail]/Bin"))
-
-          (nnimap "laterpay"
+        '((nnimap "laterpay"
                   (nnimap-address "imap.gmail.com")
                   (nnimap-server-port "imaps")
                   (nnimap-stream ssl)

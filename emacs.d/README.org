@@ -623,8 +623,6 @@
    #+BEGIN_SRC emacs-lisp
      (setq smtp-accounts
            '(("stig@brautaset.org" "mailbox@brautaset.org" "mail.gandi.net")
-             ("stig.brautaset@icloud.com" "stig.brautaset@icloud.com" "smtp.mail.me.com")
-             ("sbrautaset@gmail.com" "sbrautaset@gmail.com" "smtp.gmail.com")
              ("sbrautaset@laterpay.net" "sbrautaset@laterpay.ag" "smtp.gmail.com")))
    #+END_SRC
 

@@ -14,7 +14,7 @@ The process generates a =Gnus.el= file. This section does not end up in the
   (org-babel-load-file "~/Dotfiles/Gnus.org")
 #+END_SRC
 
-Write a header to the Gnus.el so it won't be confused with the reas config.
+Write a header to the Gnus.el so it won't be confused with the real config.
 Sadness and woe will betide you if you edit it and start Gnus: your changes
 will be summarily overwritten.
 

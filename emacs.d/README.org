@@ -592,11 +592,19 @@
      (setq read-mail-command 'gnus)
    #+END_SRC
 
-   Discourage HTML & Rich Text messages.
+   Discourage Rich Text messages.
 
    #+BEGIN_SRC emacs-lisp
    (setq mm-discouraged-alternatives
-      '("text/html" "text/richtext"))
+      '("text/richtext"))
+   #+END_SRC
+
+   I like to be able to read HTML email. Even in Gnus. Use the built-in
+   renderer. This gives me the best of both worlds, IMO: immediate rendering
+   of content, but open links clicked by mouse in external browser.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq mm-text-html-renderer 'shr)
    #+END_SRC
 
    Use Org structure editing & table mode in Message mode. (Used for composing
@@ -1386,12 +1394,6 @@
    #+BEGIN_SRC emacs-lisp
      (use-package bbdb :ensure t)
      (use-package bbdb-vcard :ensure t)
-   #+END_SRC
-
-   I like to be able to read HTML email. Even in Gnus.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq mm-text-html-renderer 'eww)
    #+END_SRC
 
 * Footnotes

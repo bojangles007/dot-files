@@ -15,3 +15,4 @@
 !emacs.d/init.el
 emacs.d/bbdb
 emacs.d/bbdb-vcard/
+/emacs.d/.org-id-locations

@@ -48,7 +48,7 @@ Set different parameters based on the group/folder I currently have open.
           ("^nnimap\\+laterpay"
            (gcc-self . "nnimap+laterpay:[Gmail]/Sent Mail")
            (expiry-target . "nnimap+laterpay:[Gmail]/Bin")
-           (posting-style 
+           (posting-style
             (address "sbrautaset@laterpay.net")
             (organisation "LaterPay GmbH")))
 

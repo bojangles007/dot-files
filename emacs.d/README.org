@@ -1391,16 +1391,7 @@
    I like to be able to read HTML email. Even in Gnus.
 
    #+BEGIN_SRC emacs-lisp
-     (use-package w3m
-       :ensure t
-       :init
-       (setq mm-text-html-renderer 'w3m))
-   #+END_SRC
-
-   For this we require the w3m browser to be installed via brew.
-
-   #+BEGIN_SRC sh
-   brew install w3m
+     (setq mm-text-html-renderer 'eww)
    #+END_SRC
 
 * Footnotes

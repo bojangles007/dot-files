@@ -119,5 +119,14 @@ Ignore all groups matching this regular expression.
 I only use Gnus, so I don't care about =.newsrc=, actually.
 
 #+BEGIN_SRC emacs-lisp
-(setq gnus-save-newsrc-file nil)
+  (setq gnus-read-newsrc-file nil)
+  (setq gnus-save-newsrc-file nil)
+#+END_SRC
+
+Don't bother saving a list of killed newsgroups. Apparently this saves time
+during startup.
+
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-save-killed-list nil)
+  (setq gnus-check-new-newsgroups 'ask-server)
 #+END_SRC

@@ -130,3 +130,9 @@ during startup.
   (setq gnus-save-killed-list nil)
   (setq gnus-check-new-newsgroups 'ask-server)
 #+END_SRC
+
+When viewing articles, remove Carriage Returns.
+
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-treat-strip-cr t)
+#+END_SRC

@@ -73,10 +73,13 @@ in the \*Group\* buffer if I want messages to expire.
              'gnus-summary-expire-articles)
 #+END_SRC
 
-For reading /bona fide news/ I use gmane as my primary server.
+For reading bona fide news I use [[file:Leafnode.org][Leafnode]] running on my local machine so I can
+read news offline. This is more to avoid hangs when starting Gnus when I am
+offline than anything else. (I use a laptop and often have no internet where I
+am.)
 
 #+BEGIN_SRC emacs-lisp
-  (setq gnus-select-method '(nntp "news.gmane.org"))
+  (setq gnus-select-method '(nntp "localhost"))
 #+END_SRC
 
 I also have some other mail accounts. I don't subscribe to all mailboxes
@@ -121,14 +124,6 @@ I only use Gnus, so I don't care about =.newsrc=, actually.
 #+BEGIN_SRC emacs-lisp
   (setq gnus-read-newsrc-file nil)
   (setq gnus-save-newsrc-file nil)
-#+END_SRC
-
-Don't bother saving a list of killed newsgroups. Apparently this saves time
-during startup.
-
-#+BEGIN_SRC emacs-lisp
-  (setq gnus-save-killed-list nil)
-  (setq gnus-check-new-newsgroups 'ask-server)
 #+END_SRC
 
 When viewing articles, remove Carriage Returns.

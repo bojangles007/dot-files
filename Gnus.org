@@ -109,8 +109,8 @@ Also set different expiry targets based on the account the mail is in.
 A list of groups I am subscribed to. I am honestly not certain what this does.
 
 #+BEGIN_SRC emacs-lisp
-(setq message-subscribed-addresses
-      '("centos-announce@centos.org"))
+  (setq message-subscribed-addresses
+        '("centos-announce@centos.org"))
 #+END_SRC
 
 Ignore all groups matching this regular expression.

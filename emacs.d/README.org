@@ -1396,6 +1396,15 @@
      (use-package bbdb-vcard :ensure t)
    #+END_SRC
 
+   Load the offlineimap package before Gnus starts.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package offlineimap
+       :ensure t
+       :config
+       (add-hook 'gnus-before-startup-hook 'offlineimap))
+   #+END_SRC
+
 * Footnotes
 
 [fn:1] Found at http://www.emacswiki.org/emacs/TrampMode#toc31

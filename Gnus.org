@@ -38,16 +38,16 @@ Set different parameters based on the group/folder I currently have open.
 #+BEGIN_SRC emacs-lisp
   (setq gnus-parameters
         '((".*"
-           (gcc-self . "nnimap+icloud:Sent Messages")
-           (expiry-target . "nnimap+icloud:Deleted Messages")
+           (gcc-self . "nnimap+Personal:Sent Messages")
+           (expiry-target . "nnimap+Personal:Deleted Messages")
            (expiry-wait . never)
            (posting-style
             (name "Stig Brautaset")
             (address "stig@brautaset.org")))
 
-          ("^nnimap\\+laterpay"
-           (gcc-self . "nnimap+laterpay:[Gmail]/Sent Mail")
-           (expiry-target . "nnimap+laterpay:[Gmail]/Bin")
+          ("^nnimap\\+LaterPay"
+           (gcc-self . "nnimap+LaterPay:[Gmail]/Sent Mail")
+           (expiry-target . "nnimap+LaterPay:[Gmail]/Bin")
            (posting-style
             (address "sbrautaset@laterpay.net")
             (organisation "LaterPay GmbH")))
@@ -59,18 +59,12 @@ Set different parameters based on the group/folder I currently have open.
            (expiry-wait . immediate))))
 #+END_SRC
 
-Always keep the inbox visible.
+Always keep the INBOX visible, even if it has no messages. This is handy so
+that I can always select it and have the above posting-styles applied when
+writing new mail.
 
 #+BEGIN_SRC emacs-lisp
-(setq gnus-permanently-visible-groups "INBOX")
-#+END_SRC
-
-Do not expire messages immediately when exiting the group. I press =C-c C-x=
-in the \*Group\* buffer if I want messages to expire.
-
-#+BEGIN_SRC emacs-lisp
-(remove-hook 'gnus-summary-prepare-exit-hook
-             'gnus-summary-expire-articles)
+  (setq gnus-permanently-visible-groups "INBOX")
 #+END_SRC
 
 For reading bona fide news I use [[file:Leafnode.org][Leafnode]] running on my local machine so I can
@@ -82,28 +76,20 @@ am.)
   (setq gnus-select-method '(nntp "localhost"))
 #+END_SRC
 
-I also have some other mail accounts. I don't subscribe to all mailboxes
-everywhere, but for convenience the config is the same.
-
-Also set different expiry targets based on the account the mail is in.
+I also have two mail accounts. I don't subscribe to work mail folders on my
+personal account, but for convenience this config is the same. See [[OfflineIMAP.org][OfflineIMAP]]
+for more details on this setup.
 
 #+BEGIN_SRC emacs-lisp
   (setq gnus-secondary-select-methods
-        '((nnimap "laterpay"
-                  (nnimap-address "imap.gmail.com")
-                  (nnimap-server-port "imaps")
-                  (nnimap-stream ssl)
-                  (nnir-search-engine imap)
-
-                  (nnmail-expiry-target "nnimap+laterpay:[Gmail]/Bin"))
-
-          (nnimap "icloud"
-                  (nnimap-address "imap.mail.me.com")
-                  (nnimap-server-port "imaps")
-                  (nnimap-stream ssl)
-                  (nnir-search-engine imap)
-
-                  (nnmail-expiry-target "nnimap+icloud:Deleted Messages"))))
+        '((nnimap "LaterPay"
+                  (nnimap-stream shell)
+                  (nnimap-shell-program "/usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/LaterPay")
+                  (nnir-search-engine imap))
+          (nnimap "Personal"
+                  (nnimap-stream shell)
+                  (nnimap-shell-program "/usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Personal")
+                  (nnir-search-engine imap))))
 #+END_SRC
 
 A list of groups I am subscribed to. I am honestly not certain what this does.

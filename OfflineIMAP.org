@@ -1,0 +1,69 @@
+#+TITLE: OfflineIMAP Setup
+#+AUTHOR: Stig Brautaset
+* Introduction
+
+  Startup used to be /slooooow/ with two remote IMAP accounts, so I started
+  using [[Http://www.offlineimap.org][OfflineIMAP]]. You can set it up to sync multiple accounts, either to a
+  local Maildir, or you can sync two IMAP accounts. Most reports didn't have
+  many nice things to say about Gnus' native Maildir support, so I went with
+  IMAP.
+
+  I use [[http://www.dovecot.org][Dovecot]] for the IMAP server. I have /two/ local IMAP boxes, and I
+  didn't really want to try setting up Dovecot to serve both. (Actually, I
+  didn't want it running at all most of the time.) The good thing is both Gnus
+  and OfflineIMAP can launch [[http://www.dovecot.org][Dovecot]] on demand. Score!
+
+* Installation
+
+  Both OfflineIMAP and Dovecot can be installed with homebrew:
+
+  #+BEGIN_SRC sh
+    brew install offlineimap dovecot
+  #+END_SRC
+
+* Configuration
+
+  I'm just going to leave this here for now. Check out the OfflineIMAP
+  documentation for details. It was pretty good, IIRC.
+
+  #+BEGIN_SRC conf :tangle ~/.offlineimaprc
+[general]
+accounts = Personal,LaterPay
+
+[Account Personal]
+localrepository = PLocal
+remoterepository = PRemote
+
+[Repository PLocal]
+type = IMAP
+preauthtunnel = /usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
+
+[Repository PRemote]
+type = IMAP
+remotehost = imap.mail.me.com
+remoteuser = stig.brautaset
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+
+
+[Account LaterPay]
+localrepository = LPLocal
+remoterepository = LPRemote
+
+[Repository LPLocal]
+type = IMAP
+preauthtunnel = /usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
+
+[Repository LPRemote]
+type = Gmail
+remoteuser = sbrautaset@laterpay.ag
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+folderfilter = lambda foldername: foldername not in ['[Gmail]/Spam', '[Gmail]/All Mail', '[Gmail]/Starred', '[Gmail]/Important']
+  #+END_SRC
+
+** TODO Use a better way to get passwords
+   
+   Ideally we would get passwords from Emacs. I already have to type my
+   password to decrypt authinfo.gpg when starting Gnus, so it would be great
+   if offlineimap.el could use that too.
+
+  

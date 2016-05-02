@@ -36,7 +36,7 @@ remoterepository = PRemote
 
 [Repository PLocal]
 type = IMAP
-preauthtunnel = /usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
+preauthtunnel = /usr/local/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
 
 [Repository PRemote]
 type = IMAP
@@ -44,26 +44,23 @@ remotehost = imap.mail.me.com
 remoteuser = stig.brautaset
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 
-
 [Account LaterPay]
 localrepository = LPLocal
 remoterepository = LPRemote
 
 [Repository LPLocal]
 type = IMAP
-preauthtunnel = /usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
+preauthtunnel = /usr/local/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
 
 [Repository LPRemote]
 type = Gmail
 remoteuser = sbrautaset@laterpay.ag
 sslcacertfile = /usr/local/etc/openssl/cert.pem
-folderfilter = lambda foldername: foldername not in ['[Gmail]/Spam', '[Gmail]/All Mail', '[Gmail]/Starred', '[Gmail]/Important']
+folderfilter = lambda foldername: foldername not in ['[Gmail]/Starred', '[Gmail]/Important']
   #+END_SRC
 
 ** TODO Use a better way to get passwords
-   
+
    Ideally we would get passwords from Emacs. I already have to type my
    password to decrypt authinfo.gpg when starting Gnus, so it would be great
    if offlineimap.el could use that too.
-
-  

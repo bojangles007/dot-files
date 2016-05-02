@@ -77,18 +77,18 @@ am.)
 #+END_SRC
 
 I also have two mail accounts. I don't subscribe to work mail folders on my
-personal account, but for convenience this config is the same. See [[OfflineIMAP.org][OfflineIMAP]]
+personal account, but for convenience this config is the same. See [[file:OfflineIMAP.org][OfflineIMAP]]
 for more details on this setup.
 
 #+BEGIN_SRC emacs-lisp
   (setq gnus-secondary-select-methods
         '((nnimap "LaterPay"
                   (nnimap-stream shell)
-                  (nnimap-shell-program "/usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/LaterPay")
+                  (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/LaterPay")
                   (nnir-search-engine imap))
           (nnimap "Personal"
                   (nnimap-stream shell)
-                  (nnimap-shell-program "/usr/local/Cellar/dovecot/2.2.21/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Personal")
+                  (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Personal")
                   (nnir-search-engine imap))))
 #+END_SRC
 

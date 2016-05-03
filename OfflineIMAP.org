@@ -36,7 +36,7 @@ remoterepository = PRemote
 
 [Repository PLocal]
 type = IMAP
-preauthtunnel = /usr/local/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
+preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
 
 [Repository PRemote]
 type = IMAP
@@ -50,7 +50,7 @@ remoterepository = LPRemote
 
 [Repository LPLocal]
 type = IMAP
-preauthtunnel = /usr/local/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
+preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
 
 [Repository LPRemote]
 type = Gmail

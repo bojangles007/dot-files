@@ -62,6 +62,11 @@
     folderfilter = lambda foldername: foldername not in ['[Gmail]/Starred', '[Gmail]/Important']
   #+END_SRC
 
+  The dovecot config file has to exist, but we don't care about what's in it.
+
+  #+BEGIN_SRC conf :tangle /usr/local/etc/dovecot/dovecot.conf
+  #+END_SRC
+
 ** Get Password from Emacs' .authinfo.gpg
 
    Ideally we would get passwords from Emacs. I already have to type my

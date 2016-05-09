@@ -57,7 +57,7 @@
     [Repository LPRemote]
     type = Gmail
     remoteuser = sbrautaset@laterpay.ag
-    remotepasseval = get_password_emacs("imap.host.com", "imaps")
+    remotepasseval = get_password_emacs("imap.gmail.com", "imaps")
     sslcacertfile = /usr/local/etc/openssl/cert.pem
     folderfilter = lambda foldername: foldername not in ['[Gmail]/Starred', '[Gmail]/Important']
   #+END_SRC

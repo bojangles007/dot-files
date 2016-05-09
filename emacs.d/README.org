@@ -1405,6 +1405,22 @@
        (add-hook 'gnus-before-startup-hook 'offlineimap))
    #+END_SRC
 
+   Supply passwords to offlineimap
+
+   #+BEGIN_SRC emacs-lisp
+     (defun offlineimap-get-password (host port)
+          (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
+                 (hostentry (netrc-machine netrc host port port)))
+            (when hostentry (netrc-get hostentry "password"))))
+   #+END_SRC
+
+   This requires the Emacs server to be running.
+
+   #+BEGIN_SRC emacs-lisp
+     (unless (server-running-p)
+       (server-start))
+   #+END_SRC
+
 * Footnotes
 
 [fn:1] Found at http://www.emacswiki.org/emacs/TrampMode#toc31

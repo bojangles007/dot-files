@@ -27,40 +27,56 @@
   documentation for details. It was pretty good, IIRC.
 
   #+BEGIN_SRC conf :tangle ~/.offlineimaprc
-[general]
-accounts = Personal,LaterPay
+    [general]
+    accounts = Personal,LaterPay
+    pythonfile = ~/.offlineimap.py
 
-[Account Personal]
-localrepository = PLocal
-remoterepository = PRemote
+    [Account Personal]
+    localrepository = PLocal
+    remoterepository = PRemote
 
-[Repository PLocal]
-type = IMAP
-preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
+    [Repository PLocal]
+    type = IMAP
+    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
 
-[Repository PRemote]
-type = IMAP
-remotehost = imap.mail.me.com
-remoteuser = stig.brautaset
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+    [Repository PRemote]
+    type = IMAP
+    remotehost = imap.mail.me.com
+    remoteuser = stig.brautaset
+    remotepasseval = get_password_emacs("imap.mail.me.com", "imaps")
+    sslcacertfile = /usr/local/etc/openssl/cert.pem
 
-[Account LaterPay]
-localrepository = LPLocal
-remoterepository = LPRemote
+    [Account LaterPay]
+    localrepository = LPLocal
+    remoterepository = LPRemote
 
-[Repository LPLocal]
-type = IMAP
-preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
+    [Repository LPLocal]
+    type = IMAP
+    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
 
-[Repository LPRemote]
-type = Gmail
-remoteuser = sbrautaset@laterpay.ag
-sslcacertfile = /usr/local/etc/openssl/cert.pem
-folderfilter = lambda foldername: foldername not in ['[Gmail]/Starred', '[Gmail]/Important']
+    [Repository LPRemote]
+    type = Gmail
+    remoteuser = sbrautaset@laterpay.ag
+    remotepasseval = get_password_emacs("imap.host.com", "imaps")
+    sslcacertfile = /usr/local/etc/openssl/cert.pem
+    folderfilter = lambda foldername: foldername not in ['[Gmail]/Starred', '[Gmail]/Important']
   #+END_SRC
 
-** TODO Use a better way to get passwords
+** Get Password from Emacs' .authinfo.gpg
 
    Ideally we would get passwords from Emacs. I already have to type my
    password to decrypt authinfo.gpg when starting Gnus, so it would be great
    if offlineimap.el could use that too.
+
+   #+BEGIN_SRC python :tangle ~/.offlineimap.py
+     import subprocess
+     def get_output(cmd):
+       # Bunch of boilerplate to catch the output of a command:
+       pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+       (output, errout) = pipe.communicate()
+       assert pipe.returncode == 0 and not errout
+       return output
+     def get_password_emacs(host, port):
+       cmd = "emacsclient --eval '(offlineimap-get-password \"%s\" \"%s\")'" % (host,port)
+       return get_output(cmd).strip().lstrip('"').rstrip('"')
+   #+END_SRC

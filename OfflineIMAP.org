@@ -34,6 +34,8 @@
     [Account Personal]
     localrepository = PLocal
     remoterepository = PRemote
+    autorefresh = 5
+    quick = 10
 
     [Repository PLocal]
     type = IMAP
@@ -49,6 +51,8 @@
     [Account LaterPay]
     localrepository = LPLocal
     remoterepository = LPRemote
+    autorefresh = 5
+    quick = 10
 
     [Repository LPLocal]
     type = IMAP

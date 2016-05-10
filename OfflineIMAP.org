@@ -26,7 +26,17 @@
   I'm just going to leave this here for now. Check out the OfflineIMAP
   documentation for details. It was pretty good, IIRC.
 
-  #+BEGIN_SRC conf :tangle ~/.offlineimaprc
+  First we define some shared account options. I want autorefresh for all
+  accounts. Let's do 10 quick checks before a full one. Wait 5 minutes between
+  each attempt at autorefresh.
+
+  #+name: shared-account-opts
+  #+BEGIN_SRC conf
+    autorefresh = 5
+    quick = 10
+  #+END_SRC
+
+  #+BEGIN_SRC conf :tangle ~/.offlineimaprc :noweb yes
     [general]
     accounts = Personal,LaterPay
     pythonfile = ~/.offlineimap.py
@@ -34,8 +44,7 @@
     [Account Personal]
     localrepository = PLocal
     remoterepository = PRemote
-    autorefresh = 5
-    quick = 10
+    <<shared-account-opts>>
 
     [Repository PLocal]
     type = IMAP
@@ -51,8 +60,7 @@
     [Account LaterPay]
     localrepository = LPLocal
     remoterepository = LPRemote
-    autorefresh = 5
-    quick = 10
+    <<shared-account-opts>>
 
     [Repository LPLocal]
     type = IMAP

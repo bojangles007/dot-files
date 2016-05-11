@@ -5,7 +5,7 @@
   I read email and news with Gnus. I often use a laptop, and often in places I
   don't have internet access. Gnus doesn't like not being able to connect to
   the nntp server when it starts, so as a work-around I run the [[http://leafnode.sourceforge.net][Leafnode]] NNTP
-  server locally.
+  server locally. As a nice side effect, Gnus starts a lot faster.
 
 * Installation
 

@@ -687,7 +687,7 @@
 
      (add-hook 'message-mode-hook
                (lambda ()
-                 (define-key message-mode-map "\C-c\C-f" 'message-loop-from)))
+                 (define-key message-mode-map "\C-c\C-f\C-f" 'message-loop-from)))
    #+END_SRC
 
 * Install & Configure Optional Packages

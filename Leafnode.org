@@ -22,14 +22,26 @@
   there's a well-commented example at =/usr/local/etc/leafnode/config.example=
   that we can use as a reference. I'll omit comments from my version.
 
-  #+BEGIN_SRC conf :tangle /usr/local/etc/leafnode/config
+  Leafnode requires a fully qualified hostname, and my machines just has
+  $hostname.local---which is not considered good enough. I could hardcode it,
+  but I use the same config on two different machines and I want to keep these
+  separate. So, first, we need to figure out our machine hostname. This is
+  luckly simple:
+
+  #+NAME: hostname
+  #+BEGIN_SRC sh
+  hostname -s | tr A-Z a-z
+  #+END_SRC
+
+  Then, we call that snippet from our config snippet, using the "noweb"
+  syntax.
+
+  #+BEGIN_SRC conf :tangle /usr/local/etc/leafnode/config :noweb yes
     expire = 20
     server = news.gmane.org
     initialfetch = 100
-    hostname = margil.superloopy.io
+    hostname = <<hostname()>>.superloopy.io
   #+END_SRC
-
-*** TODO set a FQDN for the machine so I can remove the hostname parameter
 
 * Scheduling the daemons to run
 

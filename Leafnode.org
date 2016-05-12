@@ -25,8 +25,8 @@
   Leafnode requires a fully qualified hostname, and my machines just has
   $hostname.local---which is not considered good enough. I could hardcode it,
   but I use the same config on two different machines and I want to keep these
-  separate. So, first, we need to figure out our machine hostname. This is
-  luckly simple:
+  separate. So, first, we need to figure out our machine hostname. I use the
+  =-s= flag to remove the =.local=. Also lowercase the hostname.
 
   #+NAME: hostname
   #+BEGIN_SRC emacs-lisp
@@ -34,7 +34,9 @@
   #+END_SRC
 
   Then, we call that snippet from our config snippet, using the "noweb"
-  syntax.
+  syntax. By using the =<<snippet-name()>>= syntax we don't insert the
+  verbatim snippet but the result of /executing/ the snippet. That's what we
+  want here.
 
   #+BEGIN_SRC conf :tangle /usr/local/etc/leafnode/config :noweb yes
     expire = 20
@@ -118,7 +120,8 @@
 ** Texpire
 
    We'll run it about every 7 hours, which means that on successive days it
-   should run at different times of day.
+   should run at different times of day. I do this so that there's a bigger
+   chance it /eventually/ will run at a time the computer is on.
 
    #+BEGIN_SRC nxml :tangle ~/Library/LaunchAgents/org.brautaset.texpire.plist
      <?xml version="1.0" encoding="UTF-8"?>

@@ -29,8 +29,8 @@
   luckly simple:
 
   #+NAME: hostname
-  #+BEGIN_SRC sh
-  hostname -s | tr A-Z a-z
+  #+BEGIN_SRC emacs-lisp
+  (downcase (car (split-string (system-name) "\\.")))
   #+END_SRC
 
   Then, we call that snippet from our config snippet, using the "noweb"

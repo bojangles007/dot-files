@@ -1273,10 +1273,10 @@
        (setq org-completion-use-ido t)
 
        :bind (("C-c P P" . org-passwords)
-       ("C-c P g" . org-passwords-generate-password)
-       :map org-passwords-mode-map
-       ("C-c C-c u" . org-passwords-copy-username)
-       ("C-c C-c p" . org-passwords-copy-password)))
+              ("C-c P g" . org-passwords-generate-password)
+              :map org-passwords-mode-map
+              ("C-c C-c u" . org-passwords-copy-username)
+              ("C-c C-c p" . org-passwords-copy-password)))
    #+END_SRC
 
 ** Sphinx & reStructuredText

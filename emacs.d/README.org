@@ -3,6 +3,7 @@
 #+OPTIONS: f:t h:4
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
+#+STARTUP: content
 * Introduction
 
   This is my Emacs configuration. Because I'm prone to forget what does what,

@@ -18,7 +18,7 @@
 
   When I say this document uses literate programming, I mean that the
   configuration snippets here are not copied-and-pasted from my config, they
-  _are_ my config. I use a tiny "bootloader", found in [[file:init.el][init.el]], that reads
+  /are/ my config. I use a tiny "bootloader", found in [[file:init.el][init.el]], that reads
   this file and parses out all the configuration snippets.
 
   However, this document doesn't just contain =emacs-lisp= snippets. It also
@@ -32,9 +32,10 @@
 * Install Emacs & Setup =~/.emacs.d=
 
   I use [[http://brew.sh][homebrew]] to install Emacs. I use YAMAMOTO Mitsuharu's experimental
-  "Mac port" addition to GNU Emacs 24. This provides much, _much_ nicer fonts.
+  "Mac port" addition to GNU Emacs 24. This provides much, /much/ nicer fonts.
   Also, it appears that this patched Emacs is a lot faster, particularly when
-  invoking external processes. (Magit, specifically.)
+  invoking external processes. (Magit, specifically.) Finally, it seems to do
+  the right thing when launching emerge from Magit, even in fullscreen.
 
   #+BEGIN_SRC sh
     brew tap caskroom/cask

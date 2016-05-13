@@ -55,10 +55,9 @@
     ln -s ~/Dotfiles/emacs.d ~/.emacs.d
   #+END_SRC
 
-* Configure the base install
+* Configuration
 
-  Alright! Now on to the actual configuration. None of the stuff in this
-  section requires external packages; it's all vanilla Emacs.
+  Alright! Now on to the actual configuration. 
 
 ** Don't hide Emacs when  ⌘-h is pressed
 
@@ -583,7 +582,6 @@
    (setq rcirc-default-full-name "Stig Brautaset")
    #+END_SRC
 
-* ELPA packages
 ** Leuven Theme
 
    Install & activate a nice-looking theme.

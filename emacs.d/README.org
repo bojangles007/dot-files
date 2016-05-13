@@ -691,51 +691,7 @@
                  (define-key message-mode-map "\C-c\C-f\C-f" 'message-loop-from)))
    #+END_SRC
 
-* Install & Configure Optional Packages
-
-  I install quite a few packages from [[http://melpa.org/][melpa]]. First add the URLs of the
-  archives we want to use, then initiate already installed packages.
-
-** Setup Packages
-
-   We need to add the package archives we want to use. I just add melpa.
-   Marmelade seems to largely overlap with it, so let's ignore it.
-
-   #+BEGIN_SRC emacs-lisp
-     (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-   #+END_SRC
-
-   I want to install the `org-plus-contrib' package, so need to use the org
-   MELPA repo. This is required for the `org-mime' package.
-
-   #+BEGIN_SRC emacs-lisp
-     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-   #+END_SRC
-
-** Special-case installation of =use-package=
-
-   I use the excellent [[https://github.com/jwiegley/use-package][use-package]] for installing & configuring packages.
-   Because it is _itself_ installed via Melpa, there's a minor bootstrapping
-   problem: we have to make sure it is installed before we can use it to
-   install the rest of the packages.
-
-   #+BEGIN_SRC emacs-lisp
-     (unless (package-installed-p 'use-package)
-       (message "%s" "Refreshing package database...")
-       (package-refresh-contents)
-       (package-install 'use-package))
-   #+END_SRC
-
-   Configure =use-package= to pre-compile the configuration for faster loading.
-
-   #+BEGIN_SRC emacs-lisp
-     (eval-when-compile
-       (require 'use-package))
-     (require 'bind-key)
-   #+END_SRC
-
-   Now we can use =use-package= to install the rest of the packages we want.
-
+* ELPA packages
 ** Leuven Theme
 
    Install & activate a nice-looking theme.

@@ -1213,6 +1213,11 @@
        ;; Tell Org where to find ditaa jar
        (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
 
+       ;; Always include stderr output for shell
+       (setq org-babel-default-header-args:sh
+             '((:prologue . "exec 2>&1")
+               (:epilogue . ":")))
+
        :config
        (org-babel-do-load-languages
         'org-babel-load-languages

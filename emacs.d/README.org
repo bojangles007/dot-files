@@ -1107,6 +1107,17 @@
                  (local-set-key "\C-c\C-h" 'org-mime-htmlize)))
    #+END_SRC
 
+   Let's try presenting with Emacs.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-tree-slide
+       :bind (("<f8>" . org-tree-slide-mode)
+              :map org-tree-slide-mode-map
+              ("q" . org-tree-slide)
+              ("<right>" . org-tree-slide-move-next-tree)
+              ("<left>" . org-tree-slide-move-previous-tree)))
+   #+END_SRC
+
 ** Org passwords
 
    #+BEGIN_SRC emacs-lisp

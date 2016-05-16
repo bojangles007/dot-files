@@ -1024,19 +1024,14 @@
    Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
    makes it an easy choice. (I can even export to Markdown if I want.)
 
-   First we need to make sure the =org-plus-contrib= package is installed, as
-   we use some contributions from there.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-plus-contrib
-       :ensure t)
-   #+END_SRC
-
-   Anoyingly, we cannot use that same block for the config, because the module
-   is still called just =org=. So we have a separate block for that.
+   This package is annoying in that the installed package has a different name
+   from what you would use in your config. =use-package= supports this, by
+   passing the name of the package to install as the value to =:ensure=.
 
    #+BEGIN_SRC emacs-lisp
      (use-package org
+       :ensure org-plus-contrib
+
        ;; The Org manual expects these to be available in any mode, so set them here.
        :bind (("C-c l" . org-store-link)
               ("C-c a" . org-agenda)

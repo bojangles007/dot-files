@@ -187,16 +187,6 @@
      (setq-default fill-column 78)
    #+END_SRC
 
-** Automatic word-wrap in text-mode
-
-   Turn on automatic work-wrap in =text-mode=. Without this you end up with
-   really long lines and have to manually insert linebreaks where you want
-   them. (Or call e.g. =fill-paragraph=, bound to =M-q=, manually.)
-
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'text-mode-hook 'turn-on-auto-fill)
-   #+END_SRC
-
 ** A sentence ends at a period
 
    Sentences do not need double spaces to end. Period.

@@ -1094,10 +1094,13 @@
    #+BEGIN_SRC emacs-lisp
      (use-package org-tree-slide
        :bind (("<f8>" . org-tree-slide-mode)
+              ("S-<f8>" . org-tree-slide-skip-done-toggle)
+
               :map org-tree-slide-mode-map
-              ("q" . org-tree-slide)
-              ("<right>" . org-tree-slide-move-next-tree)
-              ("<left>" . org-tree-slide-move-previous-tree)))
+              ("<f8>" . org-tree-slide)
+              ("<f9>" . org-tree-slide-move-previous-tree)
+              ("<f10>" . org-tree-slide-move-next-tree)
+              ("<f12>" . org-tree-slide-content)))
    #+END_SRC
 
 ** Org passwords

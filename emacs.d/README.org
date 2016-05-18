@@ -1097,7 +1097,7 @@
               ("S-<f8>" . org-tree-slide-skip-done-toggle)
 
               :map org-tree-slide-mode-map
-              ("<f8>" . org-tree-slide)
+              ("<f8>" . org-tree-slide-mode)
               ("<f9>" . org-tree-slide-move-previous-tree)
               ("<f10>" . org-tree-slide-move-next-tree)
               ("<f12>" . org-tree-slide-content)))

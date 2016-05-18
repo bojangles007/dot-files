@@ -86,17 +86,10 @@
      (setq inhibit-startup-message t)
    #+END_SRC
 
-   I do not like Emacs to beep at me; I prefer a visual bell. Unfortunately
-   in the current stable release there is a bug that causes [[http://debbugs.gnu.org/cgi/bugreport.cgi?bug%3D21662][visual artefacts]]
-   on El Capitan. The workaround is to turn off visual bell, but make the
-   function that actually rings the bell be a no-op. I'd like to get the
-   visual bell back one day. It's been fixed upstream, but I've not been
-   brave enough to build =--HEAD= yet, so so far I've stuck with the stable
-   builds.
+   I do not like Emacs to beep at me; I prefer a visual bell.
 
    #+BEGIN_SRC emacs-lisp
-     (setq visible-bell nil)
-     (setq ring-bell-function 'ignore)
+     (setq visible-bell t)
    #+END_SRC
 
 ** Start in fullscreen

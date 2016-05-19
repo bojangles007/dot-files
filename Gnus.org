@@ -61,7 +61,10 @@ Set different parameters based on the group/folder I currently have open.
            (mm-discouraged-alternatives nil))
 
           ("INBOX"
-           (expiry-wait . immediate))))
+           (expiry-wait . immediate))
+
+          ("Archive"
+           (expiry-wait . never))))
 #+END_SRC
 
 Always keep the INBOX visible, even if it has no messages. This is handy so

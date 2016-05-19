@@ -104,7 +104,8 @@ A list of groups I am subscribed to. I am honestly not certain what this does.
 
 #+BEGIN_SRC emacs-lisp
   (setq message-subscribed-addresses
-        '("centos-announce@centos.org"))
+        '("centos-announce@centos.org"
+          "fish-users@lists.sourceforge.net"))
 #+END_SRC
 
 Ignore all groups matching this regular expression.

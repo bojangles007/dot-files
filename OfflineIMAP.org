@@ -33,7 +33,6 @@
   #+name: shared-account-opts
   #+BEGIN_SRC conf
     autorefresh = 5
-    quick = 10
   #+END_SRC
 
   #+BEGIN_SRC conf :tangle ~/.offlineimaprc :noweb yes

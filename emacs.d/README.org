@@ -1046,6 +1046,7 @@
         'org-babel-load-languages
         '((emacs-lisp . t)
           (clojure . t)
+          (python . t)
           (ditaa . t)
           (dot . t)
           (sql . t)

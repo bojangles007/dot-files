@@ -1,8 +1,9 @@
-alias bundle $HOME/.gem/ruby/2.0.0/bin/bundle
-alias woman tramp-aware-woman ${*man -c --path $1}
-alias take mkdir $1 ; cd $1
-alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
-alias scd "${pwd}/$1"(:s/ssh/sudo/)
-alias pt ~/.gem/ruby/2.0.0/bin/papertrail $*
-alias ff find-file $1
+alias cert openssl x509 -text -noout -in $*
 alias d dired $1
+alias ff find-file $1
+alias pt ~/.gem/ruby/2.0.0/bin/papertrail $*
+alias scd "${pwd}/$1"(:s/ssh/sudo/)
+alias sff find-file "${pwd}/$1"(:s,^,/sudo::,:s,::/ssh:,:,)
+alias take mkdir $1 ; cd $1
+alias woman tramp-aware-woman ${*man -c --path $1}
+alias bundle $HOME/.gem/ruby/2.0.0/bin/bundle

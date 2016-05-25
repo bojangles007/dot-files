@@ -83,12 +83,11 @@
 * Composing
 
   Use Org structure editing & table mode in Message mode. (Used for composing
-  messages.) Also turn on yas minor mode, for form responses.
+  messages.)
 
   #+BEGIN_SRC emacs-lisp
     (add-hook 'message-mode-hook 'turn-on-orgstruct++)
     (add-hook 'message-mode-hook 'turn-on-orgtbl)
-    (add-hook 'message-mode-hook 'yas-minor-mode)
   #+END_SRC
 
   Add a function to cycle between from addresses in the message buffer.

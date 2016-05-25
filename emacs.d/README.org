@@ -897,19 +897,9 @@
        :ensure t)
    #+END_SRC
 
-   YAS is a templating package. You can define mode-specific or global
-   templates, and insert templates with keycombinations or triggered based on
-   trigger words in the text. I used to have this globally active, but it
-   interferes with some of org mode that I want, so now only activate it in
-   Clojure Mode, where it is required for refactoring support.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package yasnippet
-       :config
-       (yas-minor-mode 1))
-   #+END_SRC
-
-   The Clojure Refactor package is also ace.
+   The Clojure Refactor package is also ace. The `magic-require-namespaces'
+   thing is so that if I type ~(io/~ then the ~clojure.java.io~ package is
+   automatically added to my namespace's requires.
 
    #+BEGIN_SRC emacs-lisp
      (use-package clj-refactor
@@ -1223,6 +1213,19 @@
 
    #+BEGIN_SRC sh
      brew install plantuml
+   #+END_SRC
+
+** YAS
+
+   YAS is a templating package. You can define mode-specific or global
+   templates, and insert templates with keycombinations or triggered based on
+   trigger words in the text.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package yasnippet
+       :ensure t
+       :config
+       (yas-global-mode))
    #+END_SRC
 
 * Footnotes

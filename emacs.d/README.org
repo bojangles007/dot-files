@@ -60,7 +60,7 @@
 
 * Configuration
 
-  Alright! Now on to the actual configuration. 
+  Alright! Now on to the actual configuration.
 
 ** Don't hide Emacs when  ⌘-h is pressed
 

@@ -7,12 +7,26 @@
 
   I'm trying to see if I can become happy reading and writing mail in Emacs. I
   have chosen Gnus as my mail reader. I already used Gnus in the past, and I
-  like to read Usenet News too, so it seemed a good fit.
+  follow a few newsgroups, so it seemed a good fit.
 
-  Most of the Gnus specific setup is in [[file:~/Dotfiles/Gnus.org][Gnus.org]], but this file has some
-  generic stuff.
+* Gnus setup
+  :PROPERTIES:
+  :header-args:emacs-lisp: :tangle ~/.gnus.el
+  :END:
+  
+  This section (and only this!) is written to =~/.gnus.el= rather than
+  =Gnus.el= in this directory. We could probably just set it here and make
+  =~/.gnus.el= an empty file, but this should be marginally better for
+  fiddling with Gnus config without restarting Emacs.
 
-* Reading Mail in Emacs
+  First write a header to =~/.gnus.el= so it won't be confused with the real
+  config. Sadness and woe will betide you if you edit it and start Gnus: your
+  changes will be summarily overwritten.
+
+  #+BEGIN_SRC emacs-lisp
+    ;; WARNING: The primary source of this config is in the ~/Dotfiles/Gnus.org
+    ;; file. Any changes made to Gnus.el will be blown away when Gnus starts.
+  #+END_SRC
 
   First of all, discourage Rich Text messages. Emacs doesn't like them, or
   something.
@@ -28,6 +42,112 @@
 
   #+BEGIN_SRC emacs-lisp
     (setq mm-text-html-renderer 'shr)
+  #+END_SRC
+
+  I only use Gnus, so I don't care about =.newsrc=, actually.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-read-newsrc-file nil)
+    (setq gnus-save-newsrc-file nil)
+  #+END_SRC
+
+  When viewing articles, remove Carriage Returns.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-treat-strip-cr t)
+  #+END_SRC
+
+
+
+  Load additional libraries we'll use. nnmail is used later to move messages
+  to the correct folder when they are expired. nnir is used to search
+  messages. By loading them at gnus start time, rather than emacs start time,
+  we get a /little/ speed improvement.
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'nnmail)
+    (require 'nnir)
+  #+END_SRC
+
+  For reading bona fide news I use [[file:~/Dotfiles/Leafnode.org][Leafnode]] running on my local machine so I can
+  read news offline. This is more to avoid hangs when starting Gnus when I am
+  offline than anything else. (I use a laptop and often have no internet where I
+  am.)
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-select-method '(nntp "localhost"))
+  #+END_SRC
+
+  I also have two mail accounts. I don't subscribe to work mail folders on my
+  personal account, but for convenience this config is the same. See [[file:OfflineIMAP.org][OfflineIMAP]]
+  for more details on this setup.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-secondary-select-methods
+          '((nnimap "LaterPay"
+                    (nnimap-stream shell)
+                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/LaterPay")
+                    (nnir-search-engine imap))
+            (nnimap "Personal"
+                    (nnimap-stream shell)
+                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Personal")
+                    (nnir-search-engine imap))))
+  #+END_SRC
+
+  A list of groups I am subscribed to. I am honestly not certain what this does.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq message-subscribed-addresses
+          '("centos-announce@centos.org"
+            "fish-users@lists.sourceforge.net"))
+  #+END_SRC
+
+  Ignore all groups matching this regular expression.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]")
+  #+END_SRC
+
+  Always keep the INBOX visible, even if it has no messages. This is handy so
+  that I can always select it and have the above posting-styles applied when
+  writing new mail.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-permanently-visible-groups "INBOX")
+  #+END_SRC
+
+  Set different parameters based on the group/folder I currently have open.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-parameters
+          '((".*"
+             (gcc-self . "nnimap+Personal:Sent Messages")
+             (expiry-target . "nnimap+Personal:Deleted Messages")
+             (expiry-wait . never)
+             (posting-style
+              (name "Stig Brautaset")
+              (address "stig@brautaset.org")))
+
+            ("^nnimap\\+LaterPay"
+             (gcc-self . "nnimap+LaterPay:[Gmail].Sent Mail")
+             (expiry-target . "nnimap+LaterPay:[Gmail].Bin")
+             (posting-style
+              (address "sbrautaset@laterpay.net")
+              (organisation "LaterPay GmbH")))
+
+            (":Lists"
+             (expiry-target . delete)
+             (expiry-wait . 14)
+             (total-expire . t))
+
+            ("^nnrss:"
+             (mm-discouraged-alternatives nil))
+
+            ("INBOX"
+             (expiry-wait . immediate))
+
+            (":Archive"
+             (expiry-wait . never))))
   #+END_SRC
 
 * Sending Mail

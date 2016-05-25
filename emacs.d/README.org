@@ -1105,6 +1105,8 @@
      (use-package org-passwords
        :init
 
+       (setq org-passwords-time-opened "30 min")
+
        ;; Where's my passwords file?
        (setq org-passwords-file "~/Org/passwords.org.gpg")
 

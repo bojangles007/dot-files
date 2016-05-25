@@ -1,0 +1,77 @@
+#+TITLE: Package.el & use-package Setup
+#+AUTHOR: Stig Brautaset
+#+OPTIONS: f:t
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh         :tangle yes
+#+PROPERTY: header-args            :results silent
+
+* Initialize packages
+
+  Initialize packages early, so we load the latest org from ELPA (rather than
+  the one that is bundled with Emacs) later in this file.
+
+  #+BEGIN_SRC emacs-lisp
+    (package-initialize)
+  #+END_SRC
+
+  Normally packages are initialised after reading the init file, but we
+  already did it manually so there's no reason to do so. This prevents
+  packages being activated again.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq package-enable-at-startup nil)
+  #+END_SRC
+
+* Add Package Archives
+
+  I install quite a few packages from [[http://melpa.org/][melpa]]. Before we can install packages,
+  we need to add the URLs of the package archives we want to use.
+
+  I use the Melpa package repos. Marmelade seems to largely overlap with
+  melpa, so let's ignore that.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  #+END_SRC
+
+  I want to install the `org-plus-contrib' package, mostly for the `org-mime'
+  package, so I also add the org Melpa repo.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  #+END_SRC
+
+* Install =use-package=
+
+  Most of my config use the excellent [[https://github.com/jwiegley/use-package][use-package]] for installing & configuring
+  packages. Because it is /itself/ installed via Melpa, there's a minor
+  bootstrapping problem: we have to make sure it is installed before we can
+  use it to install the rest of the packages.
+
+  #+BEGIN_SRC emacs-lisp
+    (unless (package-installed-p 'use-package)
+      (message "%s" "Refreshing package database...")
+      (package-refresh-contents)
+      (package-install 'use-package))
+  #+END_SRC
+
+  Configure =use-package= to pre-compile the configuration for faster loading.
+
+  #+BEGIN_SRC emacs-lisp
+    (eval-when-compile
+      (require 'use-package))
+    (require 'bind-key)
+  #+END_SRC
+
+* Load the remaining config
+
+  Now find all capitalised =.org= files in this directory, tangle them (i.e.
+  extract all the emacs-lisp snippets into corresponding =.el= files) and load
+  the result.
+
+  #+BEGIN_SRC emacs-lisp
+    (let ((dotfiles-dir (file-name-directory (or (buffer-file-name)
+                                                 load-file-name))))
+      (mapc #'org-babel-load-file
+            (directory-files dotfiles-dir t "[A-Z]\\w+\\.org$")))
+  #+END_SRC

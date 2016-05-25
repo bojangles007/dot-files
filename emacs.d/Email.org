@@ -1,6 +1,7 @@
 #+TITLE: Email Setup
 #+AUTHOR: Stig Brautaset
 #+OPTIONS: f:t h:4
+#+PROPERTY: header-args:emacs-lisp :tangle Email.el
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
 * Introduction

@@ -124,16 +124,6 @@
     (use-package message-x :ensure t)
   #+END_SRC
 
-  I use BBDB to manage contacts. I don't have a good two-way synch between
-  iCloud contacts and BBDB, but selecting all contacts in Contacts.app and
-  exporting them as a vCard archive can be imported with
-  =bbdb-vcard-import-file=.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package bbdb :ensure t)
-    (use-package bbdb-vcard :ensure t)
-  #+END_SRC
-
   Load the offlineimap package before Gnus starts.
 
   #+BEGIN_SRC emacs-lisp
@@ -161,3 +151,23 @@
   #+END_SRC
 
 ** TODO Move the server-start line to somewhere more appropriate
+
+* Managing Contacts
+
+  I use BBDB to manage contacts.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package bbdb
+      :ensure t
+      :init
+      (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb"))
+  #+END_SRC
+
+  I don't have a good two-way synch between iCloud contacts and BBDB, but
+  selecting all contacts in Contacts.app and exporting them as a vCard archive
+  can be imported with =bbdb-vcard-import-file=.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package bbdb-vcard
+      :ensure t)
+  #+END_SRC

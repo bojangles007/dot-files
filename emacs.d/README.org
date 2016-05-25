@@ -30,7 +30,7 @@
   recent Emacs distributions ships with the required Org mode support for
   most of this, so it's not really a problem.)
 
-* Install Emacs & Setup =~/.emacs.d=
+* Install Emacs
 
   I use [[http://brew.sh][homebrew]] to install Emacs. I use YAMAMOTO Mitsuharu's experimental
   "Mac port" addition to GNU Emacs 24. This provides much, /much/ nicer fonts.
@@ -45,8 +45,10 @@
     mv /opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.15/Emacs.app/ /Applications/
   #+END_SRC
 
-  I then create a symlink from =~/.emacs.d= to the directory containing this
-  file. (Checking out this repo is the topic [[file:~/Dotfiles/README.org][covered here]].) If =~/.emacs.d= is
+* Symlink =~/.emacs.d= to this directory
+
+  I create a symlink from =~/.emacs.d= to the directory containing this file.
+  (Checking out this repo is the topic [[file:~/Dotfiles/README.org][covered here]].) If =~/.emacs.d= is
   already a symbolic link, this will delete it first. If it is a directory,
   move that out of the way.
 

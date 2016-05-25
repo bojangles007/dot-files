@@ -17,10 +17,6 @@
 ;; Don't call package-initialize again after we're done with init.el
 (setq package-enable-at-startup nil)
 
-;; Load up Org-mode and Org-babel
-(require 'org-install)
-(require 'ob-tangle)
-
 ;; Load (and tangle) all literate org-mode files in this directory
 (let ((dotfiles-dir (file-name-directory (or (buffer-file-name) load-file-name))))
   (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$")))

@@ -33,13 +33,14 @@
   #+name: shared-account-opts
   #+BEGIN_SRC conf
     autorefresh = 5
+    maxconnections = 3
   #+END_SRC
 
   #+BEGIN_SRC conf :tangle ~/.offlineimaprc :noweb yes
     [general]
     accounts = Personal,LaterPay
     pythonfile = ~/.offlineimap.py
-    maxsyncaccounts = 2
+    maxsyncaccounts = 3
 
     [Account Personal]
     localrepository = PLocal

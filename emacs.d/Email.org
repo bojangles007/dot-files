@@ -85,13 +85,13 @@
 
   #+BEGIN_SRC emacs-lisp
     (setq gnus-secondary-select-methods
-          '((nnimap "LaterPay"
+          '((nnimap "Work"
                     (nnimap-stream shell)
-                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/LaterPay")
+                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Work")
                     (nnir-search-engine imap))
-            (nnimap "Personal"
+            (nnimap "Play"
                     (nnimap-stream shell)
-                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Personal")
+                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Play")
                     (nnir-search-engine imap))))
   #+END_SRC
 
@@ -122,16 +122,16 @@
   #+BEGIN_SRC emacs-lisp
     (setq gnus-parameters
           '((".*"
-             (gcc-self . "nnimap+Personal:Sent Messages")
-             (expiry-target . "nnimap+Personal:Deleted Messages")
+             (gcc-self . "nnimap+Play:Sent Messages")
+             (expiry-target . "nnimap+Play:Deleted Messages")
              (expiry-wait . never)
              (posting-style
               (name "Stig Brautaset")
               (address "stig@brautaset.org")))
 
-            ("^nnimap\\+LaterPay"
-             (gcc-self . "nnimap+LaterPay:[Gmail].Sent Mail")
-             (expiry-target . "nnimap+LaterPay:[Gmail].Bin")
+            ("^nnimap\\+Work"
+             (gcc-self . "nnimap+Work:[Gmail].Sent Mail")
+             (expiry-target . "nnimap+Work:[Gmail].Bin")
              (posting-style
               (address "sbrautaset@laterpay.net")
               (organisation "LaterPay GmbH")))

@@ -1,3 +1,4 @@
+#+STARTUP: showall
 #+TITLE: OfflineIMAP Setup
 #+AUTHOR: Stig Brautaset
 * Introduction
@@ -38,36 +39,36 @@
 
   #+BEGIN_SRC conf :tangle ~/.offlineimaprc :noweb yes
     [general]
-    accounts = Personal,LaterPay
+    accounts = Play,Work
     pythonfile = ~/.offlineimap.py
     maxsyncaccounts = 3
 
-    [Account Personal]
-    localrepository = PLocal
-    remoterepository = PRemote
+    [Account Play]
+    localrepository = PlayLocal
+    remoterepository = PlayRemote
     <<shared-account-opts>>
 
-    [Repository PLocal]
+    [Repository PlayLocal]
     type = IMAP
-    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Personal
+    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Play
 
-    [Repository PRemote]
+    [Repository PlayRemote]
     type = IMAP
     remotehost = imap.mail.me.com
     remoteuser = stig.brautaset
     remotepasseval = get_password_emacs("imap.mail.me.com", "imaps")
     sslcacertfile = /usr/local/etc/openssl/cert.pem
 
-    [Account LaterPay]
-    localrepository = LPLocal
-    remoterepository = LPRemote
+    [Account Work]
+    localrepository = WorkLocal
+    remoterepository = WorkRemote
     <<shared-account-opts>>
 
-    [Repository LPLocal]
+    [Repository WorkLocal]
     type = IMAP
-    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/LaterPay
+    preauthtunnel = /usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:~/Mail/Work
 
-    [Repository LPRemote]
+    [Repository WorkRemote]
     type = Gmail
     remoteuser = sbrautaset@laterpay.ag
     remotepasseval = get_password_emacs("imap.gmail.com", "imaps")

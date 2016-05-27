@@ -1018,6 +1018,10 @@
        :init
        (setq org-babel-clojure-backend 'cider)
 
+       ;; If a gmane or google groups link is present, prefer that.
+       ;; Get a Gnus link with `C-u C-c l'.
+       (setq org-gnus-prefer-web-links t)
+
        ;; Sometimes I accidentally edit non-visible parts of org document. This
        ;; helps, apparently.
        (setq org-catch-invisible-edits t)

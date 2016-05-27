@@ -1,4 +1,5 @@
 set EDITOR 'emacsclient -n'
+export EDITOR
 
 # Add to path for psql
 set PATH $PATH /Applications/Postgres.app/Contents/Versions/latest/bin

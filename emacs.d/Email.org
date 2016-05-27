@@ -14,7 +14,7 @@
   :PROPERTIES:
   :header-args:emacs-lisp: :tangle ~/.gnus.el
   :END:
-  
+
   This section (and only this!) is written to =~/.gnus.el= rather than
   =Gnus.el= in this directory. We could probably just set it here and make
   =~/.gnus.el= an empty file, but this should be marginally better for

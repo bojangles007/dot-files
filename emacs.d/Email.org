@@ -280,7 +280,25 @@
     (use-package bbdb
       :ensure t
       :init
-      (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb"))
+      (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb")
+
+      ;; Show additions to BBDB
+      (setq bbdb-mua-pop-up t)
+
+      ;; My own email addresses
+      (setq bbdb-user-mail-address-re
+            "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.net")
+
+      ;; Only add contacts for mail addressed to me
+      (setq bbdb-accept-message-alist
+            '(("to" . "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.net")))
+
+      (setq bbdb-ignore-message-alist
+            '(("from" . "no.?reply@\\|notifications@\\|jira@")))
+
+      :config
+      (bbdb-initialize 'gnus 'message)
+      (bbdb-mua-auto-update-init 'gnus 'message))
   #+END_SRC
 
   I don't have a good two-way synch between iCloud contacts and BBDB, but

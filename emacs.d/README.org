@@ -51,8 +51,7 @@
 
   #+BEGIN_SRC sh
     brew install emacs \
-         --with-d-bus \
-         --with-glib \
+         --with-dbus \
          --with-gnutls \
          --with-imagemagick \
          --with-librsvg \

@@ -45,6 +45,29 @@
     mv /opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.15/Emacs.app/ /Applications/
   #+END_SRC
 
+* Emacs 25
+
+  Let's toy with Emacs 25 a bit too.
+
+  #+BEGIN_SRC sh
+    brew install emacs \
+         --with-d-bus \
+         --with-glib \
+         --with-gnutls \
+         --with-imagemagick \
+         --with-librsvg \
+         --with-mailutils \
+         --with-cocoa \
+         --HEAD
+  #+END_SRC
+
+  For some reason Emacs 25 requires us to add "/usr/local/bin" to our
+  exec-path, lest Emacs can't find the "gpg" program.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'exec-path "/usr/local/bin")
+  #+END_SRC
+
 * Symlink =~/.emacs.d= to this directory
 
   I create a symlink from =~/.emacs.d= to the directory containing this file.

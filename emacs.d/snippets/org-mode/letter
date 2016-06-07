@@ -1,0 +1,34 @@
+# -*- mode: snippet -*-
+# name: letter
+# key: letter
+# --
+#+LATEX_HEADER: \usepackage[top=2cm,bottom=2cm]{geometry}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \pagenumbering{gobble}
+* \hfill Stig Brautaset
+
+#+begin_flushright
+The Coach House
+Barmoor Castle
+Berwick-upon-Tweed
+TD15 2TR
+#+end_flushright
+
+#+begin_flushright
++44 78 3567 0886
+stig@brautaset.org
+#+end_flushright
+
+#+begin_flushright
+{{{date}}}
+#+end_flushright
+
+#+begin_flushleft
+${1:to address}
+#+end_flushleft
+
+${0}
+
+Sincerely yours,
+
+Stig Brautaset

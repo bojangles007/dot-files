@@ -282,8 +282,8 @@
       :init
       (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb")
 
-      ;; Show additions to BBDB
-      (setq bbdb-mua-pop-up t)
+      ;; Don't show additions to BBDB in a separate window
+      (setq bbdb-mua-pop-up nil)
 
       ;; My own email addresses
       (setq bbdb-user-mail-address-re

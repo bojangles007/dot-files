@@ -149,6 +149,12 @@
              (expiry-wait . never))))
   #+END_SRC
 
+  Add a key binding to start an offlineimap run from Gnus.
+
+  #+BEGIN_SRC emacs-lisp
+  (define-key gnus-group-mode-map "o" 'offlineimap)
+  #+END_SRC
+
 * Sending Mail
 
   Set up defaults for sending email.

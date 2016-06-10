@@ -58,8 +58,6 @@
     (setq gnus-treat-strip-cr t)
   #+END_SRC
 
-
-
   Load additional libraries we'll use. nnmail is used later to move messages
   to the correct folder when they are expired. nnir is used to search
   messages. By loading them at gnus start time, rather than emacs start time,

@@ -266,15 +266,7 @@
            (when hostentry (netrc-get hostentry "password"))))
   #+END_SRC
 
-  This requires the Emacs server to be running.
-
-  #+BEGIN_SRC emacs-lisp
-    (require 'server)
-    (unless (server-running-p)
-      (server-start))
-  #+END_SRC
-
-** TODO Move the server-start line to somewhere more appropriate
+  This requires the [[file:README.org::*Start%20the%20Emacs%20Daemon][Emacs server to be running]].
 
 * Managing Contacts
 

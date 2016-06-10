@@ -154,6 +154,16 @@
          (load custom-file))
    #+END_SRC
 
+** Start the Emacs Daemon
+
+   We want Emacs to be running its server so we can interact with it using =emacsclient=.
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'server)
+    (unless (server-running-p)
+      (server-start))
+  #+END_SRC
+
 ** Internationalisation
 
    Let's always use UTF-8 encoding. Pretty, pretty please with sugar on top.

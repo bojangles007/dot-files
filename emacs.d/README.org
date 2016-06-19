@@ -1032,8 +1032,9 @@
    makes it an easy choice. (I can even export to Markdown if I want.)
 
    This package is annoying in that the installed package has a different name
-   from what you would use in your config. =use-package= supports this, by
-   passing the name of the package to install as the value to =:ensure=.
+   from what you would use in your config. However, =use-package= supports
+   this by passing the name of the package to install as the value to
+   =:ensure=.
 
    #+BEGIN_SRC emacs-lisp
      (use-package org

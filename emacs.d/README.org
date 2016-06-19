@@ -1050,6 +1050,9 @@
        :init
        (setq org-babel-clojure-backend 'cider)
 
+       ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
+       (setq org-log-into-drawer t)
+
        ;; If a gmane or google groups link is present, prefer that.
        ;; Get a Gnus link with `C-u C-c l'.
        (setq org-gnus-prefer-web-links t)

@@ -153,6 +153,7 @@
 
   #+BEGIN_SRC emacs-lisp
   (define-key gnus-group-mode-map "o" 'offlineimap)
+  (define-key gnus-group-mode-map "O" 'offlineimap-kill)
   #+END_SRC
 
 * Sending Mail

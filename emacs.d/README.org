@@ -1065,6 +1065,11 @@
        :init
        (setq org-babel-clojure-backend 'cider)
 
+       ;; See https://www.youtube.com/watch?v=ECWtf6mAi9k
+       (setq org-refile-targets '((org-agenda-files :level . 1)))
+       (setq org-refile-use-outline-path 'file)
+       (setq org-refile-allow-creating-parent-nodes 'confirm)
+
        ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
        (setq org-log-into-drawer t)
 

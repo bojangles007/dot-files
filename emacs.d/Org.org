@@ -45,15 +45,17 @@
 
 * Capturing
 
+  Set up capture templates. This is mainly from [[http://koenig-haunstetten.de/2014/08/29/the-power-of-orgmode-capture-templates/][Rainer's blog post]]. No doubt
+  this will grow...
+
   #+name: capturing
   #+BEGIN_SRC emacs-lisp
-      ;; Make Capturing work
-      (setq org-default-notes-file "Notes.org")
-
-      ;; Extra template for Capture
-      (setq org-capture-templates
-            '(("t" "Todo" entry (file+headline "" "Tasks")
-               "* TODO %?\n  %i\n  %a")))
+    (setq org-capture-templates
+          '(("p" "Private Templates")
+            ("pt" "ToDo Entry" entry (file+headline "Life.org" "Capture")
+             (file "tpl-todo.org") :empty-lines-before 1)
+            ("w" "Work templates")
+            ("wl" "Logbook entry" entry (file+datetree "WorkLog.org") "** %U - %^{Activity} :LOG:")))
   #+END_SRC
 
 * Putting it all together

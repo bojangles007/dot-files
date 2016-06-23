@@ -1,0 +1,178 @@
+#+TITLE: Org Mode
+#+AUTHOR: Stig Brautaset
+#+OPTIONS: f:t h:4
+#+PROPERTY: header-args:emacs-lisp :tangle Email.el
+#+PROPERTY: header-args:sh         :tangle yes
+#+PROPERTY: header-args            :results silent
+* Introduction
+
+  I used to use Markdown for my writing, but now I tend to use Org mode. The
+  Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
+  makes it an easy choice. I can even export to two different flavours of
+  Markdown if I want!
+
+  To avoid having one gigantic section, this file uses NOWEB syntax to weave
+  together config snippets.
+
+* Key bindings
+
+
+  The Org manual expects the top four of these to be available in any mode, so
+  define them globally. I prefer to follow conventions. It makes reading the
+  manual and tutorials a lot easier!
+
+  #+name: key-bindings
+  #+BEGIN_SRC emacs-lisp
+    :bind (("C-c l" . org-store-link)
+           ("C-c a" . org-agenda)
+           ("C-c c" . org-capture)
+           ("C-c b" . org-iswitchb)
+           :map org-mode-map
+           ("C-n" . org-next-link)
+           ("C-p" . org-previous-link))
+  #+END_SRC
+
+* Refiling
+
+  I got all of this from [[https://www.youtube.com/watch?v=ECWtf6mAi9k][this YouTube video]].
+
+  #+name: refiling
+  #+BEGIN_SRC emacs-lisp
+      (setq org-refile-targets '((org-agenda-files :level . 1)))
+      (setq org-refile-use-outline-path 'file)
+      (setq org-refile-allow-creating-parent-nodes 'confirm)
+  #+END_SRC
+
+* Capturing
+
+  #+name: capturing
+  #+BEGIN_SRC emacs-lisp
+      ;; Make Capturing work
+      (setq org-default-notes-file "Notes.org")
+
+      ;; Extra template for Capture
+      (setq org-capture-templates
+            '(("t" "Todo" entry (file+headline "" "Tasks")
+               "* TODO %?\n  %i\n  %a")))
+  #+END_SRC
+
+* Putting it all together
+
+  The particular version of package I use is annoying to install because the
+  installed package has a different name from what you would use in your
+  config. However, =use-package= supports this by passing the name of the
+  package to install as the value to =:ensure=.
+
+  #+BEGIN_SRC emacs-lisp :noweb yes
+    (use-package org
+      :ensure org-plus-contrib
+
+      <<key-bindings>>
+
+      :init
+      (setq org-babel-clojure-backend 'cider)
+
+      <<capturing>>
+
+      <<refiling>>
+
+      ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
+      (setq org-log-into-drawer t)
+
+      ;; If a gmane or google groups link is present, prefer that.
+      ;; Get a Gnus link with `C-u C-c l'.
+      (setq org-gnus-prefer-web-links t)
+
+      ;; Sometimes I accidentally edit non-visible parts of org document. This
+      ;; helps, apparently.
+      (setq org-catch-invisible-edits t)
+
+      ;; Don't execute code blocks during export
+      (setq org-export-babel-evaluate nil)
+
+      ;; Tell Org where to find ditaa jar
+      (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+
+      ;; Always include stderr output for shell
+      (setq org-babel-default-header-args:sh
+            '((:prologue . "exec 2>&1")
+              (:epilogue . ":")))
+
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t)
+         (clojure . t)
+         (python . t)
+         (ditaa . t)
+         (dot . t)
+         (sql . t)
+         (sh . t))))
+  #+END_SRC
+
+  Ditaa has to be installed manually. It's a cool toy, so let's do that.
+
+  #+BEGIN_SRC sh
+    brew install ditaa
+  #+END_SRC
+
+  I hate writing JIRA markup, so I wrote a JIRA export backend for Org mode.
+  It should be available on Melpa now.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ox-jira)
+  #+END_SRC
+
+  I'm not that fond of writing Markdown anymore either:
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ox-gfm)
+    (use-package ox-md)
+  #+END_SRC
+
+  Not only that, but I want to be able to create MIME HTML mail based on
+  org-formatted source. There's a package for that too, of course.
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'org-mime)
+    (add-hook 'message-mode-hook
+              (lambda ()
+                (local-set-key "\C-c\C-h" 'org-mime-htmlize)))
+  #+END_SRC
+
+* Presenting
+
+  Let's try presenting with Emacs.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-tree-slide
+      :bind (("<f8>" . org-tree-slide-mode)
+             ("S-<f8>" . org-tree-slide-skip-done-toggle)
+
+             :map org-tree-slide-mode-map
+             ("<f7>" . org-tree-slide-move-previous-tree)
+             ("<f8>" . org-tree-slide-mode)
+             ("<f9>" . org-tree-slide-move-next-tree)
+             ("<f12>" . org-tree-slide-content)))
+  #+END_SRC
+
+* Passwords
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-passwords
+      :init
+
+      (setq org-passwords-time-opened "30 min")
+
+      ;; Where's my passwords file?
+      (setq org-passwords-file "~/Org/passwords.org.gpg")
+
+      ;; Use completion for org elements
+      (setq org-completion-use-ido t)
+
+      :bind (("C-c P P" . org-passwords)
+             ("C-c P g" . org-passwords-generate-password)
+             :map org-passwords-mode-map
+             ("C-c C-c u" . org-passwords-copy-username)
+             ("C-c C-c p" . org-passwords-copy-password)))
+  #+END_SRC

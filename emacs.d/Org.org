@@ -1,7 +1,7 @@
 #+TITLE: Org Mode
 #+AUTHOR: Stig Brautaset
 #+OPTIONS: f:t h:4
-#+PROPERTY: header-args:emacs-lisp :tangle Email.el
+#+PROPERTY: header-args:emacs-lisp :tangle Org.el
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
 * Introduction
@@ -16,13 +16,12 @@
 
 * Key bindings
 
-
   The Org manual expects the top four of these to be available in any mode, so
   define them globally. I prefer to follow conventions. It makes reading the
   manual and tutorials a lot easier!
 
   #+name: key-bindings
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     :bind (("C-c l" . org-store-link)
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture)
@@ -37,7 +36,7 @@
   I got all of this from [[https://www.youtube.com/watch?v=ECWtf6mAi9k][this YouTube video]].
 
   #+name: refiling
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
       (setq org-refile-targets '((org-agenda-files :level . 1)))
       (setq org-refile-use-outline-path 'file)
       (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -49,7 +48,7 @@
   this will grow...
 
   #+name: capturing
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (setq org-capture-templates
           '(("p" "Private Templates")
             ("pt" "ToDo Entry" entry (file+headline "Life.org" "Capture")

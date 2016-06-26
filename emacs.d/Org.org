@@ -53,6 +53,7 @@
           '(("p" "Private Templates")
             ("pt" "ToDo Entry" entry (file+headline "Life.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
+            ("pl" "Logbook entry" entry (file+datetree "LifeLog.org") "** %U - %^{Activity} :LOG:")
             ("w" "Work templates")
             ("wl" "Logbook entry" entry (file+datetree "WorkLog.org") "** %U - %^{Activity} :LOG:")))
   #+END_SRC

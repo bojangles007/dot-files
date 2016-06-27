@@ -55,6 +55,8 @@
              (file "tpl-todo.org") :empty-lines-before 1)
             ("pl" "Logbook entry" entry (file+datetree "LifeLog.org") "** %U - %^{Activity} :LOG:")
             ("w" "Work templates")
+            ("wt" "ToDo Entry" entry (file+headline "Work.org" "Capture")
+             (file "tpl-todo.org") :empty-lines-before 1)
             ("wl" "Logbook entry" entry (file+datetree "WorkLog.org") "** %U - %^{Activity} :LOG:")))
   #+END_SRC
 

@@ -32,40 +32,7 @@
 
 * Install Emacs
 
-  I use [[http://brew.sh][homebrew]] to install Emacs. I use YAMAMOTO Mitsuharu's experimental
-  "Mac port" addition to GNU Emacs 24. This provides much, /much/ nicer fonts.
-  Also, it appears that this patched Emacs is a lot faster, particularly when
-  invoking external processes. (Magit, specifically.) Finally, it seems to do
-  the right thing when launching emerge from Magit, even in fullscreen.
-
-  #+BEGIN_SRC sh
-    brew tap caskroom/cask
-    brew tap railwaycat/homebrew-emacsmacport
-    brew cask install emacs-mac --with-spacemacs-icon
-    mv /opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.15/Emacs.app/ /Applications/
-  #+END_SRC
-
-* Emacs 25
-
-  Let's toy with Emacs 25 a bit too.
-
-  #+BEGIN_SRC sh
-    brew install emacs \
-         --with-dbus \
-         --with-gnutls \
-         --with-imagemagick \
-         --with-librsvg \
-         --with-mailutils \
-         --with-cocoa \
-         --HEAD
-  #+END_SRC
-
-  For some reason Emacs 25 requires us to add "/usr/local/bin" to our
-  exec-path, lest Emacs can't find the "gpg" program.
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'exec-path "/usr/local/bin")
-  #+END_SRC
+  I'm currently running a [[https://emacsformacosx.com/emacs-builds/Emacs-2016-06-28_01-41-49-cfb3c61f1ffec9a6322407fdd228d5cc31c31ed0-universal.dmg][Emacs 25 nightly build]].
 
 * Symlink =~/.emacs.d= to this directory
 

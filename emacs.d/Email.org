@@ -93,6 +93,13 @@
                     (nnir-search-engine imap))))
   #+END_SRC
 
+  Let's make sure Gnus uses the internet connection to send mail when it can,
+  rather than always queue mail when in unplugged mode.
+
+  #+BEGIN_SRC emacs-lisp
+  (setq gnus-agent-queue-mail nil)
+  #+END_SRC
+
   A list of groups I am subscribed to. I am honestly not certain what this does.
 
   #+BEGIN_SRC emacs-lisp

@@ -149,13 +149,6 @@
              (expiry-wait . never))))
   #+END_SRC
 
-  Add a key binding to start an offlineimap run from Gnus.
-
-  #+BEGIN_SRC emacs-lisp
-  (define-key gnus-group-mode-map "o" 'offlineimap)
-  (define-key gnus-group-mode-map "O" 'offlineimap-kill)
-  #+END_SRC
-
 * Sending Mail
 
   Set up defaults for sending email.
@@ -248,24 +241,6 @@
   #+BEGIN_SRC emacs-lisp
     (use-package message-x :ensure t)
   #+END_SRC
-
-  Load the offlineimap package before Gnus starts.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package offlineimap
-      :ensure t)
-  #+END_SRC
-
-  Supply passwords to offlineimap
-
-  #+BEGIN_SRC emacs-lisp
-    (defun offlineimap-get-password (host port)
-         (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
-                (hostentry (netrc-machine netrc host port port)))
-           (when hostentry (netrc-get hostentry "password"))))
-  #+END_SRC
-
-  This requires the [[file:README.org::*Start%20the%20Emacs%20Daemon][Emacs server to be running]].
 
 * Managing Contacts
 

@@ -68,28 +68,28 @@
     (require 'nnir)
   #+END_SRC
 
-  For reading bona fide news I use [[file:~/Dotfiles/Leafnode.org][Leafnode]] running on my local machine so I can
-  read news offline. This is more to avoid hangs when starting Gnus when I am
-  offline than anything else. (I use a laptop and often have no internet where I
-  am.)
+  For reading bona fide news I use [[http://gmane.org][Gmane]]. Although I prefer email
+  subscriptions because they sync read marks via IMAP. (This is important
+  because I check the same accounts from multiple machines.)
+
+  Previously I used Leafnode to avoid hangs when starting Gnus, but now I'm
+  experimenting with `gnus-unplugged'. (I use a laptop and often have no
+  internet where I am.)
 
   #+BEGIN_SRC emacs-lisp
-    (setq gnus-select-method '(nntp "localhost"))
+    (setq gnus-select-method '(nntp "news.gmane.org"))
   #+END_SRC
 
   I also have two mail accounts. I don't subscribe to work mail folders on my
-  personal account, but for convenience this config is the same. See [[file:OfflineIMAP.org][OfflineIMAP]]
-  for more details on this setup.
+  personal account, but for convenience this config is the same.
 
   #+BEGIN_SRC emacs-lisp
     (setq gnus-secondary-select-methods
           '((nnimap "Work"
-                    (nnimap-stream shell)
-                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Work")
+                    (nnimap-address "imap.gmail.com")
                     (nnir-search-engine imap))
             (nnimap "Play"
-                    (nnimap-stream shell)
-                    (nnimap-shell-program "/usr/local/opt/dovecot/libexec/dovecot/imap -o mail_location=maildir:$HOME/Mail/Play")
+                    (nnimap-address "imap.mail.me.com")
                     (nnir-search-engine imap))))
   #+END_SRC
 

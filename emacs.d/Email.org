@@ -268,10 +268,17 @@
 
       ;; Only add contacts for mail addressed to me
       (setq bbdb-accept-message-alist
-            '(("to" . "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.net")))
+            `((("To" "From") . ,bbdb-user-mail-address-re)))
 
       (setq bbdb-ignore-message-alist
-            '(("from" . "no.?reply@\\|notifications@\\|jira@")))
+            '(("From" . "no.reply@\\|noreply@\\|notifications@\\|jira@")))
+
+      (setq gnus-select-group-hook
+            '(lambda ()
+               (setq bbdb/news-auto-create-p
+                     (or (string= "INBOX" gnus-newsgroup-name)
+                         (string= "Archive" gnus-newsgroup-name)))))
+
 
       :config
       (bbdb-initialize 'gnus 'message)

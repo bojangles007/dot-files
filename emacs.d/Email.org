@@ -135,11 +135,14 @@
               (address "stig@brautaset.org")))
 
             ("^nnimap\\+Work"
-             (gcc-self . "nnimap+Work:[Gmail].Sent Mail")
-             (expiry-target . "nnimap+Work:[Gmail].Bin")
+             (gcc-self . "nnimap+Work:[Gmail]/Sent Mail")
+             (expiry-target . "nnimap+Work:[Gmail]/Bin")
              (posting-style
               (address "sbrautaset@laterpay.net")
               (organisation "LaterPay GmbH")))
+
+            (":Vendor"
+             (expiry-wait . 14))
 
             (":Lists"
              (expiry-target . delete)

@@ -11,9 +11,6 @@
   follow a few newsgroups, so it seemed a good fit.
 
 * Gnus setup
-  :PROPERTIES:
-  :header-args:emacs-lisp: :tangle ~/.gnus.el
-  :END:
 
   This section (and only this!) is written to =~/.gnus.el= rather than
   =Gnus.el= in this directory. We could probably just set it here and make
@@ -91,6 +88,16 @@
             (nnimap "Play"
                     (nnimap-address "imap.mail.me.com")
                     (nnir-search-engine imap))))
+  #+END_SRC
+
+  It seems for that using gnutls-cli always fails, so let's just try openssl
+  first. It might speed things up a bit.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq tls-program
+          '("openssl s_client -connect %h:%p -CAfile /etc/ssl/certs/ca-certificates.crt -no_ssl2 -ign_eof"
+            "gnutls-cli --x509cafile /etc/ssl/certs/ca-certificates.crt -p %p %h"
+            "gnutls-cli --x509cafile /etc/ssl/certs/ca-certificates.crt -p %p %h --protocols ssl3"))
   #+END_SRC
 
   Let's make sure Gnus uses the internet connection to send mail when it can,

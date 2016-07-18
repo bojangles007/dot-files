@@ -55,11 +55,13 @@
              (file "tpl-todo.org") :empty-lines-before 1)
             ("pl" "Logbook Entry" entry (file+datetree "LifeLog.org")
              (file "tpl-logbook.org"))
-        
             ("w" "Work templates")
             ("wt" "TODO Entry" entry (file+headline "Work.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
-            ("wl" "Logbook Entry" entry (file+datetree "WorkLog.org") 
+            ("wn" "New Starter" entry (file+headline "Work.org" "Capture")
+             (file "tpl-new-starter.org") :empty-lines-before 1)
+            ("wi" "New Invoice" plain (file "invoices/new.org") (file "tpl-invoice.org"))
+            ("wl" "Logbook Entry" entry (file+datetree "WorkLog.org")
              (file "tpl-logbook.org"))))
   #+END_SRC
 

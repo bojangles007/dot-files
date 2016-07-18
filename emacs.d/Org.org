@@ -107,6 +107,10 @@
             '((:prologue . "exec 2>&1")
               (:epilogue . ":")))
 
+
+      ;; If running interactively, I want export to copy to the kill-ring
+      (setq org-export-copy-to-kill-ring 'if-interactive)
+
       :config
       (org-babel-do-load-languages
        'org-babel-load-languages

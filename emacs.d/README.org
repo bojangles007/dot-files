@@ -819,8 +819,14 @@
    entire matched line from the file where it was found by hitting =C-c C-d=
    on it. I use this _a lot_ when cleaning up Hieradata.
 
+   Recently ag broke wgrep-ag by starting to group its output. The grouping is
+   quite nice, but I prefer working wgrep so I turn the grouping off.
+
    #+BEGIN_SRC emacs-lisp
-     (use-package wgrep-ag :ensure t)
+     (use-package wgrep-ag
+       :ensure t
+       :init
+       (setq ag-group-matches nil))
    #+END_SRC
 
 ** Projectile

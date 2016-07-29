@@ -37,7 +37,7 @@
 
 * Install Emacs & Friends
 
-  See [[emacs.d/README.org]].
+  See [[file:emacs.d/README.org][emacs.d/README.org]].
 
 * The Friendly Interactive Shell
 

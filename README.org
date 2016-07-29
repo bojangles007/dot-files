@@ -73,29 +73,6 @@
     chsh -s /usr/local/bin/fish
   #+END_SRC
 
-* Cluster SSH
-
-  This requires a bit of hackery until [[https://github.com/brockgr/csshx/pull/77][my patch to make csshx behave in Zsh]]
-  is merged.
-
-  First we create a new =~/.clusters= file if there are none:
-
-  #+BEGIN_SRC sh
-    touch ~/.clusters
-  #+END_SRC
-
-  Then we tell =csshx= to look for clusters in =~/.clusters=.
-
-  #+BEGIN_SRC sh :tangle ~/.csshxrc
-    extra_cluster_file=~/.clusters
-  #+END_SRC
-
-  Then we install it from my own hacked repo:
-
-  #+BEGIN_SRC sh
-    brew install https://raw.github.com/stig/dot-files/master/csshx/csshx.rb --HEAD
-  #+END_SRC
-
 * Git
 
   Set up my basic details:

@@ -138,6 +138,7 @@
              (gcc-self . "nnimap+Work:[Gmail]/Sent Mail")
              (expiry-target . "nnimap+Work:[Gmail]/Bin")
              (posting-style
+              (signature-file "~/CloudDocs/LaterPay.signature")
               (address "sbrautaset@laterpay.net")
               (organisation "LaterPay GmbH")))
 

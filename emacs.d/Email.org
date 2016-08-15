@@ -263,26 +263,20 @@
       :init
       (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb")
 
-      ;; Don't show additions to BBDB in a separate window
-      (setq bbdb-mua-pop-up nil)
-
       ;; My own email addresses
       (setq bbdb-user-mail-address-re
-            "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.net")
+            "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.")
 
       ;; Only add contacts for mail addressed to me
-      (setq bbdb-accept-message-alist
-            `((("To" "From") . ,bbdb-user-mail-address-re)))
+      (setq bbdb-accept-message-alist t)
+            `(("To" . ,bbdb-user-mail-address-re)))
 
+      ;; Don't add contacts for these senders, regardless of who it's addressed to
       (setq bbdb-ignore-message-alist
             '(("From" . "no.reply@\\|noreply@\\|notifications@\\|jira@")))
 
-      (setq gnus-select-group-hook
-            '(lambda ()
-               (setq bbdb/news-auto-create-p
-                     (or (string= "INBOX" gnus-newsgroup-name)
-                         (string= "Archive" gnus-newsgroup-name)))))
-
+      ;; Ask me whether to add contacts
+      (setq bbdb-update-records-p 'query)
 
       :config
       (bbdb-initialize 'gnus 'message)

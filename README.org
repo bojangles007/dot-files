@@ -144,3 +144,15 @@
   #+END_SRC
 
 ** TODO Describe what the plugins do
+* Some general settings
+
+  Disable smart quotes as they’re annoying when typing code.
+  #+BEGIN_SRC sh
+  defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+  #+END_SRC
+
+  Disable smart dashes as they’re annoying when typing code.
+
+  #+BEGIN_SRC sh
+  defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+  #+END_SRC

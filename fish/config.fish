@@ -1,10 +1,10 @@
 set EDITOR emacsclient
 
 # Add to path for psql
-set PATH (ls -d1  /Applications/Postgres.app/Contents/Versions/*/bin | tail -1) $PATH
+set PATH /Applications/Postgres.app/Contents/Versions/latest/bin $PATH
 
 # emacsclient
-set PATH (ls -d1 /Applications/Emacs.app/Contents/MacOS/bin-x86_64-* | tail -1) $PATH
+set PATH /Applications/Emacs.app/Contents/MacOS/bin $PATH
 
 # Jekyll etc
 set PATH $HOME/.gem/ruby/2.0.0/bin $PATH

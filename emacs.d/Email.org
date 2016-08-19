@@ -273,7 +273,7 @@
 
       ;; Don't add contacts for these senders, regardless of who it's addressed to
       (setq bbdb-ignore-message-alist
-            '(("From" . "no.reply@\\|noreply@\\|notifications@\\|jira@")))
+            '(("From" . "no.reply@\\|noreply@\\|notifications@\\|jira@\\|@notifications.workablemail.com")))
 
       ;; Ask me whether to add contacts
       (setq bbdb-update-records-p 'query)

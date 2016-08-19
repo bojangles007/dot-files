@@ -268,7 +268,7 @@
             "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.")
 
       ;; Only add contacts for mail addressed to me
-      (setq bbdb-accept-message-alist t)
+      (setq bbdb-accept-message-alist
             `(("To" . ,bbdb-user-mail-address-re)))
 
       ;; Don't add contacts for these senders, regardless of who it's addressed to

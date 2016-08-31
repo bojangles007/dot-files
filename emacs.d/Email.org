@@ -220,6 +220,12 @@
     (add-hook 'message-mode-hook 'turn-on-orgtbl)
   #+END_SRC
 
+  Turn off auto-fill for message mode.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'message-mode-hook 'turn-off-auto-fill)
+  #+END_SRC
+
   Add a function to cycle between from addresses in the message buffer.
   Credit to [[https://www.emacswiki.org/emacs/GnusTutorial][GnusTutorial]] which is where I found the example I adopted this
   from.
@@ -263,15 +269,18 @@
       :init
       (setq bbdb-file-remote "~/Library/Mobile Documents/com~apple~CloudDocs/Sync/bbdb")
 
+      (setq bbdb-mua-pop-up 'horiz)
+
       ;; My own email addresses
       (setq bbdb-user-mail-address-re
-            "stig@brautaset.org\\|stig.brautaset@icloud.com\\|sbrautaset@laterpay.")
+            "stig@brautaset.org\\|sbrautaset@laterpay.net")
 
       ;; Only add contacts for mail addressed to me
       (setq bbdb-accept-message-alist
             `(("To" . ,bbdb-user-mail-address-re)))
 
       ;; Don't add contacts for these senders, regardless of who it's addressed to
+      (require 'subr-x)
       (setq bbdb-ignore-message-alist
             `(("From" . ,(string-join '("@dpd.co.uk"
                                         "@notifications.workablemail.com"
@@ -279,13 +288,15 @@
                                         "devbugs@apple.com"
                                         "calendar-notification@google.com"
                                         "jira@"
-                                        "no.reply@"
-                                        "noreply@"
+                                        "support@"
+                                        "feedback@"
+                                        "nobody@"
+                                        "no.?reply@"
                                         "notifications@")
                                       "\\|"))))
 
       ;; Ask me whether to add contacts
-      (setq bbdb-update-records-p 'query)
+      (setq bbdb-update-records-p 'update)
 
       :config
       (bbdb-initialize 'gnus 'message)

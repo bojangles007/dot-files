@@ -7,4 +7,4 @@ set PATH /Applications/Postgres.app/Contents/Versions/latest/bin $PATH
 set PATH /Applications/Emacs.app/Contents/MacOS/bin $PATH
 
 # Jekyll etc
-set PATH $HOME/.gem/ruby/2.0.0/bin $PATH
+set PATH $HOME/.gem/ruby/2.3.0/bin $PATH

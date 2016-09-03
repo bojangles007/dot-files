@@ -37,8 +37,8 @@
   #+BEGIN_SRC sh
       cat <<EOF > /tmp/emacs
     cask 'emacs' do
-      version 'pretest-25.1-rc1'
-      sha256 '572dff6723feef0bda86218cfabe09663ed6df1b6a34594084f9a7dbdf957c77'
+      version 'pretest-25.1-rc2'
+      sha256 '66439f5ac002c549ec82f43843b10e1157725c6ddb5c49aebb491415c0d16c5c'
 
       url "http://emacsformacosx.com/emacs-builds/Emacs-#{version}-universal.dmg"
       name 'Emacs'

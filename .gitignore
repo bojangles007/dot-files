@@ -12,7 +12,14 @@
 *.el
 *.sh
 *.html
-!emacs.d/init.el
-emacs.d/bbdb
-emacs.d/bbdb-vcard/
+
+
+# OS X
+.DS_Store
+
+# Emacs
+!/emacs.d/init.el
+/emacs.d/bbdb
+/emacs.d/bbdb-vcard/
 /emacs.d/.org-id-locations
+/emacs.d/network-security.data

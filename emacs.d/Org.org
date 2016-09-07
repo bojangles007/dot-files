@@ -50,19 +50,13 @@
   #+name: capturing
   #+BEGIN_SRC emacs-lisp :tangle no
     (setq org-capture-templates
-          '(("p" "Private Templates")
-            ("pt" "TODO Entry" entry (file+headline "Life.org" "Capture")
+          '(("t" "TODO Entry" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
-            ("pl" "Logbook Entry" entry (file+datetree "LifeLog.org")
+            ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org"))
-            ("w" "Work templates")
-            ("wt" "TODO Entry" entry (file+headline "Work.org" "Capture")
-             (file "tpl-todo.org") :empty-lines-before 1)
-            ("wn" "New Starter" entry (file+headline "Work.org" "Capture")
+            ("n" "New Starter" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-new-starter.org") :empty-lines-before 1)
-            ("wi" "New Invoice" plain (file "invoices/new.org") (file "tpl-invoice.org"))
-            ("wl" "Logbook Entry" entry (file+datetree "WorkLog.org")
-             (file "tpl-logbook.org"))))
+            ("i" "New Invoice" plain (file "LaterPay-Invoices.org") (file "tpl-laterpay-invoice.org"))))
   #+END_SRC
 
 * Putting it all together
@@ -133,7 +127,8 @@
   It should be available on Melpa now.
 
   #+BEGIN_SRC emacs-lisp
-    (use-package ox-jira)
+    (use-package ox-jira
+      :ensure t)
   #+END_SRC
 
   I'm not that fond of writing Markdown anymore either:

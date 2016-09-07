@@ -142,6 +142,10 @@
               (address "sbrautaset@laterpay.net")
               (organisation "LaterPay GmbH")))
 
+            ("JIRA"
+             (posting-style
+              (signature nil)))
+
             (":Vendor"
              (expiry-wait . 14))
 

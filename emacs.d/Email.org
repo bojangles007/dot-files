@@ -144,6 +144,8 @@
 
             ("JIRA"
              (posting-style
+              (expiry-wait . 14)
+              (total-expire . t)
               (signature nil)))
 
             (":Vendor"

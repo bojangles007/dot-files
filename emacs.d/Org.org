@@ -59,6 +59,16 @@
             ("i" "New Invoice" plain (file "LaterPay-Invoices.org") (file "tpl-laterpay-invoice.org"))))
   #+END_SRC
 
+* Org Babel
+
+  I wrote a module for executing AppleScript from Babel. Let's install it, so
+  we can make sure it works.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ob-applescript
+      :ensure t)
+  #+END_SRC
+
 * Putting it all together
 
   The particular version of package I use is annoying to install because the
@@ -112,6 +122,7 @@
          (clojure . t)
          (python . t)
          (ditaa . t)
+         (applescript . t)
          (dot . t)
          (sql . t)
          (sh . t))))

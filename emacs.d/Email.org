@@ -100,6 +100,13 @@
     (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]")
   #+END_SRC
 
+  Speed up checking for messages by only checking subscribed groups for new
+  messages.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq gnus-activate-level gnus-level-subscribed)
+  #+END_SRC
+
   Always keep the INBOX visible, even if it has no messages. This is handy so
   that I can always select it and have the above posting-styles applied when
   writing new mail.

@@ -12,20 +12,6 @@
 
 * Gnus setup
 
-  This section (and only this!) is written to =~/.gnus.el= rather than
-  =Gnus.el= in this directory. We could probably just set it here and make
-  =~/.gnus.el= an empty file, but this should be marginally better for
-  fiddling with Gnus config without restarting Emacs.
-
-  First write a header to =~/.gnus.el= so it won't be confused with the real
-  config. Sadness and woe will betide you if you edit it and start Gnus: your
-  changes will be summarily overwritten.
-
-  #+BEGIN_SRC emacs-lisp
-    ;; WARNING: The primary source of this config is in the ~/Dotfiles/Gnus.org
-    ;; file. Any changes made to Gnus.el will be blown away when Gnus starts.
-  #+END_SRC
-
   First of all, discourage Rich Text messages. Emacs doesn't like them, or
   something.
 

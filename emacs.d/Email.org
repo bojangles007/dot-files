@@ -129,9 +129,9 @@
               (organisation "LaterPay GmbH")))
 
             ("JIRA"
+             (expiry-wait . 14)
+             (total-expire . t)
              (posting-style
-              (expiry-wait . 14)
-              (total-expire . t)
               (signature nil)))
 
             ("Confluence"

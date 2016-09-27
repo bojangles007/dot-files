@@ -134,6 +134,12 @@
               (total-expire . t)
               (signature nil)))
 
+            ("Confluence"
+             (expiry-wait . 14)
+             (total-expire . t)
+             (posting-style
+              (signature nil)))
+
             (":Vendor"
              (expiry-wait . 14))
 
@@ -280,6 +286,7 @@
                                         "devbugs@apple.com"
                                         "calendar-notification@google.com"
                                         "jira@"
+                                        "confluence@"
                                         "support@"
                                         "feedback@"
                                         "nobody@"

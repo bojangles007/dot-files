@@ -86,7 +86,7 @@
   (setq gnus-agent-queue-mail nil)
   #+END_SRC
 
-  A list of groups I am subscribed to. I am honestly not certain what this does.
+  A list of groups I subscribe to. I am honestly not certain what this does.
 
   #+BEGIN_SRC emacs-lisp
     (setq message-subscribed-addresses

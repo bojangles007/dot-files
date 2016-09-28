@@ -37,13 +37,8 @@
   #+BEGIN_SRC sh
       cat <<EOF > /tmp/emacs
     cask 'emacs' do
-      version 'pretest-25.1-rc2'
-      sha256 '66439f5ac002c549ec82f43843b10e1157725c6ddb5c49aebb491415c0d16c5c'
-
-      url "http://emacsformacosx.com/emacs-builds/Emacs-#{version}-universal.dmg"
-      name 'Emacs'
-      homepage 'http://emacsformacosx.com/'
-      license :oss
+      version '25.1'
+      sha256 '5bd04c82d2a091a48d7b9b80a26fa31f64767f2e553440a556d12be5815e29ef'
 
       app 'Emacs.app'
       binary "#{appdir}/Emacs.app/Contents/MacOS/bin/emacsclient"
@@ -53,7 +48,7 @@
     end
 EOF
 
-  brew cask install file:///tmp/emacs
+  brew cask install --force file:///tmp/emacs
   #+END_SRC
 
 * Symlink =~/.emacs.d= to this directory

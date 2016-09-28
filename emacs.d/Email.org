@@ -158,10 +158,12 @@
             (":Vendor"
              (expiry-wait . 14))
 
-            (":Lists"
-             (expiry-target . delete)
-             (expiry-wait . 14)
-             (total-expire . t))
+            (".*emacs.*"
+             (posting-style
+              (signature (concat ": "
+                                 (emacs-version)
+                                 "\n: "
+                                 (org-version nil t)))))
 
             ("^nnrss:"
              (mm-discouraged-alternatives nil))

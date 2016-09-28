@@ -115,6 +115,8 @@
     (setq gnus-permanently-visible-groups "INBOX")
   #+END_SRC
 
+** Per-mailbox Parameters
+
   Set different parameters based on the group/folder I currently have open.
 
   #+BEGIN_SRC emacs-lisp
@@ -134,6 +136,12 @@
               (signature-file "~/CloudDocs/LaterPay.signature")
               (address "sbrautaset@laterpay.net")
               (organisation "LaterPay GmbH")))
+
+            ("Sentry"
+             (expiry-wait . 14)
+             (total-expire . t)
+             (posting-style
+              (signature nil)))
 
             ("JIRA"
              (expiry-wait . 14)
@@ -159,7 +167,7 @@
              (mm-discouraged-alternatives nil))
 
             ("INBOX"
-             (expiry-wait . immediate))
+             (expiry-wait . 1))
 
             (":Archive"
              (expiry-wait . never))))
@@ -290,6 +298,7 @@
             `(("From" . ,(string-join '("@dpd.co.uk"
                                         "@notifications.workablemail.com"
                                         "auto-confirm@amazon.co.uk"
+                                        "@laterpay.atlassian.net"
                                         "devbugs@apple.com"
                                         "calendar-notification@google.com"
                                         "jira@"

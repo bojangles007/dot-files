@@ -160,10 +160,14 @@
 
             (".*emacs.*"
              (posting-style
-              (signature (concat ": "
-                                 (emacs-version)
-                                 "\n: "
-                                 (org-version nil t)))))
+              (signature
+               ;; Inspired by Eric S Fraga's signature on the orgmode mailing list
+               (concat ": "
+                       user-full-name
+                       ", "
+                       (car (split-string (emacs-version) " ("))
+                       ", "
+                       (car (split-string (org-version nil t) " ("))))))
 
             ("^nnrss:"
              (mm-discouraged-alternatives nil))

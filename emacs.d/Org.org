@@ -125,10 +125,12 @@
          (applescript . t)
          (dot . t)
          (sql . t)
-         (shell . t))))
+         (shell . t)))
+
+      (add-hook 'org-mode-hook 'auto-fill-mode nil t))
   #+END_SRC
 
-  Ditaa has to be installed manually. It's a cool toy, so let's do that.
+  Ditaa requires a package installed by brew.
 
   #+BEGIN_SRC sh
     brew install ditaa

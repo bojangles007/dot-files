@@ -96,14 +96,10 @@
   #+BEGIN_SRC emacs-lisp :noweb yes
     (use-package org
       :ensure org-plus-contrib
-
       <<key-bindings>>
 
       :init
-      (setq org-babel-clojure-backend 'cider)
-
       <<capturing>>
-
       <<refiling>>
 
       ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer

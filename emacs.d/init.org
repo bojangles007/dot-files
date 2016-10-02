@@ -5,6 +5,44 @@
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
 
+* Load =package.el=
+
+  #+BEGIN_SRC emacs-lisp
+  (require 'package)
+  #+END_SRC
+
+* Add Package Archives & priorities
+
+  I install more than 150 packages using =package.el=. Before we can install packages,
+  we need to add the URLs of the package archives we want to use.
+
+  I use the Melpa package archive. Marmelade seems to overlap with melpa, so
+  let's ignore that.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  #+END_SRC
+
+  I also add the `org' archive as I want to install the `org-plus-contrib'
+  package, which includes `org-mime'.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+  #+END_SRC
+
+  Since Emacs 25.1 we can now set a [[http://endlessparentheses.com/new-in-emacs-25-1-archive-priorities-and-downgrading-packages.html][priority for package archives]]. I prefer to
+  run stable packages, so make single-package repos and melpa-stable the
+  priority, with bleeding edge melpa last.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq package-archive-priorities
+          '(("org" . 30)
+            ("melpa-stable" . 20)
+            ("gnu" . 10)
+            ("melpa" . 0)))
+  #+END_SRC
+
 * Initialize packages
 
   Initialize packages early, so we load the latest org from ELPA (rather than
@@ -20,25 +58,6 @@
 
   #+BEGIN_SRC emacs-lisp
     (setq package-enable-at-startup nil)
-  #+END_SRC
-
-* Add Package Archives
-
-  I install quite a few packages from [[http://melpa.org/][melpa]]. Before we can install packages,
-  we need to add the URLs of the package archives we want to use.
-
-  I use the Melpa package repos. Marmelade seems to largely overlap with
-  melpa, so let's ignore that.
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  #+END_SRC
-
-  I want to install the `org-plus-contrib' package, mostly for the `org-mime'
-  package, so I also add the org Melpa repo.
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
   #+END_SRC
 
 * Install =use-package=

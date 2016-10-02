@@ -1,10 +1,19 @@
+(require 'package)
+
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+
+(setq package-archive-priorities
+      '(("org" . 30)
+        ("melpa-stable" . 20)
+        ("gnu" . 10)
+        ("melpa" . 0)))
+
 (package-initialize)
 
 (setq package-enable-at-startup nil)
-
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (unless (package-installed-p 'use-package)
   (message "%s" "Refreshing package database...")

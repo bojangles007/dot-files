@@ -69,6 +69,23 @@
       :ensure t)
   #+END_SRC
 
+* Org Export
+
+  I hate writing JIRA markup, so I wrote a JIRA export backend for Org mode.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ox-jira
+      :ensure t)
+  #+END_SRC
+
+  I'm not that fond of writing Markdown either. I don't feel the need to
+  install these by default, but I load them if they are present.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package ox-md)
+  #+END_SRC
+
+
 * Putting it all together
 
   The particular version of package I use is annoying to install because the
@@ -134,21 +151,6 @@
 
   #+BEGIN_SRC sh
     brew install ditaa
-  #+END_SRC
-
-  I hate writing JIRA markup, so I wrote a JIRA export backend for Org mode.
-  It should be available on Melpa now.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package ox-jira
-      :ensure t)
-  #+END_SRC
-
-  I'm not that fond of writing Markdown anymore either:
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package ox-gfm)
-    (use-package ox-md)
   #+END_SRC
 
   Not only that, but I want to be able to create MIME HTML mail based on

@@ -7,17 +7,18 @@
 
 * Load =package.el=
 
+  I install more than 60 packages using =package.el=. First we need to load
+  that package.
+
   #+BEGIN_SRC emacs-lisp
   (require 'package)
   #+END_SRC
 
 * Add Package Archives & priorities
 
-  I install more than 150 packages using =package.el=. Before we can install packages,
-  we need to add the URLs of the package archives we want to use.
-
-  I use the Melpa package archive. Marmelade seems to overlap with melpa, so
-  let's ignore that.
+  Before we can install packages, we need to add the URLs of the package
+  archives we want to use. I like to use Melpa-stable where possible. I don't
+  use Marmelade as it seems to overlap with Melpa.
 
   #+BEGIN_SRC emacs-lisp
     (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))

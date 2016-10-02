@@ -14,6 +14,68 @@
   To avoid having one gigantic section, this file uses NOWEB syntax to weave
   together config snippets.
 
+  The particular version of package I use is annoying to install because the
+  installed package has a different name from what you would use in your
+  config. However, =use-package= supports this by passing the name of the
+  package to install as the value to =:ensure=.
+
+  #+BEGIN_SRC emacs-lisp :noweb yes
+    (use-package org
+      :ensure org-plus-contrib
+      <<key-bindings>>
+
+      :init
+      <<capturing>>
+      <<refiling>>
+
+      ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
+      (setq org-log-into-drawer t)
+
+      ;; If a gmane or google groups link is present, prefer that.
+      ;; Get a Gnus link with `C-u C-c l'.
+      (setq org-gnus-prefer-web-links t)
+
+      ;; Sometimes I accidentally edit non-visible parts of org document. This
+      ;; helps, apparently.
+      (setq org-catch-invisible-edits t)
+
+      ;; Don't execute code blocks during export
+      (setq org-export-babel-evaluate nil)
+
+      ;; Tell Org where to find ditaa jar
+      (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+
+      ;; Always include stderr output for shell
+      (setq org-babel-default-header-args:sh
+            '((:prologue . "exec 2>&1")
+              (:epilogue . ":")))
+
+
+      ;; If running interactively, I want export to copy to the kill-ring
+      (setq org-export-copy-to-kill-ring 'if-interactive)
+
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((emacs-lisp . t)
+         (clojure . t)
+         (python . t)
+         (ditaa . t)
+         (applescript . t)
+         (dot . t)
+         (sql . t)
+         (shell . t)))
+
+      (add-hook 'org-mode-hook 'auto-fill-mode nil t))
+  #+END_SRC
+
+  Ditaa requires a package installed by brew.
+
+  #+BEGIN_SRC sh
+    brew install ditaa
+  #+END_SRC
+
+
 * Key bindings
 
   The Org manual expects the top four of these to be available in any mode, so
@@ -83,70 +145,6 @@
 
   #+BEGIN_SRC emacs-lisp
     (use-package ox-md)
-  #+END_SRC
-
-
-* Putting it all together
-
-  The particular version of package I use is annoying to install because the
-  installed package has a different name from what you would use in your
-  config. However, =use-package= supports this by passing the name of the
-  package to install as the value to =:ensure=.
-
-  #+BEGIN_SRC emacs-lisp :noweb yes
-    (use-package org
-      :ensure org-plus-contrib
-      <<key-bindings>>
-
-      :init
-      <<capturing>>
-      <<refiling>>
-
-      ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
-      (setq org-log-into-drawer t)
-
-      ;; If a gmane or google groups link is present, prefer that.
-      ;; Get a Gnus link with `C-u C-c l'.
-      (setq org-gnus-prefer-web-links t)
-
-      ;; Sometimes I accidentally edit non-visible parts of org document. This
-      ;; helps, apparently.
-      (setq org-catch-invisible-edits t)
-
-      ;; Don't execute code blocks during export
-      (setq org-export-babel-evaluate nil)
-
-      ;; Tell Org where to find ditaa jar
-      (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
-
-      ;; Always include stderr output for shell
-      (setq org-babel-default-header-args:sh
-            '((:prologue . "exec 2>&1")
-              (:epilogue . ":")))
-
-
-      ;; If running interactively, I want export to copy to the kill-ring
-      (setq org-export-copy-to-kill-ring 'if-interactive)
-
-      :config
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((emacs-lisp . t)
-         (clojure . t)
-         (python . t)
-         (ditaa . t)
-         (applescript . t)
-         (dot . t)
-         (sql . t)
-         (shell . t)))
-
-      (add-hook 'org-mode-hook 'auto-fill-mode nil t))
-  #+END_SRC
-
-  Ditaa requires a package installed by brew.
-
-  #+BEGIN_SRC sh
-    brew install ditaa
   #+END_SRC
 
 * Presenting

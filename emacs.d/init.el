@@ -24,6 +24,8 @@
   (require 'use-package))
 (require 'bind-key)
 
+(add-to-list 'package-selected-packages 'use-package)
+
 (let ((dotfiles-dir (file-name-directory (or (buffer-file-name)
                                              load-file-name))))
   (mapc #'org-babel-load-file

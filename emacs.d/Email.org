@@ -239,10 +239,15 @@
     (add-hook 'message-mode-hook 'turn-on-orgtbl)
   #+END_SRC
 
-  Turn off auto-fill for message mode.
+  I haven't found a way to turn off `auto-fill-mode' selectively, but we can
+  fake it by telling auto-fill-mode to never break.
 
   #+BEGIN_SRC emacs-lisp
-    (add-hook 'message-mode-hook 'turn-off-auto-fill)
+    (add-hook 'message-mode-hook
+              (lambda ()
+                (set (make-local-variable 'fill-nobreak-predicate)
+                     (lambda ()
+                       t))))
   #+END_SRC
 
   Add a function to cycle between from addresses in the message buffer.

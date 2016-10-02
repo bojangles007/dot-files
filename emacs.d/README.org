@@ -76,6 +76,15 @@ EOF
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'exec-path "/usr/local/bin")
    #+END_SRC
+
+** Auto fill mode
+
+   I like it when Emacs automatically breaks lines I type.
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'text-mode-hook 'auto-fill-mode)
+   #+END_SRC
+
 ** Don't hide Emacs when  ⌘-h is pressed
 
    In Emacs Mac Port, ⌘-h bypasses any Emacs keybindings and instead sends a

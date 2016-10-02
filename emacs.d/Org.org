@@ -149,16 +149,6 @@
     brew install ditaa
   #+END_SRC
 
-  Not only that, but I want to be able to create MIME HTML mail based on
-  org-formatted source. There's a package for that too, of course.
-
-  #+BEGIN_SRC emacs-lisp
-    (require 'org-mime)
-    (add-hook 'message-mode-hook
-              (lambda ()
-                (local-set-key "\C-c\C-h" 'org-mime-htmlize)))
-  #+END_SRC
-
 * Presenting
 
   Let's try presenting with Emacs.

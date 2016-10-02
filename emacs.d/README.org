@@ -594,10 +594,7 @@ EOF
      (use-package leuven-theme
        :ensure t
        :config
-       (load-theme 'leuven t)
-
-       ;; For some reason this isn't detected, so add it manually
-       (add-to-list 'package-selected-packages 'leuven-theme))
+       (load-theme 'leuven t))
    #+END_SRC
 
 ** Magit

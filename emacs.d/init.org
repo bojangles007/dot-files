@@ -82,12 +82,6 @@
     (require 'bind-key)
   #+END_SRC
 
-  Ensure we keep =use-package= around.
-
-  #+BEGIN_SRC emacs-lisp
-  (add-to-list 'package-selected-packages 'use-package)
-  #+END_SRC
-
 * Load the remaining config
 
   Now find all capitalised =.org= files in this directory, tangle them (i.e.

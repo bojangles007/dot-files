@@ -1,15 +1,15 @@
 #+TITLE: Org Mode
 #+AUTHOR: Stig Brautaset
 #+OPTIONS: f:t h:4
-#+PROPERTY: header-args:emacs-lisp :tangle Org.el
+#+PROPERTY: header-args:emacs-lisp :tangle yes
 #+PROPERTY: header-args:sh         :tangle yes
 #+PROPERTY: header-args            :results silent
 * Introduction
 
-  I used to use Markdown for my writing, but now I tend to use Org mode. The
-  Emacs org mode's support for tables, TOC, footnotes, TODO and agenda items
-  makes it an easy choice. I can even export to two different flavours of
-  Markdown if I want!
+  I now use Org mode for all writing I initiate. The Emacs org mode's support
+  for tables, TOC, footnotes, TODO and agenda items makes it an easy choice.
+  Gists and GitHub READMEs support Org mode too, and I can export to other
+  formats including if I want.
 
   To avoid having one gigantic section, this file uses NOWEB syntax to weave
   together config snippets.

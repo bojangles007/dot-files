@@ -114,6 +114,8 @@
     (setq org-capture-templates
           '(("t" "TODO Entry" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
+            ("p" "Project" entry (file+headline "Agenda.org" "Capture")
+             (file "tpl-proj.org") :empty-lines-before 1)
             ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org"))
             ("n" "New Starter" entry (file+headline "Agenda.org" "Capture")

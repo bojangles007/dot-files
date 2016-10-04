@@ -75,7 +75,6 @@
     brew install ditaa
   #+END_SRC
 
-
 * Key bindings
 
   The Org manual expects the top four of these to be available in any mode, so
@@ -116,6 +115,8 @@
              (file "tpl-todo.org") :empty-lines-before 1)
             ("p" "Project" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-proj.org") :empty-lines-before 1)
+            ("b" "Blog Post" entry (file+headline "Agenda.org" "Blog")
+             (file "tpl-blog-post.org") :empty-lines-before 1)
             ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org"))
             ("n" "New Starter" entry (file+headline "Agenda.org" "Capture")

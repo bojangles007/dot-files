@@ -297,7 +297,7 @@
 
       ;; My own email addresses
       (setq bbdb-user-mail-address-re
-            "stig@brautaset.org\\|sbrautaset@laterpay.net")
+            "stig.brautaset@icloud.com\\|stig@brautaset.org\\|sbrautaset@laterpay.net")
 
       ;; Only add contacts for mail addressed to me
       (setq bbdb-accept-message-alist
@@ -322,7 +322,7 @@
                                       "\\|"))))
 
       ;; Ask me whether to add contacts
-      (setq bbdb-update-records-p 'update)
+      (setq bbdb-update-records-p 'create)
 
       :config
       (bbdb-initialize 'gnus 'message)

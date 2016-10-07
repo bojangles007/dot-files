@@ -43,7 +43,7 @@
       (setq org-export-babel-evaluate nil)
 
       ;; Tell Org where to find ditaa jar
-      (setq org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+      (setq org-ditaa-jar-path (-last-item (directory-files "/usr/local/opt/ditaa/libexec" t)))
 
       ;; Always include stderr output for shell
       (setq org-babel-default-header-args:sh

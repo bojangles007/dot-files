@@ -283,6 +283,26 @@
     (use-package message-x :ensure t)
   #+END_SRC
 
+  Install boxquote to make fancy text boxes like this:
+
+  #+BEGIN_EXAMPLE
+    ,----
+    | This is a box quote!
+    `----
+  #+END_EXAMPLE
+
+  You can even set a title!
+
+  #+BEGIN_EXAMPLE
+    ,----[ with a title! ]
+    | This is another box quote
+    `----
+  #+END_EXAMPLE
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package boxquote :ensure t)
+  #+END_SRC
+
 * Managing Contacts
 
   I use BBDB to manage contacts.

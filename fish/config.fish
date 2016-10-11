@@ -3,6 +3,9 @@ set EDITOR emacsclient
 # emacsclient
 set PATH /Applications/Emacs.app/Contents/MacOS/bin $PATH
 
+# Ruby gems
+set PATH (echo ~/.gem/ruby/*/bin) $PATH
+
 eval (python -m virtualfish)
 
 

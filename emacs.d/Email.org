@@ -162,9 +162,7 @@
              (posting-style
               (signature
                ;; Inspired by Eric S Fraga's signature on the orgmode mailing list
-               (concat ": "
-                       user-full-name
-                       ", "
+               (concat "; "
                        (car (split-string (emacs-version) " ("))
                        ", "
                        (car (split-string (org-version nil t) " ("))))))

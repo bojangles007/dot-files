@@ -91,6 +91,7 @@
   #+BEGIN_SRC emacs-lisp
     (setq message-subscribed-addresses
           '("centos-announce@centos.org"
+            "emacs-orgmode@gnu.org"
             "fish-users@lists.sourceforge.net"))
   #+END_SRC
 
@@ -155,8 +156,12 @@
              (posting-style
               (signature nil)))
 
-            (":Vendor"
+            ("Vendor"
              (expiry-wait . 14))
+
+            ("Lists"
+             (expiry-wait . 14)
+             (total-expire . t))
 
             (".*emacs.*"
              (posting-style

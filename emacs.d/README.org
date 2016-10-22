@@ -138,7 +138,15 @@ EOF
      (setq visible-bell t)
    #+END_SRC
 
-** Start in fullscreen
+** Make mouse scrolling smoother
+
+   The adaptive mouse scrolling is far, far too quick so let's turn that off.
+
+   #+BEGIN_SRC emacs-lisp
+   (setq mouse-wheel-progressive-speed nil)
+   #+END_SRC
+
+** Support for fullscreen
 
    I like to run apps in fullscreen mode. Unfortunately emerge, when running
    an Emacs version without Yamamoto's Mac patch set, doesn't really work in

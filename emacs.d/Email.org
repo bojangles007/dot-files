@@ -10,176 +10,92 @@
   have chosen Gnus as my mail reader. I already used Gnus in the past, and I
   follow a few newsgroups, so it seemed a good fit.
 
-* Gnus setup
+* mu4e Setup
 
-  First of all, discourage Rich Text messages. Emacs doesn't like them, or
-  something.
+  It's installed manually via brew, and relies on installing emacs via brew
+  too. (Because Apple's version of emacs is too old.)
 
-  #+BEGIN_SRC emacs-lisp
-  (setq mm-discouraged-alternatives
-     '("text/richtext"))
-  #+END_SRC
-
-  I like to be able to read HTML email. Even in Gnus. Use the built-in
-  renderer. This gives me the best of both worlds, IMO: immediate rendering
-  of content, but open links clicked by mouse in external browser.
+  : brew install emacs --with-cocoa
+  : brew install mu --with-emacs
 
   #+BEGIN_SRC emacs-lisp
-    (setq mm-text-html-renderer 'shr)
-  #+END_SRC
+    (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
 
-  When viewing articles, remove Carriage Returns.
+    (require 'mu4e)
 
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-treat-strip-cr t)
-  #+END_SRC
+    (setq mu4e-mu-binary "/usr/local/bin/mu")
 
-  Load additional libraries we'll use. nnmail is used later to move messages
-  to the correct folder when they are expired. nnir is used to search
-  messages. By loading them at gnus start time, rather than emacs start time,
-  we get a /little/ speed improvement.
+    ;; save attachment to my downloads folder (this can also be a function)
+    (setq mu4e-attachment-dir  "~/Downloads")
 
-  #+BEGIN_SRC emacs-lisp
-    (require 'nnmail)
-    (require 'nnir)
-  #+END_SRC
+    ;; attempt to show images when viewing messages
+    (setq mu4e-view-show-images t)
 
-  For reading bona fide news I use [[http://gmane.org][Gmane]]. Although I prefer email
-  subscriptions because they sync read marks via IMAP. (This is important
-  because I check the same accounts from multiple machines.)
+    ;; use imagemagick, if available
+    (when (fboundp 'imagemagick-register-types)
+      (imagemagick-register-types))
 
-  Previously I used Leafnode to avoid hangs when starting Gnus, but now I'm
-  experimenting with `gnus-unplugged'. (I use a laptop and often have no
-  internet where I am.)
+    (require 'mu4e-contrib)
+    (setq mu4e-html2text-command 'mu4e-shr2text)
 
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-select-method '(nntp "news.gmane.org"))
-  #+END_SRC
+    (add-hook 'mu4e-view-mode-hook
+              (lambda()
+                ;; try to emulate some of the eww key-bindings
+                (local-set-key (kbd "<tab>") 'shr-next-link)
+                (local-set-key (kbd "<backtab>") 'shr-previous-link)))
 
-  I also have two mail accounts. I don't subscribe to work mail folders on my
-  personal account, but for convenience this config is the same.
 
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-secondary-select-methods
-          '((nnimap "Work"
-                    (nnimap-address "imap.gmail.com")
-                    (nnir-search-engine imap))
-            (nnimap "Play"
-                    (nnimap-address "imap.mail.me.com")
-                    (nnir-search-engine imap))))
-  #+END_SRC
+    (setq mu4e-get-mail-command "offlineimap"
+          mu4e-update-interval 300)
 
-  It seems for that using gnutls-cli always fails, so let's just try openssl
-  first. It might speed things up a bit.
+    (setq mu4e-contexts
+          `(,(make-mu4e-context
+              :name "Private"
+              :enter-func (lambda () (mu4e-message "Switch to the Private context"))
+              ;; leave-func not defined
+              :match-func (lambda (msg)
+                            (when msg
+                              (mu4e-message-contact-field-matches msg
+                                                                  :to "stig@brautaset.org")))
+              :vars '((user-mail-address . "stig@brautaset.org")
+                      (mu4e-sent-folder . "/Private/Sent Messages")
+                      (mu4e-drafts-folder . "/Private/Drafts")
+                      (mu4e-trash-folder .  "/Private/Deleted Messages")
+                      (mu4e-refile-folder . "/Private/Archive")
 
-  #+BEGIN_SRC emacs-lisp
-    (setq tls-program
-          '("gnutls-cli -p %p %h"
-            "gnutls-cli -p %p %h --protocols ssl3"
-            "openssl s_client -connect %h:%p -CAfile /etc/ssl/certs/ca-certificates.crt -no_ssl2 -ign_eof"))
-  #+END_SRC
+                      ;; (mu4e-compose-signature
+                      ;;  . (concat "; "
+                      ;;            (car (split-string (emacs-version) " ("))
+                      ;;            ", "
+                      ;;            (car (split-string (org-version nil t) " ("))))
 
-  Let's make sure Gnus uses the internet connection to send mail when it can,
-  rather than always queue mail when in unplugged mode.
+                      ))
 
-  #+BEGIN_SRC emacs-lisp
-  (setq gnus-agent-queue-mail nil)
-  #+END_SRC
+            ,(make-mu4e-context
+              :name "Work"
+              :enter-func (lambda () (mu4e-message "Switch to the Work context"))
+              ;; leave-fun not defined
+              :match-func (lambda (msg)
+                            (when msg
+                              (mu4e-message-contact-field-matches msg
+                                                                  :to "sbrautaset@laterpay.net")))
+              :vars '((user-mail-address . "sbrautaset@laterpay.net")
+                      (mu4e-sent-folder . "/Work/[Gmail].Sent Mail")
+                      (mu4e-drafts-folder . "/Work/[Gmail].Drafts")
+                      (mu4e-trash-folder .  "/Work/[Gmail].Bin")
+                      (mu4e-refile-folder . "/Work/[Gmail].All Mail")
+                      (mu4e-sent-messages-behavior . 'delete)
+                      ))))
 
-  A list of groups I subscribe to. I am honestly not certain what this does.
+    (setq mu4e-context-policy 'pick-first)
 
-  #+BEGIN_SRC emacs-lisp
-    (setq message-subscribed-addresses
-          '("centos-announce@centos.org"
-            "emacs-orgmode@gnu.org"
-            "fish-users@lists.sourceforge.net"))
-  #+END_SRC
+    ;; (mu4e-compose-signature .
+    ;;                         ((concat )
+    ;;                          "Prof. Alice Derleth\n"
+    ;;                          "Miskatonic University, Dept. of Occult Sciences\n"))
 
-  Ignore all groups matching this regular expression.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\(\\|$\\)\\|^[\"]\"[#'()]")
-  #+END_SRC
-
-  Speed up checking for messages by only checking subscribed groups for new
-  messages.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-activate-level gnus-level-subscribed)
-  #+END_SRC
-
-  Always keep the INBOX visible, even if it has no messages. This is handy so
-  that I can always select it and have the above posting-styles applied when
-  writing new mail.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-permanently-visible-groups "INBOX")
-  #+END_SRC
-
-** Per-mailbox Parameters
-
-  Set different parameters based on the group/folder I currently have open.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq gnus-parameters
-          '((".*"
-             (gcc-self . "nnimap+Play:Sent Messages")
-             (expiry-target . "nnimap+Play:Deleted Messages")
-             (expiry-wait . never)
-             (posting-style
-              (name "Stig Brautaset")
-              (address "stig@brautaset.org")))
-
-            ("^nnimap\\+Work"
-             (gcc-self . "nnimap+Work:[Gmail]/Sent Mail")
-             (expiry-target . "nnimap+Work:[Gmail]/Bin")
-             (posting-style
-              (signature-file "~/CloudDocs/LaterPay.signature")
-              (address "sbrautaset@laterpay.net")
-              (organisation "LaterPay GmbH")))
-
-            ("Sentry"
-             (expiry-wait . 14)
-             (total-expire . t)
-             (posting-style
-              (signature nil)))
-
-            ("JIRA"
-             (expiry-wait . 14)
-             (total-expire . t)
-             (posting-style
-              (signature nil)))
-
-            ("Confluence"
-             (expiry-wait . 14)
-             (total-expire . t)
-             (posting-style
-              (signature nil)))
-
-            ("Vendor"
-             (expiry-wait . 14))
-
-            ("Lists"
-             (expiry-wait . 14)
-             (total-expire . t))
-
-            (".*emacs.*"
-             (posting-style
-              (signature
-               ;; Inspired by Eric S Fraga's signature on the orgmode mailing list
-               (concat "; "
-                       (car (split-string (emacs-version) " ("))
-                       ", "
-                       (car (split-string (org-version nil t) " ("))))))
-
-            ("^nnrss:"
-             (mm-discouraged-alternatives nil))
-
-            ("INBOX"
-             (expiry-wait . 1))
-
-            (":Archive"
-             (expiry-wait . never))))
+    (setq smtpmail-queue-mail nil
+          smtpmail-queue-dir   "~/Maildir/queue/cur")
   #+END_SRC
 
 * Sending Mail
@@ -335,6 +251,7 @@
                                         "@laterpay.atlassian.net"
                                         "devbugs@apple.com"
                                         "calendar-notification@google.com"
+                                        "notify@twitter.com"
                                         "jira@"
                                         "confluence@"
                                         "support@"

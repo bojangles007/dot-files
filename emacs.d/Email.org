@@ -132,6 +132,21 @@
     (setq mu4e-context-policy 'pick-first)
   #+END_SRC
 
+  A list of my addresses.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-user-mail-address-list
+          '("stig@brautaset.org"
+            "sbrautaset@laterpay.net"
+            "stig.brautaset@icloud.com"))
+  #+END_SRC
+
+  Tell mu4e that I don't want to email myself, normally.
+
+  #+BEGIN_SRC emacs-lisp
+  (setq mu4e-compose-dont-reply-to-self t)
+  #+END_SRC
+
   Configure mu4e to support queueing mail for sending later, for cases when I
   don't have network connection.
 

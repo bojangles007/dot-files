@@ -821,7 +821,9 @@ EOF
 
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig
-       :ensure t)
+       :ensure t
+       :config
+       (editorconfig-mode))
    #+END_SRC
 
    Emacs requires an external tool for this to work. I install that using

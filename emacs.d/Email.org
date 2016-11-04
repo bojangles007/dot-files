@@ -15,45 +15,72 @@
   It's installed manually via brew, and relies on installing emacs via brew
   too. (Because Apple's version of emacs is too old.)
 
-  : brew install emacs --with-cocoa
-  : brew install mu --with-emacs
+  #+BEGIN_SRC sh
+    brew install emacs --with-cocoa
+    brew install mu --with-emacs
+  #+END_SRC
+
+  First we add mu4e to our load path and load the package, and tell it where
+  our =mu= binary is.
 
   #+BEGIN_SRC emacs-lisp
     (add-to-list 'load-path "/usr/local/opt/mu/share/emacs/site-lisp/mu/mu4e/")
-
     (require 'mu4e)
 
     (setq mu4e-mu-binary "/usr/local/bin/mu")
+  #+END_SRC
 
-    ;; save attachment to my downloads folder (this can also be a function)
+  Save attachment to my ~/Downloads folder. Apparently this value can also be
+  a function, but I've not needed that yet.
+
+  #+BEGIN_SRC emacs-lisp
     (setq mu4e-attachment-dir  "~/Downloads")
+  #+END_SRC
 
-    ;; attempt to show images when viewing messages
+  Try to show images inline if possible, and use imagemagick if our Emacs
+  supports that.
+
+  #+BEGIN_SRC emacs-lisp
     (setq mu4e-view-show-images t)
 
     ;; use imagemagick, if available
     (when (fboundp 'imagemagick-register-types)
       (imagemagick-register-types))
+  #+END_SRC
 
+  Use a non-default way to view HTML messages.
+
+  #+BEGIN_SRC emacs-lisp
     (require 'mu4e-contrib)
     (setq mu4e-html2text-command 'mu4e-shr2text)
-
-
-    ;; Remove the default "unread" bookmark and add our own
-    (setq mu4e-bookmarks (cdr mu4e-bookmarks))
-    (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT maildir:/Work/[Gmail].Bin AND NOT maildir:Deleted*" "Unread Messages" ?u))
 
     (add-hook 'mu4e-view-mode-hook
               (lambda()
                 ;; try to emulate some of the eww key-bindings
                 (local-set-key (kbd "<tab>") 'shr-next-link)
                 (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+  #+END_SRC
 
+  Remove the default "unread" bookmark and add our own. My version ignores
+  stuff in our Trash folders. I *love* how simple mu4e makes this!
 
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-bookmarks (cdr mu4e-bookmarks))
+    (add-to-list 'mu4e-bookmarks
+                 '("flag:unread AND NOT maildir:/Work/[Gmail].Bin AND NOT maildir:Deleted*" "Unread Messages" ?u))
+  #+END_SRC
+
+  Tell mu4e to periodically (every 5 minutes) get my mail with OfflineIMAP.
+
+  #+BEGIN_SRC emacs-lisp
     (setq mu4e-get-mail-command "offlineimap"
           mu4e-update-interval 300)
+  #+END_SRC
 
+  Set up different contexts based on which folder / mailbox I'm in. This is
+  much more obvious than Gnus' approach, IMO. I like it.
+
+  #+BEGIN_SRC emacs-lisp
     (require 's) ;; Used by my :match-funcs
 
     (setq mu4e-contexts
@@ -101,9 +128,22 @@
     ;;                         ((concat )
     ;;                          "Prof. Alice Derleth\n"
     ;;                          "Miskatonic University, Dept. of Occult Sciences\n"))
+  #+END_SRC
 
-    (setq smtpmail-queue-mail nil
+  Configure mu4e to support queueing mail for sending later, for cases when I
+  don't have network connection.
+
+  #+BEGIN_SRC emacs-lisp
+      (setq smtpmail-queue-mail nil
           smtpmail-queue-dir   "~/Maildir/queue/cur")
+  #+END_SRC
+
+  This requires creating the queue directory, which you can do with =mu=. We
+  also tell mu not to index the queue:
+
+  #+BEGIN_SRC sh
+  mu mkdir ~/Mailbox/queue
+  touch ~/Mailbox/queue/.noindex
   #+END_SRC
 
 * Sending Mail

@@ -54,6 +54,8 @@
     (setq mu4e-get-mail-command "offlineimap"
           mu4e-update-interval 300)
 
+    (require 's) ;; Used by my :match-funcs
+
     (setq mu4e-contexts
           `(,(make-mu4e-context
               :name "Private"
@@ -61,8 +63,8 @@
               ;; leave-func not defined
               :match-func (lambda (msg)
                             (when msg
-                              (mu4e-message-contact-field-matches msg
-                                                                  :to "stig@brautaset.org")))
+                              (s-starts-with-p "/Private/"
+                                               (mu4e-message-field msg :maildir))))
               :vars '((user-mail-address . "stig@brautaset.org")
                       (mu4e-sent-folder . "/Private/Sent Messages")
                       (mu4e-drafts-folder . "/Private/Drafts")
@@ -83,8 +85,8 @@
               ;; leave-fun not defined
               :match-func (lambda (msg)
                             (when msg
-                              (mu4e-message-contact-field-matches msg
-                                                                  :to "sbrautaset@laterpay.net")))
+                              (s-starts-with-p "/Work/"
+                                               (mu4e-message-field msg :maildir))))
               :vars '((user-mail-address . "sbrautaset@laterpay.net")
                       (mu4e-sent-folder . "/Work/[Gmail].Sent Mail")
                       (mu4e-drafts-folder . "/Work/[Gmail].Drafts")

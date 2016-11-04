@@ -130,11 +130,6 @@
                       ))))
 
     (setq mu4e-context-policy 'pick-first)
-
-    ;; (mu4e-compose-signature .
-    ;;                         ((concat )
-    ;;                          "Prof. Alice Derleth\n"
-    ;;                          "Miskatonic University, Dept. of Occult Sciences\n"))
   #+END_SRC
 
   Configure mu4e to support queueing mail for sending later, for cases when I

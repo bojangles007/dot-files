@@ -67,7 +67,7 @@
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-bookmarks (cdr mu4e-bookmarks))
     (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT maildir:/Work/[Gmail].Bin AND NOT maildir:Deleted*" "Unread Messages" ?u))
+                 '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:Deleted* AND NOT maildir:Sent*" "Unread Messages" ?u))
   #+END_SRC
 
   Tell mu4e to periodically (every 5 minutes) get my mail with OfflineIMAP.

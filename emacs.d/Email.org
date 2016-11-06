@@ -219,25 +219,6 @@
 
 * Composing
 
-  Use Org structure editing & table mode in Message mode. (Used for composing
-  messages.)
-
-  #+BEGIN_SRC emacs-lisp
-    (add-hook 'message-mode-hook 'turn-on-orgstruct++)
-    (add-hook 'message-mode-hook 'turn-on-orgtbl)
-  #+END_SRC
-
-  Not only that, but I want to be able to create MIME HTML mail based on
-  org-formatted source. There's a package for that too, of course.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package org-mime
-      :config
-      (add-hook 'message-mode-hook
-                (lambda ()
-                  (local-set-key "\C-ch" 'org-mime-htmlize))))
-  #+END_SRC
-
   Add a function to cycle between from addresses in the message buffer.
   Credit to [[https://www.emacswiki.org/emacs/GnusTutorial][GnusTutorial]] which is where I found the example I adopted this
   from.
@@ -284,3 +265,25 @@
     (use-package boxquote :ensure t)
   #+END_SRC
 
+* Integration with Org mode
+
+  I want to be able to create links to messages from Org mode capture
+  templates, as email Inbox is a terrible TODO list.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-mu4e
+      :config
+
+      (add-hook 'message-mode-hook 'org-mu4e-compose-org-mode))
+  #+END_SRC
+
+  Not only that, but I want to be able to create MIME HTML mail based on
+  org-formatted source. There's a package for that too, of course.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-mime
+      :config
+      (add-hook 'message-mode-hook
+                (lambda ()
+                  (local-set-key "\C-ch" 'org-mime-htmlize))))
+  #+END_SRC

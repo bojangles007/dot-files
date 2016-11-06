@@ -8,14 +8,15 @@
 * Basic Setup
 
   I use [[http://magit.vc][Magit]] all day. If you use git a lot it's possibly worth switching to
-  Emacs just for it. It is excellent. I bind =M-m= to =magit-status=, which is
+  Emacs just for it. It is excellent. I bind =H-m= to =magit-status=, which is
   the main entry point for the mode.
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit
       :ensure t
 
-      :bind ("M-m" . magit-status)
+      :bind (("H-m" . magit-status)
+             ("H-b" . magit-blame))
 
       :init
       (setq magit-git-executable "/usr/bin/git"

@@ -69,7 +69,7 @@
     (add-to-list 'mu4e-bookmarks
                  '("flag:unread AND MAILDIR:/Work* AND NOT maildir:/Work/[Gmail]*" "Work Unread Messages" ?W))
     (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND MAILDIR:/Private* AND NOT maildir:Deleted* AND NOT maildir:/Private/Sent*" "Private Unread Messages" ?p))
+                 '("flag:unread AND MAILDIR:/Private* AND NOT maildir:Deleted* AND NOT maildir:/Private/Sent*" "Private Unread Messages" ?P))
     (add-to-list 'mu4e-bookmarks
                  '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:/Private/Deleted* AND NOT maildir:/Private/Sent*" "All Unread Messages" ?u))
   #+END_SRC

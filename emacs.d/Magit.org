@@ -15,8 +15,8 @@
     (use-package magit
       :ensure t
 
-      :bind (("H-m" . magit-status)
-             ("H-b" . magit-blame))
+      :bind (("s-m" . magit-status)
+             ("s-b" . magit-blame))
 
       :init
       (setq magit-git-executable "/usr/bin/git"

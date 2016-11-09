@@ -1,5 +1,10 @@
 set EDITOR emacsclient
 
+# I applaud the initiative but my high-latency connection regretfully make
+# these a massive pain in daily use.
+set HOMEBREW_NO_AUTO_UPDATE 1
+set HOMEBREW_NO_ANALYTICS 1
+
 # Ruby gems
 set PATH (echo ~/.gem/ruby/*/bin) $PATH
 

@@ -5,8 +5,8 @@ set EDITOR emacsclient
 set HOMEBREW_NO_AUTO_UPDATE 1
 set HOMEBREW_NO_ANALYTICS 1
 
-# Ruby gems
-set PATH (echo ~/.gem/ruby/*/bin) $PATH
+# Rbenv
+status --is-interactive; and . (rbenv init -|psub)
 
 eval (python -m virtualfish)
 

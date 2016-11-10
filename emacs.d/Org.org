@@ -217,7 +217,6 @@
       ;; For being able to generate passwords from capture template
       (setq enable-recursive-minibuffers t)
 
-      <<org-babel-init>>
       :bind (("C-c P P" . org-passwords)
              ("C-c P g" . org-passwords-generate-password)
              :map org-passwords-mode-map

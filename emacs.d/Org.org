@@ -93,15 +93,24 @@
     (setq org-capture-templates
           '(("t" "TODO Entry" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
+
+            ("P" "password" entry (file "~/Org/passwords.org.gpg")
+             "* %^{Title}\n  %^{URL}p %^{USERNAME}p %^{PASSWORD}p")
+
             ("p" "Project" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-proj.org") :empty-lines-before 1)
+
             ("b" "Blog Post" entry (file+headline "Agenda.org" "Blog")
              (file "tpl-blog-post.org") :empty-lines-before 1)
+
             ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org"))
+
             ("n" "New Starter" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-new-starter.org") :empty-lines-before 1)
-            ("i" "New Invoice" plain (file "LaterPay-Invoices.org") (file "tpl-laterpay-invoice.org"))))
+
+            ("i" "New Invoice" plain (file "LaterPay-Invoices.org")
+             (file "tpl-laterpay-invoice.org"))))
   #+END_SRC
 
 * Org Babel
@@ -205,9 +214,14 @@
       ;; Use completion for org elements
       (setq org-completion-use-ido t)
 
+      ;; For being able to generate passwords from capture template
+      (setq enable-recursive-minibuffers t)
+
+      <<org-babel-init>>
       :bind (("C-c P P" . org-passwords)
              ("C-c P g" . org-passwords-generate-password)
              :map org-passwords-mode-map
              ("C-c C-c u" . org-passwords-copy-username)
-             ("C-c C-c p" . org-passwords-copy-password)))
+             ("C-c C-c p" . org-passwords-copy-password)
+             ("C-c C-c o" . org-passwords-open-url)))
   #+END_SRC

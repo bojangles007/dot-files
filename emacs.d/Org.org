@@ -78,7 +78,7 @@
 
   #+name: refiling
   #+BEGIN_SRC emacs-lisp :tangle no
-      (setq org-refile-targets '((org-agenda-files :level . 1)))
+      (setq org-refile-targets '((org-agenda-files :level . 2)))
       (setq org-refile-use-outline-path t)
       (setq org-refile-allow-creating-parent-nodes 'confirm)
   #+END_SRC

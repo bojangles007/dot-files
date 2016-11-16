@@ -71,7 +71,7 @@
     (add-to-list 'mu4e-bookmarks
                  '("flag:unread AND MAILDIR:/Private* AND NOT maildir:Deleted* AND NOT maildir:/Private/Sent* AND NOT maildir:/Private/Junk" "Private Unread Messages" ?P))
     (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:/Private/Deleted* AND NOT maildir:/Private/Sent*" "All Unread Messages" ?u))
+                 '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:/Private/Deleted* AND NOT maildir:/Private/Sent* AND NOT maildir:/Private/Junk" "All Unread Messages" ?u))
   #+END_SRC
 
   Tell mu4e to periodically (every 5 minutes) get my mail with OfflineIMAP.

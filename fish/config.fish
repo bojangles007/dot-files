@@ -1,4 +1,5 @@
 set EDITOR emacsclient
+export EDITOR
 
 # I applaud the initiative but my high-latency connection regretfully make
 # these a massive pain in daily use.

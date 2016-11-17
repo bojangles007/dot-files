@@ -68,13 +68,17 @@ EOF
 
   Alright! Now on to the actual configuration.
 
-** Let Emacs find gpg
+** Get PATH from our shell
 
-   Emacs 25 requires us to add "/usr/local/bin" to exec-path lest it can't
-   find the "gpg" program.
+   The GUI Emacs gets exec path from the system, rather than the login shell.
+   This requires us to add "/usr/local/bin" to exec-path lest it can't find
+   the "gpg" program, and others. Let's get full path from shell:
 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list 'exec-path "/usr/local/bin")
+     (use-package exec-path-from-shell
+       :ensure t
+       :config
+       (exec-path-from-shell-initialize))
    #+END_SRC
 
 ** Auto fill mode

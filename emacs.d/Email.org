@@ -168,6 +168,15 @@
   touch ~/Mailbox/queue/.noindex
   #+END_SRC
 
+* Reflow mail using soft linebreaks
+
+#+BEGIN_SRC emacs-lisp
+  ;; tip submitted by mu4e user cpbotha
+  (add-hook 'mu4e-compose-mode-hook
+            (lambda ()
+              (use-hard-newlines t 'always)))
+#+END_SRC
+
 * Sending Mail
 
   Set up defaults for sending email.

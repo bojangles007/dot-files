@@ -134,7 +134,7 @@
                       (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))
                       ))))
 
-    (setq mu4e-context-policy 'pick-first)
+    (setq mu4e-context-policy 'ask)
   #+END_SRC
 
   A list of my addresses.

@@ -93,6 +93,10 @@
         (insert-file-contents filePath)
         (buffer-string)))
 
+    (defun my-emacs-org-sig ()
+      (concat "; " (car (split-string (emacs-version) " ("))
+              ", " (car (split-string (org-version nil t) " ("))))
+
     (setq mu4e-contexts
           `(,(make-mu4e-context
               :name "Private"
@@ -108,14 +112,8 @@
                       (mu4e-trash-folder .  "/Private/Deleted Messages")
                       (mu4e-refile-folder . "/Private/Archive")
                       (mu4e-sent-messages-behavior . sent)
+                      (mu4e-compose-signature . (my-emacs-org-sig))))
 
-                      ;; (mu4e-compose-signature
-                      ;;  . (concat "; "
-                      ;;            (car (split-string (emacs-version) " ("))
-                      ;;            ", "
-                      ;;            (car (split-string (org-version nil t) " ("))))
-
-                      ))
 
             ,(make-mu4e-context
               :name "Work"
@@ -131,8 +129,7 @@
                       (mu4e-trash-folder .  "/Work/[Gmail].Bin")
                       (mu4e-refile-folder . "/Work/[Gmail].All Mail")
                       (mu4e-sent-messages-behavior . delete)
-                      (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))
-                      ))))
+                      (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))))))
 
     (setq mu4e-context-policy 'ask)
   #+END_SRC

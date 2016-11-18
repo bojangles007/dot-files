@@ -65,16 +65,13 @@
   stuff in our Trash folders. I *love* how simple mu4e makes this!
 
   #+BEGIN_SRC emacs-lisp
-    (setq mu4e-bookmarks (cdr mu4e-bookmarks))
     (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND MAILDIR:/Work* AND NOT maildir:/Work/[Gmail]*" "Work Unread Messages" ?W))
+                 '("flag:unread AND NOT flag:trashed AND maildir:/Work*" "Work Unread Messages" ?W))
     (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND MAILDIR:/Private* AND NOT maildir:Deleted* AND NOT maildir:/Private/Sent* AND NOT maildir:/Private/Junk" "Private Unread Messages" ?P))
-    (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:/Private/Deleted* AND NOT maildir:/Private/Sent* AND NOT maildir:/Private/Junk" "All Unread Messages" ?u))
+                 '("flag:unread AND NOT flag:trashed AND maildir:/Private*" "Private Unread Messages" ?P))
   #+END_SRC
 
-  Tell mu4e to get new mail with mbsync.
+  Tell mu4e how to get new mail.
 
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-get-mail-command "mbsync -a")

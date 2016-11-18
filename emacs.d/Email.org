@@ -161,8 +161,8 @@
   also tell mu not to index the queue:
 
   #+BEGIN_SRC sh
-  mu mkdir ~/Mailbox/queue
-  touch ~/Mailbox/queue/.noindex
+  mu mkdir ~/Maildir/queue
+  touch ~/Maildir/queue/.noindex
   #+END_SRC
 
 * Reflow mail using soft linebreaks

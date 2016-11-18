@@ -74,11 +74,10 @@
                  '("flag:unread AND NOT maildir:/Work/[Gmail]* AND NOT maildir:/Private/Deleted* AND NOT maildir:/Private/Sent* AND NOT maildir:/Private/Junk" "All Unread Messages" ?u))
   #+END_SRC
 
-  Tell mu4e to periodically (every 5 minutes) get my mail with OfflineIMAP.
+  Tell mu4e to get new mail with mbsync.
 
   #+BEGIN_SRC emacs-lisp
-    (setq mu4e-get-mail-command "offlineimap"
-          mu4e-update-interval 300)
+    (setq mu4e-get-mail-command "mbsync -a")
   #+END_SRC
 
   Set up different contexts based on which folder / mailbox I'm in. This is
@@ -107,9 +106,10 @@
                               (s-starts-with-p "/Private/"
                                                (mu4e-message-field msg :maildir))))
               :vars '((user-mail-address . "stig@brautaset.org")
-                      (mu4e-sent-folder . "/Private/Sent Messages")
-                      (mu4e-drafts-folder . "/Private/Drafts")
-                      (mu4e-trash-folder .  "/Private/Deleted Messages")
+
+                      (mu4e-sent-folder . "/Private/sent")
+                      (mu4e-drafts-folder . "/Private/drafts")
+                      (mu4e-trash-folder .  "/Private/trash")
                       (mu4e-refile-folder . "/Private/Archive")
                       (mu4e-sent-messages-behavior . sent)
                       (mu4e-compose-signature . (my-emacs-org-sig))))
@@ -124,10 +124,11 @@
                               (s-starts-with-p "/Work/"
                                                (mu4e-message-field msg :maildir))))
               :vars '((user-mail-address . "sbrautaset@laterpay.net")
-                      (mu4e-sent-folder . "/Work/[Gmail].Sent Mail")
-                      (mu4e-drafts-folder . "/Work/[Gmail].Drafts")
-                      (mu4e-trash-folder .  "/Work/[Gmail].Bin")
-                      (mu4e-refile-folder . "/Work/[Gmail].All Mail")
+
+                      (mu4e-sent-folder . "/Work/sent")
+                      (mu4e-drafts-folder . "/Work/drafts")
+                      (mu4e-trash-folder .  "/Work/trash")
+                      (mu4e-refile-folder . "/Work/Archive")
                       (mu4e-sent-messages-behavior . delete)
                       (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))))))
 

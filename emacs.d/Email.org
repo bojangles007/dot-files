@@ -77,6 +77,12 @@
     (setq mu4e-get-mail-command "mbsync -a")
   #+END_SRC
 
+  MBSync, in contrast to OfflineIMAP, apparently needs this option to work properly!
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-change-filenames-when-moving t)
+  #+END_SRC
+
   Set up different contexts based on which folder / mailbox I'm in. This is
   much more obvious than Gnus' approach, IMO. I like it.
 

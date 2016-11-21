@@ -399,10 +399,15 @@
   templates, as email Inbox is a terrible TODO list.
 
   #+BEGIN_SRC emacs-lisp
-    (use-package org-mu4e
-      :config
+    (use-package org-mu4e)
+  #+END_SRC
 
-      (add-hook 'message-mode-hook 'org-mu4e-compose-org-mode))
+  I also want to be able to use Org's table editor, and structure editing, in
+  message mode:
+
+  #+BEGIN_SRC emacs-lisp
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
   #+END_SRC
 
   Not only that, but I want to be able to create MIME HTML mail based on

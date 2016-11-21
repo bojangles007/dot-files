@@ -151,8 +151,7 @@
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-user-mail-address-list
           '("stig@brautaset.org"
-            "sbrautaset@laterpay.net"
-            "stig.brautaset@icloud.com"))
+            "sbrautaset@laterpay.net"))
   #+END_SRC
 
   Tell mu4e that I don't want to email myself, normally.
@@ -186,66 +185,15 @@
               (use-hard-newlines t 'always)))
 #+END_SRC
 
-* Sending Mail
+* Cycle addresses in the From header
 
-  Set up defaults for sending email.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq send-mail-function 'smtpmail-send-it
-          message-send-mail-function 'smtpmail-send-it
-          starttls-extra-arguments nil
-          smtpmail-smtp-service 587
-          smtpmail-debug-info t)
-  #+END_SRC
-
-  List of sender addresses and SMTP servers.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq smtp-accounts
-          '(("stig@brautaset.org" "mailbox@brautaset.org" "mail.gandi.net")
-            ("sbrautaset@laterpay.net" "sbrautaset@laterpay.ag" "smtp.gmail.com")))
-  #+END_SRC
-
-  A function to change the active SMTP server based on the sender address.
-  (This is heavily inspired by [[http://www.mostlymaths.net/2010/12/emacs-30-day-challenge-using-gnus-to.html][emacs 30 day challenge: using gnus]].)
-
-  #+BEGIN_SRC emacs-lisp
-    (defun change-smtp (recipient smtpmail-text-buffer &rest ask-for-password)
-      "Change the SMTP server & user according to current sender"
-
-      (save-excursion
-        (loop with from = (save-restriction
-                            (message-narrow-to-headers)
-                            (message-fetch-field "from"))
-              for (address smtp-user smtp-server) in smtp-accounts
-              when (string-match address from)
-              do (progn
-                   (message "Setting SMTP server to %s for user %s"
-                            smtp-server smtp-user)
-                   (setq smtpmail-smtp-user smtp-user
-                         smtpmail-smtp-server smtp-server)))))
-  #+END_SRC
-
-  Add the `change-smtp' function as a "before advice" to the /real/ function
-  to send mail via smpt. This causes `change-smtp' to be called immediately
-  before the advised function, with the same arguments.
-
-  #+BEGIN_SRC emacs-lisp
-    (advice-add #'smtpmail-via-smtp
-                :before
-                #'change-smtp)
-  #+END_SRC
-
-* Composing
-
-  Add a function to cycle between from addresses in the message buffer.
+  Add a keybinding to cycle between from addresses in the message buffer.
   Credit to [[https://www.emacswiki.org/emacs/GnusTutorial][GnusTutorial]] which is where I found the example I adopted this
   from.
 
   #+BEGIN_SRC emacs-lisp
-    (setq my-email-addresses (mapcar (lambda (lst) (car lst) ) smtp-accounts))
     (setq message-alternative-emails
-          (regexp-opt my-email-addresses))
+          (regexp-opt mu4e-user-mail-address-list ))
 
     (setq message-from-selected-index 0)
     (defun message-loop-from ()
@@ -307,4 +255,51 @@
       (add-hook 'message-mode-hook
                 (lambda ()
                   (local-set-key "\C-ch" 'org-mime-htmlize))))
+  #+END_SRC
+
+* Sending mail
+
+  I'm currently testing [[http://msmtp.sourceforge.net/][msmtp]] for sending email. I install it with brew:
+
+  #+BEGIN_SRC sh
+  brew install msmtp
+  #+END_SRC
+
+  MSMTP's configuration is really simple, and it will detect the account to
+  use from the "from" address. Let's go!
+
+  MSMTP obtains passwords from the system Keychain. See the [[http://msmtp.sourceforge.net/doc/msmtp.html#Authentication][Authentication]]
+  section in the msmtp documentation for details.
+
+  #+BEGIN_SRC conf :tangle ~/.msmtprc
+    defaults
+
+    port 587
+    tls on
+    tls_trust_file /usr/local/etc/openssl/cert.pem
+    auth on
+
+    ###############
+    account private
+
+    from stig@brautaset.org
+    host mail.gandi.net
+    user mailbox@brautaset.org
+
+    ############
+    account work
+
+    from sbrautaset@laterpay.net
+    host smtp.gmail.com
+    user sbrautaset@laterpay.ag
+
+    #########################
+    account default : private
+  #+END_SRC
+
+  Finally we have to tell Emacs to use msmtp to send mail:
+
+  #+BEGIN_SRC emacs-lisp
+    (setq message-send-mail-function 'message-send-mail-with-sendmail
+          sendmail-program "/usr/local/bin/msmtp")
   #+END_SRC

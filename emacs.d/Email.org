@@ -7,13 +7,12 @@
 * Introduction
 
   I'm trying to see if I can become happy reading and writing mail in Emacs. I
-  have chosen Gnus as my mail reader. I already used Gnus in the past, and I
-  follow a few newsgroups, so it seemed a good fit.
+  tried Gnus for a while, but am now using [[http://www.djcbsoftware.nl/code/mu/][mu/mu4e]].
 
-* mu4e Setup
+* mu/mu4e Setup
 
   It's installed manually via brew, and relies on installing emacs via brew
-  too. (Because Apple's version of emacs is too old.)
+  too. (Because Apple's version of Emacs is too old.)
 
   #+BEGIN_SRC sh
     brew install emacs --with-cocoa
@@ -77,18 +76,6 @@
                  '("flag:unread AND NOT flag:trashed AND maildir:/Work*" "Work Unread Messages" ?W))
     (add-to-list 'mu4e-bookmarks
                  '("flag:unread AND NOT flag:trashed AND maildir:/Private*" "Private Unread Messages" ?P))
-  #+END_SRC
-
-  Tell mu4e how to get new mail.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-get-mail-command "mbsync -a")
-  #+END_SRC
-
-  MBSync, in contrast to OfflineIMAP, apparently needs this option to work properly!
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-change-filenames-when-moving t)
   #+END_SRC
 
   Set up different contexts based on which folder / mailbox I'm in. This is
@@ -176,6 +163,178 @@
   touch ~/Maildir/queue/.noindex
   #+END_SRC
 
+* Downloading email over IMAP
+
+  I used to use OfflineIMAP for this, but mbsync (from the isync suite) seems
+  faster and doesn't have this annoying db outside of the Maildir to keep in
+  sync. Config looks like this:
+
+  #+BEGIN_SRC conf :tangle ~/.mbsyncrc
+    IMAPAccount icloud
+    Host imap.mail.me.com
+    User stig.brautaset@icloud.com
+    # UseIMAPS yes
+    AuthMechs LOGIN
+    SSLType IMAPS
+    SSLVersions TLSv1
+    PassCmd "security find-generic-password -s mbsync-icloud-password -w"
+
+    IMAPStore icloud-remote
+    Account icloud
+
+    MaildirStore icloud-local
+    Path ~/Maildir/Private/
+    Inbox ~/Maildir/Private/INBOX
+    Trash "Deleted Messages"
+
+    Channel icloud-folders
+    Master :icloud-remote:
+    Slave :icloud-local:
+    Patterns "INBOX" "Lists" "Archive"
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel icloud-trash
+    Master :icloud-remote:"Deleted Messages"
+    Slave :icloud-local:trash
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel icloud-drafts
+    Master :icloud-remote:"Drafts"
+    Slave :icloud-local:drafts
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel icloud-junk
+    Master :icloud-remote:"Junk"
+    Slave :icloud-local:spam
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel icloud-sent
+    Master :icloud-remote:"Sent Messages"
+    Slave :icloud-local:sent
+    Create Both
+    Expunge Both
+    SyncState *
+
+
+    Group icloud
+    Channel icloud-folders
+    Channel icloud-sent
+    Channel icloud-trash
+    Channel icloud-drafts
+    Channel icloud-spam
+
+
+    # ACCOUNT INFORMATION
+    IMAPAccount gmail
+    Host imap.gmail.com
+    User sbrautaset@laterpay.ag
+    PassCmd "security find-generic-password -s mbsync-gmail-password -w"
+    # UseIMAPS yes
+    # AuthMechs LOGIN
+    AuthMechs PLAIN
+    SSLType IMAPS
+    # SSLVersions SSLv3
+    CertificateFile /usr/local/etc/openssl/cert.pem
+
+    # THEN WE SPECIFY THE LOCAL AND REMOTE STORAGE
+    # - THE REMOTE STORAGE IS WHERE WE GET THE MAIL FROM (E.G., THE
+    #   SPECIFICATION OF AN IMAP ACCOUNT)
+    # - THE LOCAL STORAGE IS WHERE WE STORE THE EMAIL ON OUR COMPUTER
+
+    # REMOTE STORAGE (USE THE IMAP ACCOUNT SPECIFIED ABOVE)
+    IMAPStore gmail-remote
+    Account gmail
+
+    # LOCAL STORAGE (CREATE DIRECTORIES with mkdir -p Maildir/gmail)
+    MaildirStore gmail-local
+    Path ~/Maildir/Work/
+    Inbox ~/Maildir/Work/INBOX
+
+    # CONNECTIONS SPECIFY LINKS BETWEEN REMOTE AND LOCAL FOLDERS
+    #
+    # CONNECTIONS ARE SPECIFIED USING PATTERNS, WHICH MATCH REMOTE MAIl
+    # FOLDERS. SOME COMMONLY USED PATTERS INCLUDE:
+    #
+    # 1 "*" TO MATCH EVERYTHING
+    # 2 "!DIR" TO EXCLUDE "DIR"
+    # 3 "DIR" TO MATCH DIR
+    #
+    # FOR INSTANCE IN THE SPECIFICATION BELOW:
+    #
+    # gmail-inbox gets the folder INBOX, ARCHIVE, and everything under "ARCHIVE*"
+    # gmail-trash gets only the "[Gmail]/Trash" folder and stores it to the local "trash" folder
+
+    Channel gmail-inbox
+    Master :gmail-remote:
+    Slave :gmail-local:
+    Patterns "INBOX" "Archive"
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel gmail-trash
+    Master :gmail-remote:"[Gmail]/Bin"
+    Slave :gmail-local:trash
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel gmail-drafts
+    Master :gmail-remote:"[Gmail]/Drafts"
+    Slave :gmail-local:drafts
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel gmail-spam
+    Master :gmail-remote:"[Gmail]/Spam"
+    Slave :gmail-local:spam
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel gmail-sent
+    Master :gmail-remote:"[Gmail]/Sent Mail"
+    Slave :gmail-local:sent
+    Create Both
+    Expunge Both
+    SyncState *
+
+    # GROUPS PUT TOGETHER CHANNELS, SO THAT WE CAN INVOKE
+    # MBSYNC ON A GROUP TO SYNC ALL CHANNELS
+    #
+    # FOR INSTANCE: "mbsync gmail" GETS MAIL FROM
+    # "gmail-inbox", "gmail-sent", and "gmail-trash"
+    #
+    Group gmail
+    Channel gmail-inbox
+    Channel gmail-sent
+    Channel gmail-trash
+    Channel gmail-drafts
+    Channel gmail-spam
+  #+END_SRC
+
+  There's a couple =mbsync= specific options we need to tell mu4e about. Start
+  with how to get new mail:
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-get-mail-command "mbsync -a")
+  #+END_SRC
+
+  This option helps us avoid "Duplicate UID" messages during mbsync runs.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-change-filenames-when-moving t)
+  #+END_SRC
+
 * Reflow mail using soft linebreaks
 
 #+BEGIN_SRC emacs-lisp
@@ -257,7 +416,7 @@
                   (local-set-key "\C-ch" 'org-mime-htmlize))))
   #+END_SRC
 
-* Sending mail
+* Sending mail with MSMTP
 
   I'm currently testing [[http://msmtp.sourceforge.net/][msmtp]] for sending email. I install it with brew:
 
@@ -303,3 +462,4 @@
     (setq message-send-mail-function 'message-send-mail-with-sendmail
           sendmail-program "/usr/local/bin/msmtp")
   #+END_SRC
+  

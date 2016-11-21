@@ -352,17 +352,17 @@
 
   #+BEGIN_SRC emacs-lisp
     (setq message-alternative-emails
-          (regexp-opt mu4e-user-mail-address-list ))
+          (regexp-opt mu4e-user-mail-address-list))
 
     (setq message-from-selected-index 0)
     (defun message-loop-from ()
       (interactive)
       (setq message-article-current-point (point))
       (goto-char (point-min))
-      (if (eq message-from-selected-index (length my-email-addresses))
+      (if (eq message-from-selected-index (length mu4e-user-mail-address-list))
           (setq message-from-selected-index 0) nil)
       (while (re-search-forward "^From:.*$" nil t)
-        (replace-match (concat "From: " user-full-name " <" (nth message-from-selected-index my-email-addresses) ">")))
+        (replace-match (concat "From: " user-full-name " <" (nth message-from-selected-index mu4e-user-mail-address-list) ">")))
       (goto-char message-article-current-point)
       (setq message-from-selected-index (+ message-from-selected-index 1)))
 

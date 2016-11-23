@@ -209,7 +209,7 @@
     Expunge Both
     SyncState *
 
-    Channel icloud-junk
+    Channel icloud-spam
     Master :icloud-remote:"Junk"
     Slave :icloud-local:spam
     Create Both

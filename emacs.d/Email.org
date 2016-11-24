@@ -147,6 +147,15 @@
   (setq mu4e-compose-dont-reply-to-self t)
   #+END_SRC
 
+  Allow viewing messages in a browser.
+
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'mu4e-headers-actions
+                  '("in browser" . mu4e-action-view-in-browser) t)
+    (add-to-list 'mu4e-view-actions
+                  '("in browser" . mu4e-action-view-in-browser) t)
+  #+END_SRC
+
   Configure mu4e to support queueing mail for sending later, for cases when I
   don't have network connection.
 

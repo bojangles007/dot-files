@@ -95,6 +95,9 @@
           '(("t" "TODO Entry" entry (file+headline "Agenda.org" "Capture")
              (file "tpl-todo.org") :empty-lines-before 1)
 
+            ("n" "NEXT Entry" entry (file+headline "Agenda.org" "Capture")
+             "* NEXT [#A] %?\n  %i\n  %a")
+
             ("P" "password" entry (file "~/Org/passwords.org.gpg")
              "* %^{Title}\n  %^{URL}p %^{USERNAME}p %^{PASSWORD}p")
 
@@ -106,9 +109,6 @@
 
             ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org"))
-
-            ("n" "New Starter" entry (file+headline "Agenda.org" "Capture")
-             (file "tpl-new-starter.org") :empty-lines-before 1)
 
             ("i" "New Invoice" plain (file "LaterPay-Invoices.org")
              (file "tpl-laterpay-invoice.org"))))

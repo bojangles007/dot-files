@@ -126,7 +126,7 @@
                       (mu4e-sent-folder . "/Work/sent")
                       (mu4e-drafts-folder . "/Work/drafts")
                       (mu4e-trash-folder .  "/Work/trash")
-                      (mu4e-refile-folder . "/Work/Archive")
+                      (mu4e-refile-folder . "/Work/archive")
                       (mu4e-sent-messages-behavior . delete)
                       (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))))))
 
@@ -275,7 +275,14 @@
     Channel gmail-inbox
     Master :gmail-remote:
     Slave :gmail-local:
-    Patterns "INBOX" "Archive"
+    Patterns "INBOX"
+    Create Both
+    Expunge Both
+    SyncState *
+
+    Channel gmail-refile
+    Master :gmail-remote:"[Gmail]/All Mail"
+    Slave :gmail-local:archive
     Create Both
     Expunge Both
     SyncState *
@@ -316,6 +323,7 @@
     #
     Group gmail
     Channel gmail-inbox
+    Channel gmail-refile
     Channel gmail-sent
     Channel gmail-trash
     Channel gmail-drafts
@@ -467,4 +475,3 @@
     (setq message-send-mail-function 'message-send-mail-with-sendmail
           sendmail-program "/usr/local/bin/msmtp")
   #+END_SRC
-  

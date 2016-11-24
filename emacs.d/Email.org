@@ -339,13 +339,6 @@
     Channel gmail-spam
   #+END_SRC
 
-  There's a couple =mbsync= specific options we need to tell mu4e about. Start
-  with how to get new mail:
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-get-mail-command "mbsync -a")
-  #+END_SRC
-
   This option helps us avoid "Duplicate UID" messages during mbsync runs.
 
   #+BEGIN_SRC emacs-lisp

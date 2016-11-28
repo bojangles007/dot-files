@@ -156,6 +156,14 @@
                   '("in browser" . mu4e-action-view-in-browser) t)
   #+END_SRC
 
+  Because of the weird interaction between Gmail labels and IMAP, often
+  messages show up in =archive= /and/ INBOX. This setting should help in that
+  case:
+
+  #+BEGIN_SRC emacs-lisp
+  (setq mu4e-headers-skip-duplicates nil)
+  #+END_SRC
+
   Configure mu4e to support queueing mail for sending later, for cases when I
   don't have network connection.
 

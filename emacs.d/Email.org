@@ -353,6 +353,12 @@
     (setq mu4e-change-filenames-when-moving t)
   #+END_SRC
 
+  Also tell mu4e how to initiate our mail downloader.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-get-mail-command "mbsync -a")
+  #+END_SRC
+
 * Reflow mail using soft linebreaks
 
 #+BEGIN_SRC emacs-lisp

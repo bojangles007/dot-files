@@ -215,9 +215,6 @@
       ;; Use completion for org elements
       (setq org-completion-use-ido t)
 
-      ;; For being able to generate passwords from capture template
-      (setq enable-recursive-minibuffers t)
-
       :bind (("C-c P P" . org-passwords)
              ("C-c P g" . org-passwords-generate-password)
              :map org-passwords-mode-map

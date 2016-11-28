@@ -161,7 +161,7 @@
   case:
 
   #+BEGIN_SRC emacs-lisp
-  (setq mu4e-headers-skip-duplicates nil)
+  (setq mu4e-headers-skip-duplicates t)
   #+END_SRC
 
   Configure mu4e to support queueing mail for sending later, for cases when I

@@ -154,6 +154,7 @@
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-user-mail-address-list
           '("stig@brautaset.org"
+            "stig.brautaset@icloud.com"
             "sbrautaset@laterpay.net"))
   #+END_SRC
 
@@ -483,6 +484,13 @@
     from stig@brautaset.org
     host mail.gandi.net
     user mailbox@brautaset.org
+
+    #############
+    account icloud
+
+    from stig.brautaset@icloud.com
+    host smtp.mail.me.com
+    user stig.brautaset@icloud.com
 
     ############
     account work

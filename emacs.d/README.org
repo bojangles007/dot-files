@@ -778,6 +778,8 @@ EOF
    #+BEGIN_SRC emacs-lisp
      (use-package editorconfig
        :ensure t
+       :init
+       (setq editorconfig-exclude-modes '(org-mode))
        :config
        (editorconfig-mode))
    #+END_SRC

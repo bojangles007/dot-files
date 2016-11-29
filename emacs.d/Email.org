@@ -97,6 +97,7 @@
                       ;; Quickly jump to maildir based on context
                       (mu4e-maildir-shortcuts . (("/Private/INBOX" . ?i)
                                                  ("/Private/Lists" . ?l)
+                                                 ("/Private/spam" . ?s)
                                                  ("/Private/archive" . ?a)))
 
                       (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Private/INBOX" "Unread Messages" ?u)
@@ -129,6 +130,7 @@
 
                       ;; Quickly jump to maildirs
                       (mu4e-maildir-shortcuts . (("/Work/INBOX" . ?i)
+                                                 ("/Work/spam" . ?s)
                                                  ("/Work/archive" . ?a)))
 
                       (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Work/INBOX" "Unread Messages" ?u)

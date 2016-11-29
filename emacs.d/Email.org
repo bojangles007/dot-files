@@ -60,15 +60,6 @@
                 (local-set-key (kbd "<backtab>") 'shr-previous-link)))
   #+END_SRC
 
-  Shortcuts for jumping to inbox on my two accounts.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-maildir-shortcuts
-          '(("/Private/INBOX" . ?p)
-            ("/Private/Lists" . ?l)
-            ("/Work/INBOX" . ?w)))
-  #+END_SRC
-
   Set up different contexts based on which folder / mailbox I'm in. This is
   much more obvious than Gnus' approach, IMO. I like it.
 

@@ -65,17 +65,8 @@
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-maildir-shortcuts
           '(("/Private/INBOX" . ?p)
+            ("/Private/Lists" . ?l)
             ("/Work/INBOX" . ?w)))
-  #+END_SRC
-
-  Remove the default "unread" bookmark and add our own. My version ignores
-  stuff in our Trash folders. I *love* how simple mu4e makes this!
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT flag:trashed AND maildir:/Work*" "Work Unread Messages" ?W))
-    (add-to-list 'mu4e-bookmarks
-                 '("flag:unread AND NOT flag:trashed AND maildir:/Private*" "Private Unread Messages" ?P))
   #+END_SRC
 
   Set up different contexts based on which folder / mailbox I'm in. This is
@@ -109,6 +100,20 @@
                       (mu4e-drafts-folder . "/Private/drafts")
                       (mu4e-trash-folder .  "/Private/trash")
                       (mu4e-refile-folder . "/Private/Archive")
+
+                      (mu4e-get-mail-command . "mbsync icloud")
+
+                      ;; Quickly jump to maildir based on context
+                      (mu4e-maildir-shortcuts . (("/Private/INBOX" . ?i)
+                                                 ("/Private/Lists" . ?l)
+                                                 ("/Private/archive" . ?a)))
+
+                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Private/INBOX AND NOT maildir:/Private/*" "Unread Messages" ?u)
+                                         ("flag:unread AND NOT flag:trashed AND maildir:/Private/Lists" "Unread List Messages" ?l)
+                                         ("date:today..now AND maildir:/Private/*" "Today's messages" ?t)
+                                         ("date:7d..now AND maildir:/Private/*" "Last 7 days" ?7)))
+
+
                       (mu4e-sent-messages-behavior . sent)
                       (mu4e-compose-signature . nil))) ; (my-emacs-org-sig)
 
@@ -128,6 +133,17 @@
                       (mu4e-trash-folder .  "/Work/trash")
                       (mu4e-refile-folder . "/Work/archive")
                       (mu4e-sent-messages-behavior . delete)
+
+                      (mu4e-get-mail-command . "mbsync gmail")
+
+                      ;; Quickly jump to maildirs
+                      (mu4e-maildir-shortcuts . (("/Work/INBOX" . ?i)
+                                                 ("/Work/archive" . ?a)))
+
+                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Work/INBOX AND NOT maildir:/Work/*" "Unread Messages" ?u)
+                                         ("date:today..now AND maildir:/Work/*" "Today's messages" ?t)
+                                         ("date:7d..now AND maildir:/Work/*" "Last 7 days" ?7)))
+
                       (mu4e-compose-signature . (get-string-from-file "~/CloudDocs/LaterPay.signature"))))))
 
     (setq mu4e-context-policy 'pick-first)
@@ -351,12 +367,6 @@
 
   #+BEGIN_SRC emacs-lisp
     (setq mu4e-change-filenames-when-moving t)
-  #+END_SRC
-
-  Also tell mu4e how to initiate our mail downloader.
-
-  #+BEGIN_SRC emacs-lisp
-    (setq mu4e-get-mail-command "mbsync -a")
   #+END_SRC
 
 * Reflow mail using soft linebreaks

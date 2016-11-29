@@ -108,7 +108,7 @@
                                                  ("/Private/Lists" . ?l)
                                                  ("/Private/archive" . ?a)))
 
-                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Private/INBOX AND NOT maildir:/Private/*" "Unread Messages" ?u)
+                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Private/INBOX" "Unread Messages" ?u)
                                          ("flag:unread AND NOT flag:trashed AND maildir:/Private/Lists" "Unread List Messages" ?l)
                                          ("date:today..now AND maildir:/Private/*" "Today's messages" ?t)
                                          ("date:7d..now AND maildir:/Private/*" "Last 7 days" ?7)))
@@ -140,7 +140,7 @@
                       (mu4e-maildir-shortcuts . (("/Work/INBOX" . ?i)
                                                  ("/Work/archive" . ?a)))
 
-                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Work/INBOX AND NOT maildir:/Work/*" "Unread Messages" ?u)
+                      (mu4e-bookmarks . (("flag:unread AND NOT flag:trashed AND maildir:/Work/INBOX" "Unread Messages" ?u)
                                          ("date:today..now AND maildir:/Work/*" "Today's messages" ?t)
                                          ("date:7d..now AND maildir:/Work/*" "Last 7 days" ?7)))
 

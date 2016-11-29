@@ -15,7 +15,7 @@
     (use-package magit
       :ensure t
 
-      :bind (("s-m" . magit-status)
+      :bind (("M-m" . magit-status)
              ("s-b" . magit-blame))
 
       :init

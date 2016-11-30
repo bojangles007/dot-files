@@ -750,6 +750,11 @@ EOF
      (use-package helm
        :ensure t
 
+       :init
+
+       ;; Ag buffer names are insanely long...
+       (setq helm-buffer-max-length 35)
+
        :bind (("M-x" . helm-M-x)
               ("M-y" . helm-show-kill-ring)
               ("C-x b" . helm-mini)

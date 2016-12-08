@@ -935,6 +935,20 @@ EOF
        (setq gist-ask-for-description t))
    #+END_SRC
 
+** Python development
+
+   Python environment
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package elpy)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package auto-virtualenv
+       :config
+       (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv)
+       (add-hook 'projectile-after-switch-project-hook 'auto-virtualenv-set-virtualenv))
+   #+END_SRC
 ** Sphinx & reStructuredText
 
    I like to build Sphinx docs locally to check I've got the right syntax, and

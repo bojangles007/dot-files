@@ -79,7 +79,6 @@
     (setq mu4e-contexts
           `(,(make-mu4e-context
               :name "Private"
-              :enter-func (lambda () (mu4e~main-view-real nil nil))
 
               :match-func (lambda (msg)
                             (when msg
@@ -112,8 +111,7 @@
 
             ,(make-mu4e-context
               :name "Work"
-              :enter-func (lambda () (mu4e~main-view-real nil nil))
-          
+
               :match-func (lambda (msg)
                             (when msg
                               (s-starts-with-p "/Work/"

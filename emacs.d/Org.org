@@ -28,6 +28,10 @@
       <<capturing>>
       <<refiling>>
 
+      ;; I don't rely on many drawer properties, so this should speed up my Agenda
+      ;; view, according to http://orgmode.org/worg/agenda-optimization.html
+      (setq org-agenda-ignore-drawer-properties '(effort appt category))
+
       ;; When hitting C-c C-z to take a note, always put it in the LOGBOOK drawer
       (setq org-log-into-drawer t)
 

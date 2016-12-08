@@ -33,7 +33,7 @@
 
       ;; Sometimes I accidentally edit non-visible parts of org document. This
       ;; helps, apparently.
-      (setq org-catch-invisible-edits t)
+      (setq org-catch-invisible-edits 'smart)
 
       ;; If running interactively, I want export to copy to the kill-ring
       (setq org-export-copy-to-kill-ring 'if-interactive)

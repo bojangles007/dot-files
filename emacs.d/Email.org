@@ -434,19 +434,19 @@
     (use-package org-mu4e)
   #+END_SRC
 
-  I also want to be able to use Org's table editor, and structure editing, in
-  message mode:
+  I define =C-c x= as a short-cut to switch to Org mode, and back, to message
+  mode, so that I can use full Org mode to edit messages if I want.
 
   #+BEGIN_SRC emacs-lisp
-  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
-  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+    (use-package mu4e :bind (:map mu4e-compose-mode-map
+                                  ("C-c x" . org-mode)))
+    (use-package org :bind ("C-c x" . mu4e-compose-mode))
   #+END_SRC
-
-  Not only that, but I want to be able to create MIME HTML mail based on
-  org-formatted source. There's a package for that too, of course.
 
   #+BEGIN_SRC emacs-lisp
     (use-package org-mime
+      :init
+      (setq org-mime-preserve-breaks nil)
       :config
       (add-hook 'message-mode-hook
                 (lambda ()

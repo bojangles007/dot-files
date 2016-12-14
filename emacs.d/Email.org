@@ -369,12 +369,11 @@
 
 * Reflow mail using soft linebreaks
 
-#+BEGIN_SRC emacs-lisp
-  ;; tip submitted by mu4e user cpbotha
-  (add-hook 'mu4e-compose-mode-hook
-            (lambda ()
-              (use-hard-newlines t 'always)))
-#+END_SRC
+  Use the current advice for sending =format=flowed= plain text mails.
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-compose-format-flowed t)
+  #+END_SRC
 
 * Cycle addresses in the From header
 

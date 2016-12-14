@@ -44,6 +44,7 @@
 
       <<org-babel-init>>
 
+      <<org-agenda-init>>
       :config
 
       <<org-babel-config>>)
@@ -72,6 +73,17 @@
            ("C-p" . org-previous-link))
   #+END_SRC
 
+* Agenda
+
+  #+name: org-agenda-init
+  #+BEGIN_SRC emacs-lisp :tangle no
+    (setq org-agenda-custom-commands
+          '(("w" todo "WAITING" nil)
+            ("p" todo "WIP" nil)
+            ("n" todo "NEXT" nil)
+            ("d" "Agenda + Next Actions"
+             ((agenda) (todo "NEXT")))))
+  #+END_SRC
 * Refiling
 
   I got all of this from [[https://www.youtube.com/watch?v=ECWtf6mAi9k][this YouTube video]].

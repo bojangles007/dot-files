@@ -79,10 +79,12 @@
   #+BEGIN_SRC emacs-lisp :tangle no
     (setq org-agenda-custom-commands
           '(("w" todo "WAITING" nil)
-            ("p" todo "WIP" nil)
+            ("p" todo "IN-PROGRESS" nil)
             ("n" todo "NEXT" nil)
-            ("d" "Agenda + Next Actions"
-             ((agenda) (todo "NEXT")))))
+            ("d" "Agenda + Actions"
+             ((agenda) 
+              (todo "IN-PROGRESS")
+              (todo nil)))))
   #+END_SRC
 * Refiling
 

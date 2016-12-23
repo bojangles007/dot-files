@@ -125,8 +125,8 @@
             ("l" "Logbook Entry" entry (file+datetree "Log.org")
              (file "tpl-logbook.org") :empty-lines-before 1)
 
-            ("i" "New Invoice" plain (file "LaterPay-Invoices.org")
-             (file "tpl-laterpay-invoice.org") :empty-lines-before 1)))
+            ("i" "New Invoice" plain (file "Invoices.org")
+             (file "tpl-invoice.org") :empty-lines-before 1)))
   #+END_SRC
 
 * Org Babel
@@ -249,7 +249,7 @@
        (org-map-entries (lambda ()
                           (org-entry-get nil "InvoiceId"))
                         nil
-                        'agenda)))
+                        '("~/Org/Invoices.org"))))
 
     (defun max-invoice-id ()
       (apply #'max

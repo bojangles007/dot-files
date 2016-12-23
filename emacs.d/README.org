@@ -253,16 +253,6 @@ EOF
      brew install aspell
    #+END_SRC
 
-** Extend word-wrap to 78 characters
-
-   I prefer slightly wider fill-rate than the default of 70. Let's make it
-   78, so we stay within 80 characters that so many people consider the holy
-   grail.
-
-   #+BEGIN_SRC emacs-lisp
-     (setq-default fill-column 78)
-   #+END_SRC
-
 ** A sentence ends at a period
 
    Sentences do not need double spaces to end. Period.

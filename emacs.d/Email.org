@@ -91,8 +91,6 @@
                       (mu4e-trash-folder .  "/Private/trash")
                       (mu4e-refile-folder . "/Private/Archive")
 
-                      (mu4e-get-mail-command . "mbsync icloud")
-
                       ;; Quickly jump to maildir based on context
                       (mu4e-maildir-shortcuts . (("/Private/INBOX" . ?i)
                                                  ("/Private/Lists" . ?l)
@@ -123,8 +121,6 @@
                       (mu4e-trash-folder .  "/Work/trash")
                       (mu4e-refile-folder . "/Work/archive")
                       (mu4e-sent-messages-behavior . delete)
-
-                      (mu4e-get-mail-command . "mbsync gmail")
 
                       ;; Quickly jump to maildirs
                       (mu4e-maildir-shortcuts . (("/Work/INBOX" . ?i)
@@ -367,12 +363,12 @@
   (setq mu4e~update-buffer-height 3)
   #+END_SRC
 
-* Reflow mail using soft linebreaks
-
-  Use the current advice for sending =format=flowed= plain text mails.
+  Tell mu4e to do the download every 2 minutes, with 60 second timeout for
+  each run.
 
   #+BEGIN_SRC emacs-lisp
-    (setq mu4e-compose-format-flowed t)
+    (setq mu4e-get-mail-command "gtimeout 60s mbsync -a"
+          mu4e-update-interval 120)
   #+END_SRC
 
 * Cycle addresses in the From header

@@ -47,6 +47,11 @@
       <<org-agenda-init>>
       :config
 
+      ;; I want to use habits to track how consistently I'm performing certain
+      ;; repeating events. (Practicing guitar, meditation, etc.) This is part of
+      ;; org, so we know it exists. No need for use-package here.
+      (require 'org-habit)
+
       <<org-babel-config>>)
   #+END_SRC
 

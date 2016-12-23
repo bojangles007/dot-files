@@ -85,7 +85,11 @@
              ((agenda) 
               (todo "IN-PROGRESS")
               (todo nil)))))
+
+    ;; Speed up Agenda by removing tag inheritance
+    (setq org-agenda-use-tag-inheritance '(todo))
   #+END_SRC
+
 * Refiling
 
   I got all of this from [[https://www.youtube.com/watch?v=ECWtf6mAi9k][this YouTube video]].

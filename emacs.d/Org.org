@@ -110,8 +110,8 @@
   #+name: capturing
   #+BEGIN_SRC emacs-lisp :tangle no
     (setq org-capture-templates
-          '(("t" "TODO Entry" entry (file+headline "Agenda.org" "Capture")
-             (file "tpl-todo.org") :empty-lines-before 1)
+          '(("t" "NEXT Entry" entry (file+headline "Agenda.org" "Capture")
+             (file "tpl-next.org") :empty-lines-before 1)
 
             ("P" "password" entry (file "~/Org/passwords.org.gpg")
              "* %^{Title}\n  %^{URL}p %^{USERNAME}p %^{PASSWORD}p" :empty-lines-before 1)

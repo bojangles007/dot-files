@@ -47,6 +47,22 @@
       (imagemagick-register-types))
   #+END_SRC
 
+  Show addresses of senders (not just their names)
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-view-show-addresses t)
+  #+END_SRC
+
+  For threads, only show the subject once. (Like mutt.)
+
+  #+BEGIN_SRC emacs-lisp
+    (setq mu4e-headers-fields '((:human-date . 12)
+                                (:flags . 6)
+                                (:mailing-list . 10)
+                                (:from . 22)
+                                (:thread-subject . nil)))
+  #+END_SRC
+
   Use a non-default way to view HTML messages.
 
   #+BEGIN_SRC emacs-lisp

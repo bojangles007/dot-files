@@ -995,6 +995,7 @@ EOF
    #+BEGIN_SRC emacs-lisp
      (use-package graphviz-dot-mode
        :init
+       (setq default-tab-width 8)
        (setq graphviz-dot-view-command "open -a Graphviz %s"))
    #+END_SRC
 

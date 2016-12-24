@@ -54,3 +54,11 @@
       (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
       (add-hook 'elpy-mode-hook 'flycheck-mode))
   #+END_SRC
+
+* Convert between string types
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package python-switch-quotes
+      :ensure t
+      :bind ("C-c '" . python-switch-quotes))
+  #+END_SRC

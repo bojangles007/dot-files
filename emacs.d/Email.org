@@ -495,6 +495,12 @@
     account default : private
   #+END_SRC
 
+  Don't keep buffer for sent messages
+
+  #+BEGIN_SRC emacs-lisp
+  (setq message-kill-buffer-on-exit t)
+  #+END_SRC
+
   Finally we have to tell Emacs to use msmtp to send mail:
 
   #+BEGIN_SRC emacs-lisp

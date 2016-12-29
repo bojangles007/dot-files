@@ -1059,6 +1059,12 @@ EOF
        (yas-global-mode))
    #+END_SRC
 
+** Visual line mode / word wrapping
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'text-mode-hook 'visual-line-mode)
+   #+END_SRC
+
 * Footnotes
 
 [fn:1] Found at http://www.emacswiki.org/emacs/TrampMode#toc31

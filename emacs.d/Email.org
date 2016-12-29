@@ -110,6 +110,7 @@
                       ;; Quickly jump to maildir based on context
                       (mu4e-maildir-shortcuts . (("/Private/INBOX" . ?i)
                                                  ("/Private/Lists" . ?l)
+                                                 ("/Private/Tickets" . ?t)
                                                  ("/Private/spam" . ?s)
                                                  ("/Private/archive" . ?a)))
 
@@ -227,7 +228,7 @@
     Channel icloud-folders
     Master :icloud-remote:
     Slave :icloud-local:
-    Patterns "INBOX" "Lists" "Archive"
+    Patterns "INBOX" "Lists" "Archive" "Tickets"
     Create Both
     Expunge Both
     SyncState *

@@ -10,12 +10,13 @@
   my configuration is in the form of a [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][literate programming]] document: prose,
   interspaced with code.
 
-  After many years with BBEdit I started looking at Emacs again when I started
-  learning Clojure. I started with the "better defaults" package and added
-  things one-by-one as I found them, rather than stealing someone else's
-  mammoth =.emacs= file that I didn't understand any of. Initially I drew a
-  lot of inspiration from [[https://github.com/magnars/.emacs.d][magnars' .emacs.d]], but after rewriting it using
-  [[https://github.com/jwiegley/use-package][use-package]] (which is excellent) it is starting to feel like my own work.
+  After over a decade with BBEdit I started looking at Emacs again
+  when I started learning Clojure. I started with the "better
+  defaults" package and added things one-by-one as I found them,
+  rather than stealing someone else's mammoth =.emacs= file that I
+  didn't understand any of. Initially I drew a lot of inspiration from
+  [[https://github.com/magnars/.emacs.d][magnars' .emacs.d]], but after rewriting it using [[https://github.com/jwiegley/use-package][use-package]] (which
+  is great) and later using Org mode, it now feels like my own work.
 
   When I say this document uses literate programming, I mean that the
   configuration snippets here are not copied-and-pasted from my config, they
@@ -83,7 +84,7 @@ EOF
 
 ** Auto fill mode
 
-   I like it when Emacs automatically breaks lines I type.
+   I like it when Emacs automatically breaks lines while I type.
 
    #+BEGIN_SRC emacs-lisp
    (add-hook 'text-mode-hook 'auto-fill-mode)

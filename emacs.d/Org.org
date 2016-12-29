@@ -84,12 +84,13 @@
   #+BEGIN_SRC emacs-lisp :tangle no
     (setq org-agenda-custom-commands
           '(("w" todo "WAITING" nil)
-            ("p" todo "IN-PROGRESS" nil)
+            ("i" todo "IN-PROGRESS" nil)
             ("n" todo "NEXT" nil)
-            ("d" "Agenda + Actions"
-             ((agenda) 
+            ("p" todo "PROJECT" nil)
+            ("d" "Agenda, In Progress & Next Actions"
+             ((agenda)
               (todo "IN-PROGRESS")
-              (todo nil)))))
+              (todo "NEXT" nil)))))
 
     ;; Speed up Agenda by removing tag inheritance
     (setq org-agenda-use-tag-inheritance '(todo))

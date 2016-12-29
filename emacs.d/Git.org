@@ -27,7 +27,7 @@
 * GitHub setup
 
   I also use a Magit plugin that interacts with GitHub, allowing me to create
-  pull-requests from within Emacs.
+  pull-requests without leaving Magit.
 
   #+BEGIN_SRC emacs-lisp
     (use-package magit-gh-pulls
@@ -36,7 +36,7 @@
       (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
   #+END_SRC
 
-  Link to my github for my location in a file.
+  Link to file location on github.
 
   #+BEGIN_SRC emacs-lisp
     (use-package git-link
@@ -62,4 +62,16 @@
                         (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
     (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
     (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+  #+END_SRC
+
+* Auto commit
+
+  In some projects (notably, my Org/Agenda setup) I want to
+  automatically commit when editing files.
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package git-auto-commit-mode
+      :ensure t
+      :init
+      (setq gac-shell-and "; and "))
   #+END_SRC
